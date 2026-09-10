@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel to Spat5 OSC / Raw Data Converter</title>
+  <!-- SheetJS library for parsing Excel/CSV files in the browser -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 20px; background: #222; color: #fff; }
+    
+    /* Drag and drop container styling */
+    #drop-zone {
+      border: 2px dashed #00d2ff;
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      background: #333;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    #drop-zone.hover { background: #444; border-color: #fff; }
+    #drop-zone.success { border-color: #00ff66; background: #1b3322; }
+
+    /* Controls & Switch styling */
+    .controls-bar {
+      margin: 20px 0;
+      padding: 15px;
+      background: #2a2a2a;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #555; transition: .3s; border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: #00d2ff; }
+    input:checked + .slider:before { transform: translateX(22px); }
+    .switch-label { font-weight: bold; cursor: pointer; user-select: none; }
+
+    /* Textarea and button formatting */
+    textarea {
+      width: 100%;
+      height: 100px;
+      background: #111;
+      color: #00ff66;
+      font-family: monospace;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border: 1px solid #444;
+      border-radius: 4px;
+    }
+    button {
+      padding: 8px 12px;
+      background: #00d2ff;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      margin-right: 5px;
+    }
+    button:hover { background: #0099cc; color: #fff; }
+    button.dict-btn { background: #ff9900; color: #000; }
+    button.dict-btn:hover { background: #cc7a00; color: #fff; }
+    h3 { margin-bottom: 5px; color: #00d2ff; }
+    .dict-section { margin-top: 30px; padding: 15px; background: #2a2a2a; border-radius: 6px; }
+  </style>
+</head>
+<body>
+
+<!--
+==============================================================================
+@file          Excel-to-spat5-conversion.html
+@description   Client-side web application for converting spatial audio speaker
+               and source positions from Excel (.xlsx, .xls) or CSV files into 
+               Spat5 OSC commands and MaxMSP [dict] JSON preset files.
+@authors       Max Bruckert & Gemini
+@version       2.0
+==============================================================================
+
+📄 SCRIPT OVERVIEW & FEATURES:
+------------------------------------------------------------------------------
+1. Spreadsheet Parsing: Uses SheetJS (xlsx.full.min.js) to parse loaded files
+   and extract speaker names, 3D Cartesian (X, Y, Z), and Spherical (A, D, E & A, E, D)
+   coordinate systems.
+2. Visual Drag & Drop: Offers real-time UI feedback displaying the loaded file name 
+   and the total count of valid detected speakers.
+3. Unified Raw Mode Toggle:
+   - OFF (Default): Generates standard Spat5 OSC syntax ("/speakers/xyz", "/source/1/xyz").
+   - ON (Raw Mode): Strips OSC prefixes from textareas and sanitizes JSON dictionary 
+     keys into neutral identifiers ("xyz", "source_1_xyz", "speaker_1_name").
+4. Multi-Format JSON Exporter: Downloads MaxMSP [dict] presets in various profiles
+   (Global /speakers/*, Individual /source/*, XYZ Cartesian, or ADE/AED Spherical).
+5. Modern Clipboard Utility: Asynchronous copy-to-clipboard function with safety 
+   fallbacks for legacy/non-HTTPS environments.
+
+⚙️ FUNCTION DICTIONARY:
+------------------------------------------------------------------------------
+@function toggleCheckbox()
+  Toggles the "Raw values only" switch state programmatically when clicking its label,
+  triggering an automatic UI refresh.
+
+@function updateDataOutputs()
+  Core parsing engine. Scans spreadsheet rows for required headers (Name, X, Y, Z),
+  extracts raw numeric data, populates internal cache structures, and formats 
+  output text inside all seven UI textareas according to the active Raw Mode state.
+
+@function downloadDict(modelType)
+  Generates and downloads a structured JSON preset file for MaxMSP [dict] objects.
+  Reads internal coordinate buffers and formats keys dynamically based on the 
+  requested preset scheme ('spk-xyz', 'spk-ade', 'spk-aed', 'src-xyz', 'src-ade', 'src-aed')
+  and Raw Mode selection.
+
+@function copyToClipboard(id)
+  Copies the content of a specified textarea element to the system clipboard using
+  the modern navigator.clipboard API, falling back to execCommand if necessary.
+==============================================================================
+-->
+
+  <h2>Excel / CSV Data Converter</h2>
+  
+  <!-- Drag & Drop Area -->
+  <div id="drop-zone">
+    <span id="drop-zone-text">Drag & drop your .xlsx, .xls, or .csv file here</span>
+  </div>
+
+  <!-- Options Bar -->
+  <div class="controls-bar">
+    <label class="switch">
+      <input type="checkbox" id="raw-mode-toggle" onchange="updateDataOutputs()">
+      <span class="slider"></span>
+    </label>
+    <span class="switch-label" onclick="toggleCheckbox()">Raw values only (strip Spat5 OSC prefixes across Textareas & JSON exports)</span>
+  </div>
+
+  <!-- MaxMSP Dict Export Section -->
+  <div class="dict-section">
+    <h3 style="color: #ff9900;">Download MaxMSP JSON [dict] Preset Files</h3>
+    <button class="dict-btn" onclick="downloadDict('spk-xyz')">Download speakers-positions-XYZ.json</button>
+    <button class="dict-btn" onclick="downloadDict('spk-ade')">Download speakers-positions-ADE.json</button>
+    <button class="dict-btn" onclick="downloadDict('spk-aed')">Download speakers-positions-AED.json</button>
+
+    <button class="dict-btn" onclick="downloadDict('src-xyz')">Download speakers-and-sources-positions-XYZ.json</button>
+    <button class="dict-btn" onclick="downloadDict('src-ade')">Download speakers-and-sources-positions-ADE.json</button>
+    <button class="dict-btn" onclick="downloadDict('src-aed')">Download speakers-and-sources-positions-AED.json</button>
+  </div>
+
+  <!-- Output Text Areas -->
+  <h3 id="title-spk-xyz">1. Global /speakers/xyz List:</h3>
+  <textarea id="out-spk-xyz" readonly></textarea>
+  <button onclick="copyToClipboard('out-spk-xyz')">Copy Global XYZ</button>
+
+  <h3 id="title-spk-ade">2. Global /speakers/ade List:</h3>
+  <textarea id="out-spk-ade" readonly></textarea>
+  <button onclick="copyToClipboard('out-spk-ade')">Copy Global ADE</button>
+
+  <h3 id="title-spk-aed">3. Global /speakers/aed List:</h3>
+  <textarea id="out-spk-aed" readonly></textarea>
+  <button onclick="copyToClipboard('out-spk-aed')">Copy Global AED</button>
+
+  <h3 id="title-src-xyz">4. Individual /source/x/xyz Positions:</h3>
+  <textarea id="out-src-xyz" readonly></textarea>
+  <button onclick="copyToClipboard('out-src-xyz')">Copy Individual XYZ</button>
+
+  <h3 id="title-src-ade">5. Individual /source/x/ade Positions:</h3>
+  <textarea id="out-src-ade" readonly></textarea>
+  <button onclick="copyToClipboard('out-src-ade')">Copy Individual ADE</button>
+
+  <h3 id="title-src-aed">6. Individual /source/x/aed Positions:</h3>
+  <textarea id="out-src-aed" readonly></textarea>
+  <button onclick="copyToClipboard('out-src-aed')">Copy Individual AED</button>
+
+  <h3 id="title-names">7. Speaker Names /speaker/x/name:</h3>
+  <textarea id="out-names" readonly></textarea>
+  <button onclick="copyToClipboard('out-names')">Copy Speaker Names</button>
+
+  <script>
+    let parsedRows = [];
+    
+    let extractedData = {
+      spkCount: 0,
+      names: [],
+      xyz: [],
+      ade: [],
+      aed: []
+    };
+
+    const dropZone = document.getElementById('drop-zone');
+    const dropZoneText = document.getElementById('drop-zone-text');
+    const rawToggle = document.getElementById('raw-mode-toggle');
+
+    function toggleCheckbox() {
+      rawToggle.checked = !rawToggle.checked;
+      updateDataOutputs();
+    }
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(name => dropZone.classList.add('hover'));
+    ['dragleave', 'drop'].forEach(name => dropZone.classList.remove('hover'));
+
+    dropZone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const data = new Uint8Array(evt.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        parsedRows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+        updateDataOutputs();
+
+        if (extractedData.spkCount > 0) {
+          dropZone.classList.add('success');
+          dropZoneText.innerHTML = `<strong>File loaded:</strong> ${file.name} — <em>${extractedData.spkCount} speaker(s) detected</em>`;
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    function updateDataOutputs() {
+      if (!parsedRows || parsedRows.length === 0) return;
+
+      const isRawMode = rawToggle.checked;
+
+      document.getElementById('title-spk-xyz').innerText = isRawMode ? "1. Global XYZ Coordinates (Raw):" : "1. Global /speakers/xyz List:";
+      document.getElementById('title-spk-ade').innerText = isRawMode ? "2. Global ADE Coordinates (Raw):" : "2. Global /speakers/ade List:";
+      document.getElementById('title-spk-aed').innerText = isRawMode ? "3. Global AED Coordinates (Raw):" : "3. Global /speakers/aed List:";
+      document.getElementById('title-src-xyz').innerText = isRawMode ? "4. Individual XYZ Coordinates (Raw):" : "4. Individual /source/x/xyz Positions:";
+      document.getElementById('title-src-ade').innerText = isRawMode ? "5. Individual ADE Coordinates (Raw):" : "5. Individual /source/x/ade Positions:";
+      document.getElementById('title-src-aed').innerText = isRawMode ? "6. Individual AED Coordinates (Raw):" : "6. Individual /source/x/aed Positions:";
+      document.getElementById('title-names').innerText = isRawMode ? "7. Speaker Names (Raw):" : "7. Speaker Names /speaker/x/name:";
+
+      let colIdx = { name: -1, x: -1, y: -1, z: -1, a: -1, d: -1, e: -1 };
+      let headerRowIndex = -1;
+
+      for (let r = 0; r < parsedRows.length; r++) {
+        if (!parsedRows[r]) continue;
+        const rowStr = parsedRows[r].map(c => String(c).trim().toUpperCase());
+        
+        if (rowStr.includes('NAME') && rowStr.includes('X') && rowStr.includes('Y') && rowStr.includes('Z')) {
+          headerRowIndex = r;
+          parsedRows[r].forEach((val, cIdx) => {
+            const v = String(val).trim().toUpperCase();
+            if (v === 'NAME') colIdx.name = cIdx;
+            else if (v === 'X') colIdx.x = cIdx;
+            else if (v === 'Y') colIdx.y = cIdx;
+            else if (v === 'Z') colIdx.z = cIdx;
+            else if (v === 'A') colIdx.a = cIdx;
+            else if (v === 'D') colIdx.d = cIdx;
+            else if (v === 'E') colIdx.e = cIdx;
+          });
+          break;
+        }
+      }
+
+      if (headerRowIndex === -1 || colIdx.x === -1 || colIdx.y === -1 || colIdx.z === -1) {
+        alert("Error: Header row containing (Name, X, Y, Z) was not found in the file.");
+        return;
+      }
+
+      extractedData = { spkCount: 0, names: [], xyz: [], ade: [], aed: [] };
+
+      const xyzGlobal = [];
+      const adeGlobal = [];
+      const aedGlobal = [];
+      const srcXyzList = [];
+      const srcAdeList = [];
+      const srcAedList = [];
+      const nameList = [];
+
+      let spkCounter = 1;
+
+      for (let r = headerRowIndex + 1; r < parsedRows.length; r++) {
+        const row = parsedRows[r];
+        if (!row || row.length === 0) continue;
+
+        const rawX = row[colIdx.x];
+        const rawY = row[colIdx.y];
+        const rawZ = row[colIdx.z];
+
+        if (rawX === undefined || rawY === undefined || rawZ === undefined) continue;
+
+        const x = parseFloat(rawX);
+        const y = parseFloat(rawY);
+        const z = parseFloat(rawZ);
+
+        if (isNaN(x) || isNaN(y) || isNaN(z)) continue;
+
+        const nameVal = colIdx.name !== -1 && row[colIdx.name] !== undefined ? String(row[colIdx.name]).trim() : `HP_${spkCounter}`;
+        const a = colIdx.a !== -1 && row[colIdx.a] !== undefined ? parseFloat(row[colIdx.a]) : 0;
+        const d = colIdx.d !== -1 && row[colIdx.d] !== undefined ? parseFloat(row[colIdx.d]) : 0;
+        const e = colIdx.e !== -1 && row[colIdx.e] !== undefined ? parseFloat(row[colIdx.e]) : 0;
+
+        extractedData.names.push(nameVal);
+        extractedData.xyz.push([x, y, z]);
+        extractedData.ade.push([a, d, e]);
+        extractedData.aed.push([a, e, d]);
+
+        xyzGlobal.push(x, y, z);
+        adeGlobal.push(a, d, e);
+        aedGlobal.push(a, e, d);
+
+        if (isRawMode) {
+          srcXyzList.push(`${x} ${y} ${z}`);
+          srcAdeList.push(`${a} ${d} ${e}`);
+          srcAedList.push(`${a} ${e} ${d}`);
+          nameList.push(nameVal);
+        } else {
+          srcXyzList.push(`/source/${spkCounter}/xyz ${x} ${y} ${z}`);
+          srcAdeList.push(`/source/${spkCounter}/ade ${a} ${d} ${e}`);
+          srcAedList.push(`/source/${spkCounter}/aed ${a} ${e} ${d}`);
+          nameList.push(`/speaker/${spkCounter}/name ${nameVal}`);
+        }
+
+        spkCounter++;
+      }
+
+      extractedData.spkCount = spkCounter - 1;
+
+      document.getElementById('out-spk-xyz').value = isRawMode ? xyzGlobal.join(' ') : `/speakers/xyz ${xyzGlobal.join(' ')}`;
+      document.getElementById('out-spk-ade').value = isRawMode ? adeGlobal.join(' ') : `/speakers/ade ${adeGlobal.join(' ')}`;
+      document.getElementById('out-spk-aed').value = isRawMode ? aedGlobal.join(' ') : `/speakers/aed ${aedGlobal.join(' ')}`;
+      
+      document.getElementById('out-src-xyz').value = srcXyzList.join(isRawMode ? '\n' : ', ');
+      document.getElementById('out-src-ade').value = srcAdeList.join(isRawMode ? '\n' : ', ');
+      document.getElementById('out-src-aed').value = srcAedList.join(isRawMode ? '\n' : ', ');
+      
+      document.getElementById('out-names').value = nameList.join('\n');
+    }
+
+    function downloadDict(modelType) {
+      if (extractedData.spkCount === 0) {
+        alert("Please load a valid Excel or CSV file first.");
+        return;
+      }
+
+      const isRawMode = rawToggle.checked;
+      const dictObj = {};
+      let filename = "spat5-preset.json";
+
+      const flatXYZ = extractedData.xyz.reduce((acc, val) => acc.concat(val), []);
+      const flatADE = extractedData.ade.reduce((acc, val) => acc.concat(val), []);
+      const flatAED = extractedData.aed.reduce((acc, val) => acc.concat(val), []);
+
+      switch (modelType) {
+        case 'spk-xyz':
+          dictObj[isRawMode ? "xyz" : "/speakers/xyz"] = flatXYZ;
+          filename = isRawMode ? "raw-speakers-positions-XYZ.json" : "speakers-positions-XYZ.json";
+          break;
+
+        case 'spk-ade':
+          dictObj[isRawMode ? "ade" : "/speakers/ade"] = flatADE;
+          filename = isRawMode ? "raw-speakers-positions-ADE.json" : "speakers-positions-ADE.json";
+          break;
+
+        case 'spk-aed':
+          dictObj[isRawMode ? "aed" : "/speakers/aed"] = flatAED;
+          filename = isRawMode ? "raw-speakers-positions-AED.json" : "speakers-positions-AED.json";
+          break;
+
+        case 'src-xyz':
+          dictObj[isRawMode ? "xyz" : "/speakers/xyz"] = flatXYZ;
+          for (let i = 0; i < extractedData.spkCount; i++) {
+            const srcKey = isRawMode ? `source_${i + 1}_xyz` : `/source/${i + 1}/xyz`;
+            const nameKey = isRawMode ? `speaker_${i + 1}_name` : `/speaker/${i + 1}/name`;
+            dictObj[srcKey] = extractedData.xyz[i];
+            dictObj[nameKey] = extractedData.names[i];
+          }
+          filename = isRawMode ? "raw-speakers-and-sources-positions-XYZ.json" : "speakers-and-sources-positions-XYZ.json";
+          break;
+
+        case 'src-ade':
+          dictObj[isRawMode ? "ade" : "/speakers/ade"] = flatADE;
+          for (let i = 0; i < extractedData.spkCount; i++) {
+            const srcKey = isRawMode ? `source_${i + 1}_ade` : `/source/${i + 1}/ade`;
+            const nameKey = isRawMode ? `speaker_${i + 1}_name` : `/speaker/${i + 1}/name`;
+            dictObj[srcKey] = extractedData.ade[i];
+            dictObj[nameKey] = extractedData.names[i];
+          }
+          filename = isRawMode ? "raw-speakers-and-sources-positions-ADE.json" : "speakers-and-sources-positions-ADE.json";
+          break;
+
+        case 'src-aed':
+          dictObj[isRawMode ? "aed" : "/speakers/aed"] = flatAED;
+          for (let i = 0; i < extractedData.spkCount; i++) {
+            const srcKey = isRawMode ? `source_${i + 1}_aed` : `/source/${i + 1}/aed`;
+            const nameKey = isRawMode ? `speaker_${i + 1}_name` : `/speaker/${i + 1}/name`;
+            dictObj[srcKey] = extractedData.aed[i];
+            dictObj[nameKey] = extractedData.names[i];
+          }
+          filename = isRawMode ? "raw-speakers-and-sources-positions-AED.json" : "speakers-and-sources-positions-AED.json";
+          break;
+      }
+
+      const jsonStr = JSON.stringify(dictObj, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    async function copyToClipboard(id) {
+      const el = document.getElementById(id);
+      if (!el.value) return;
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(el.value);
+        } else {
+          el.select();
+          document.execCommand('copy');
+        }
+        alert('Text copied to clipboard!');
+      } catch (err) {
+        alert('Failed to copy text: ' + err);
+      }
+    }
+  </script>
+</body>
+</html>

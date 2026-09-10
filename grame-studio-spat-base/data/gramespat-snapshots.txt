@@ -1,0 +1,2217 @@
+# ==============================================================================
+# File: "/Users/max/Desktop/Grame new ambi/gramespat-snapshots.txt"
+# Exported by: max
+# max@maxbookpro - macOS 26.5.1
+# 07-sep-2026 13:17:41
+# Content: 2210 OSC messages
+# ==============================================================================
+/snapshot/indices 1
+/snapshot/1/name "base"
+/snapshot/1/time 0.0
+/snapshot/1/begin
+/snapshot/1/source/number 28
+/snapshot/1/source/1/visible 1
+/snapshot/1/source/1/editable 1
+/snapshot/1/source/1/select 1
+/snapshot/1/source/1/hidewhenmute 0
+/snapshot/1/source/1/aed -26.2502 29.473 4.67467
+/snapshot/1/source/1/constraint/circular 0
+/snapshot/1/source/1/coordinates/visible 1
+/snapshot/1/source/1/orientation/mode "default"
+/snapshot/1/source/1/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/1/orientation/visible 1
+/snapshot/1/source/1/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/1/proportion 100.0
+/snapshot/1/source/1/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/1/label "1"
+/snapshot/1/source/1/label/visible 1
+/snapshot/1/source/1/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/1/label/justification "centred"
+/snapshot/1/source/1/vumeter/visible 0
+/snapshot/1/source/1/vumeter/level -60.0
+/snapshot/1/source/1/aperture 35.0
+/snapshot/1/source/1/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/1/radius/visible 0
+/snapshot/1/source/1/history/visible 0
+/snapshot/1/source/1/history/size 100
+/snapshot/1/source/1/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/1/history/thickness 1.0
+/snapshot/1/source/2/visible 1
+/snapshot/1/source/2/editable 1
+/snapshot/1/source/2/select 0
+/snapshot/1/source/2/hidewhenmute 0
+/snapshot/1/source/2/aed 26.2502 29.473 4.67467
+/snapshot/1/source/2/constraint/circular 0
+/snapshot/1/source/2/coordinates/visible 1
+/snapshot/1/source/2/orientation/mode "default"
+/snapshot/1/source/2/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/2/orientation/visible 1
+/snapshot/1/source/2/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/2/proportion 100.0
+/snapshot/1/source/2/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/2/label "2"
+/snapshot/1/source/2/label/visible 1
+/snapshot/1/source/2/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/2/label/justification "centred"
+/snapshot/1/source/2/vumeter/visible 0
+/snapshot/1/source/2/vumeter/level -60.0
+/snapshot/1/source/2/aperture 35.0
+/snapshot/1/source/2/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/2/radius/visible 0
+/snapshot/1/source/2/history/visible 0
+/snapshot/1/source/2/history/size 100
+/snapshot/1/source/2/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/2/history/thickness 1.0
+/snapshot/1/source/3/visible 1
+/snapshot/1/source/3/editable 1
+/snapshot/1/source/3/select 0
+/snapshot/1/source/3/hidewhenmute 0
+/snapshot/1/source/3/aed -36.8699 28.4212 4.83244
+/snapshot/1/source/3/constraint/circular 0
+/snapshot/1/source/3/coordinates/visible 1
+/snapshot/1/source/3/orientation/mode "default"
+/snapshot/1/source/3/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/3/orientation/visible 1
+/snapshot/1/source/3/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/3/proportion 100.0
+/snapshot/1/source/3/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/3/label "3"
+/snapshot/1/source/3/label/visible 1
+/snapshot/1/source/3/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/3/label/justification "centred"
+/snapshot/1/source/3/vumeter/visible 0
+/snapshot/1/source/3/vumeter/level -60.0
+/snapshot/1/source/3/aperture 35.0
+/snapshot/1/source/3/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/3/radius/visible 0
+/snapshot/1/source/3/history/visible 0
+/snapshot/1/source/3/history/size 100
+/snapshot/1/source/3/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/3/history/thickness 1.0
+/snapshot/1/source/4/visible 1
+/snapshot/1/source/4/editable 1
+/snapshot/1/source/4/select 0
+/snapshot/1/source/4/hidewhenmute 0
+/snapshot/1/source/4/aed 36.8699 28.4212 4.83244
+/snapshot/1/source/4/constraint/circular 0
+/snapshot/1/source/4/coordinates/visible 1
+/snapshot/1/source/4/orientation/mode "default"
+/snapshot/1/source/4/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/4/orientation/visible 1
+/snapshot/1/source/4/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/4/proportion 100.0
+/snapshot/1/source/4/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/4/label "4"
+/snapshot/1/source/4/label/visible 1
+/snapshot/1/source/4/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/4/label/justification "centred"
+/snapshot/1/source/4/vumeter/visible 0
+/snapshot/1/source/4/vumeter/level -60.0
+/snapshot/1/source/4/aperture 35.0
+/snapshot/1/source/4/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/4/radius/visible 0
+/snapshot/1/source/4/history/visible 0
+/snapshot/1/source/4/history/size 100
+/snapshot/1/source/4/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/4/history/thickness 1.0
+/snapshot/1/source/5/visible 1
+/snapshot/1/source/5/editable 1
+/snapshot/1/source/5/select 0
+/snapshot/1/source/5/hidewhenmute 0
+/snapshot/1/source/5/aed -90.0 43.1913 3.36043
+/snapshot/1/source/5/constraint/circular 0
+/snapshot/1/source/5/coordinates/visible 1
+/snapshot/1/source/5/orientation/mode "default"
+/snapshot/1/source/5/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/5/orientation/visible 1
+/snapshot/1/source/5/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/5/proportion 100.0
+/snapshot/1/source/5/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/5/label "5"
+/snapshot/1/source/5/label/visible 1
+/snapshot/1/source/5/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/5/label/justification "centred"
+/snapshot/1/source/5/vumeter/visible 0
+/snapshot/1/source/5/vumeter/level -60.0
+/snapshot/1/source/5/aperture 35.0
+/snapshot/1/source/5/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/5/radius/visible 0
+/snapshot/1/source/5/history/visible 0
+/snapshot/1/source/5/history/size 100
+/snapshot/1/source/5/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/5/history/thickness 1.0
+/snapshot/1/source/6/visible 1
+/snapshot/1/source/6/editable 1
+/snapshot/1/source/6/select 0
+/snapshot/1/source/6/hidewhenmute 0
+/snapshot/1/source/6/aed 90.0 43.1913 3.36043
+/snapshot/1/source/6/constraint/circular 0
+/snapshot/1/source/6/coordinates/visible 1
+/snapshot/1/source/6/orientation/mode "default"
+/snapshot/1/source/6/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/6/orientation/visible 1
+/snapshot/1/source/6/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/6/proportion 100.0
+/snapshot/1/source/6/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/6/label "6"
+/snapshot/1/source/6/label/visible 1
+/snapshot/1/source/6/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/6/label/justification "centred"
+/snapshot/1/source/6/vumeter/visible 0
+/snapshot/1/source/6/vumeter/level -60.0
+/snapshot/1/source/6/aperture 35.0
+/snapshot/1/source/6/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/6/radius/visible 0
+/snapshot/1/source/6/history/visible 0
+/snapshot/1/source/6/history/size 100
+/snapshot/1/source/6/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/6/history/thickness 1.0
+/snapshot/1/source/7/visible 1
+/snapshot/1/source/7/editable 1
+/snapshot/1/source/7/select 0
+/snapshot/1/source/7/hidewhenmute 0
+/snapshot/1/source/7/aed -138.674 30.7779 4.49472
+/snapshot/1/source/7/constraint/circular 0
+/snapshot/1/source/7/coordinates/visible 1
+/snapshot/1/source/7/orientation/mode "default"
+/snapshot/1/source/7/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/7/orientation/visible 1
+/snapshot/1/source/7/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/7/proportion 100.0
+/snapshot/1/source/7/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/7/label "7"
+/snapshot/1/source/7/label/visible 1
+/snapshot/1/source/7/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/7/label/justification "centred"
+/snapshot/1/source/7/vumeter/visible 0
+/snapshot/1/source/7/vumeter/level -60.0
+/snapshot/1/source/7/aperture 35.0
+/snapshot/1/source/7/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/7/radius/visible 0
+/snapshot/1/source/7/history/visible 0
+/snapshot/1/source/7/history/size 100
+/snapshot/1/source/7/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/7/history/thickness 1.0
+/snapshot/1/source/8/visible 1
+/snapshot/1/source/8/editable 1
+/snapshot/1/source/8/select 0
+/snapshot/1/source/8/hidewhenmute 0
+/snapshot/1/source/8/aed 138.674 30.7779 4.49472
+/snapshot/1/source/8/constraint/circular 0
+/snapshot/1/source/8/coordinates/visible 1
+/snapshot/1/source/8/orientation/mode "default"
+/snapshot/1/source/8/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/8/orientation/visible 1
+/snapshot/1/source/8/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/8/proportion 100.0
+/snapshot/1/source/8/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/8/label "8"
+/snapshot/1/source/8/label/visible 1
+/snapshot/1/source/8/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/8/label/justification "centred"
+/snapshot/1/source/8/vumeter/visible 0
+/snapshot/1/source/8/vumeter/level -60.0
+/snapshot/1/source/8/aperture 35.0
+/snapshot/1/source/8/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/8/radius/visible 0
+/snapshot/1/source/8/history/visible 0
+/snapshot/1/source/8/history/size 100
+/snapshot/1/source/8/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/8/history/thickness 1.0
+/snapshot/1/source/9/visible 1
+/snapshot/1/source/9/editable 1
+/snapshot/1/source/9/select 0
+/snapshot/1/source/9/hidewhenmute 0
+/snapshot/1/source/9/aed 0.0 27.0721 5.05371
+/snapshot/1/source/9/constraint/circular 0
+/snapshot/1/source/9/coordinates/visible 1
+/snapshot/1/source/9/orientation/mode "default"
+/snapshot/1/source/9/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/9/orientation/visible 1
+/snapshot/1/source/9/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/9/proportion 100.0
+/snapshot/1/source/9/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/9/label "9"
+/snapshot/1/source/9/label/visible 1
+/snapshot/1/source/9/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/9/label/justification "centred"
+/snapshot/1/source/9/vumeter/visible 0
+/snapshot/1/source/9/vumeter/level -60.0
+/snapshot/1/source/9/aperture 35.0
+/snapshot/1/source/9/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/9/radius/visible 0
+/snapshot/1/source/9/history/visible 0
+/snapshot/1/source/9/history/size 100
+/snapshot/1/source/9/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/9/history/thickness 1.0
+/snapshot/1/source/10/visible 1
+/snapshot/1/source/10/editable 1
+/snapshot/1/source/10/select 0
+/snapshot/1/source/10/hidewhenmute 0
+/snapshot/1/source/10/aed -180.0 29.2914 4.70106
+/snapshot/1/source/10/constraint/circular 0
+/snapshot/1/source/10/coordinates/visible 1
+/snapshot/1/source/10/orientation/mode "default"
+/snapshot/1/source/10/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/10/orientation/visible 1
+/snapshot/1/source/10/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/10/proportion 100.0
+/snapshot/1/source/10/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/10/label "10"
+/snapshot/1/source/10/label/visible 1
+/snapshot/1/source/10/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/10/label/justification "centred"
+/snapshot/1/source/10/vumeter/visible 0
+/snapshot/1/source/10/vumeter/level -60.0
+/snapshot/1/source/10/aperture 35.0
+/snapshot/1/source/10/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/10/radius/visible 0
+/snapshot/1/source/10/history/visible 0
+/snapshot/1/source/10/history/size 100
+/snapshot/1/source/10/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/10/history/thickness 1.0
+/snapshot/1/source/11/visible 1
+/snapshot/1/source/11/editable 1
+/snapshot/1/source/11/select 0
+/snapshot/1/source/11/hidewhenmute 0
+/snapshot/1/source/11/aed -37.7784 16.5886 4.34329
+/snapshot/1/source/11/constraint/circular 0
+/snapshot/1/source/11/coordinates/visible 1
+/snapshot/1/source/11/orientation/mode "default"
+/snapshot/1/source/11/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/11/orientation/visible 1
+/snapshot/1/source/11/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/11/proportion 100.0
+/snapshot/1/source/11/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/11/label "11"
+/snapshot/1/source/11/label/visible 1
+/snapshot/1/source/11/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/11/label/justification "centred"
+/snapshot/1/source/11/vumeter/visible 0
+/snapshot/1/source/11/vumeter/level -60.0
+/snapshot/1/source/11/aperture 35.0
+/snapshot/1/source/11/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/11/radius/visible 0
+/snapshot/1/source/11/history/visible 0
+/snapshot/1/source/11/history/size 100
+/snapshot/1/source/11/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/11/history/thickness 1.0
+/snapshot/1/source/12/visible 1
+/snapshot/1/source/12/editable 1
+/snapshot/1/source/12/select 0
+/snapshot/1/source/12/hidewhenmute 0
+/snapshot/1/source/12/aed 37.7784 16.5886 4.34329
+/snapshot/1/source/12/constraint/circular 0
+/snapshot/1/source/12/coordinates/visible 1
+/snapshot/1/source/12/orientation/mode "default"
+/snapshot/1/source/12/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/12/orientation/visible 1
+/snapshot/1/source/12/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/12/proportion 100.0
+/snapshot/1/source/12/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/12/label "12"
+/snapshot/1/source/12/label/visible 1
+/snapshot/1/source/12/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/12/label/justification "centred"
+/snapshot/1/source/12/vumeter/visible 0
+/snapshot/1/source/12/vumeter/level -60.0
+/snapshot/1/source/12/aperture 35.0
+/snapshot/1/source/12/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/12/radius/visible 0
+/snapshot/1/source/12/history/visible 0
+/snapshot/1/source/12/history/size 100
+/snapshot/1/source/12/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/12/history/thickness 1.0
+/snapshot/1/source/13/visible 1
+/snapshot/1/source/13/editable 1
+/snapshot/1/source/13/select 0
+/snapshot/1/source/13/hidewhenmute 0
+/snapshot/1/source/13/aed -90.0 27.3239 2.70141
+/snapshot/1/source/13/constraint/circular 0
+/snapshot/1/source/13/coordinates/visible 1
+/snapshot/1/source/13/orientation/mode "default"
+/snapshot/1/source/13/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/13/orientation/visible 1
+/snapshot/1/source/13/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/13/proportion 100.0
+/snapshot/1/source/13/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/13/label "13"
+/snapshot/1/source/13/label/visible 1
+/snapshot/1/source/13/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/13/label/justification "centred"
+/snapshot/1/source/13/vumeter/visible 0
+/snapshot/1/source/13/vumeter/level -60.0
+/snapshot/1/source/13/aperture 35.0
+/snapshot/1/source/13/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/13/radius/visible 0
+/snapshot/1/source/13/history/visible 0
+/snapshot/1/source/13/history/size 100
+/snapshot/1/source/13/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/13/history/thickness 1.0
+/snapshot/1/source/14/visible 1
+/snapshot/1/source/14/editable 1
+/snapshot/1/source/14/select 0
+/snapshot/1/source/14/hidewhenmute 0
+/snapshot/1/source/14/aed 90.0 26.845 2.74592
+/snapshot/1/source/14/constraint/circular 0
+/snapshot/1/source/14/coordinates/visible 1
+/snapshot/1/source/14/orientation/mode "default"
+/snapshot/1/source/14/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/14/orientation/visible 1
+/snapshot/1/source/14/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/14/proportion 100.0
+/snapshot/1/source/14/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/14/label "14"
+/snapshot/1/source/14/label/visible 1
+/snapshot/1/source/14/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/14/label/justification "centred"
+/snapshot/1/source/14/vumeter/visible 0
+/snapshot/1/source/14/vumeter/level -60.0
+/snapshot/1/source/14/aperture 35.0
+/snapshot/1/source/14/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/14/radius/visible 0
+/snapshot/1/source/14/history/visible 0
+/snapshot/1/source/14/history/size 100
+/snapshot/1/source/14/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/14/history/thickness 1.0
+/snapshot/1/source/15/visible 1
+/snapshot/1/source/15/editable 1
+/snapshot/1/source/15/select 0
+/snapshot/1/source/15/hidewhenmute 0
+/snapshot/1/source/15/aed -139.578 18.031 4.00606
+/snapshot/1/source/15/constraint/circular 0
+/snapshot/1/source/15/coordinates/visible 1
+/snapshot/1/source/15/orientation/mode "default"
+/snapshot/1/source/15/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/15/orientation/visible 1
+/snapshot/1/source/15/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/15/proportion 100.0
+/snapshot/1/source/15/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/15/label "15"
+/snapshot/1/source/15/label/visible 1
+/snapshot/1/source/15/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/15/label/justification "centred"
+/snapshot/1/source/15/vumeter/visible 0
+/snapshot/1/source/15/vumeter/level -60.0
+/snapshot/1/source/15/aperture 35.0
+/snapshot/1/source/15/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/15/radius/visible 0
+/snapshot/1/source/15/history/visible 0
+/snapshot/1/source/15/history/size 100
+/snapshot/1/source/15/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/15/history/thickness 1.0
+/snapshot/1/source/16/visible 1
+/snapshot/1/source/16/editable 1
+/snapshot/1/source/16/select 0
+/snapshot/1/source/16/hidewhenmute 0
+/snapshot/1/source/16/aed 139.578 18.031 4.00606
+/snapshot/1/source/16/constraint/circular 0
+/snapshot/1/source/16/coordinates/visible 1
+/snapshot/1/source/16/orientation/mode "default"
+/snapshot/1/source/16/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/16/orientation/visible 1
+/snapshot/1/source/16/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/16/proportion 100.0
+/snapshot/1/source/16/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/16/label "16"
+/snapshot/1/source/16/label/visible 1
+/snapshot/1/source/16/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/16/label/justification "centred"
+/snapshot/1/source/16/vumeter/visible 0
+/snapshot/1/source/16/vumeter/level -60.0
+/snapshot/1/source/16/aperture 35.0
+/snapshot/1/source/16/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/16/radius/visible 0
+/snapshot/1/source/16/history/visible 0
+/snapshot/1/source/16/history/size 100
+/snapshot/1/source/16/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/16/history/thickness 1.0
+/snapshot/1/source/17/visible 1
+/snapshot/1/source/17/editable 1
+/snapshot/1/source/17/select 0
+/snapshot/1/source/17/hidewhenmute 0
+/snapshot/1/source/17/aed -53.1301 9.09028 2.5318
+/snapshot/1/source/17/constraint/circular 0
+/snapshot/1/source/17/coordinates/visible 1
+/snapshot/1/source/17/orientation/mode "default"
+/snapshot/1/source/17/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/17/orientation/visible 1
+/snapshot/1/source/17/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/17/proportion 100.0
+/snapshot/1/source/17/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/17/label "17"
+/snapshot/1/source/17/label/visible 1
+/snapshot/1/source/17/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/17/label/justification "centred"
+/snapshot/1/source/17/vumeter/visible 0
+/snapshot/1/source/17/vumeter/level -60.0
+/snapshot/1/source/17/aperture 35.0
+/snapshot/1/source/17/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/17/radius/visible 0
+/snapshot/1/source/17/history/visible 0
+/snapshot/1/source/17/history/size 100
+/snapshot/1/source/17/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/17/history/thickness 1.0
+/snapshot/1/source/18/visible 1
+/snapshot/1/source/18/editable 1
+/snapshot/1/source/18/select 0
+/snapshot/1/source/18/hidewhenmute 0
+/snapshot/1/source/18/aed 53.1301 9.09028 2.5318
+/snapshot/1/source/18/constraint/circular 0
+/snapshot/1/source/18/coordinates/visible 1
+/snapshot/1/source/18/orientation/mode "default"
+/snapshot/1/source/18/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/18/orientation/visible 1
+/snapshot/1/source/18/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/18/proportion 100.0
+/snapshot/1/source/18/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/18/label "18"
+/snapshot/1/source/18/label/visible 1
+/snapshot/1/source/18/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/18/label/justification "centred"
+/snapshot/1/source/18/vumeter/visible 0
+/snapshot/1/source/18/vumeter/level -60.0
+/snapshot/1/source/18/aperture 35.0
+/snapshot/1/source/18/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/18/radius/visible 0
+/snapshot/1/source/18/history/visible 0
+/snapshot/1/source/18/history/size 100
+/snapshot/1/source/18/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/18/history/thickness 1.0
+/snapshot/1/source/19/visible 1
+/snapshot/1/source/19/editable 1
+/snapshot/1/source/19/select 0
+/snapshot/1/source/19/hidewhenmute 0
+/snapshot/1/source/19/aed -126.87 9.09028 2.5318
+/snapshot/1/source/19/constraint/circular 0
+/snapshot/1/source/19/coordinates/visible 1
+/snapshot/1/source/19/orientation/mode "default"
+/snapshot/1/source/19/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/19/orientation/visible 1
+/snapshot/1/source/19/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/19/proportion 100.0
+/snapshot/1/source/19/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/19/label "19"
+/snapshot/1/source/19/label/visible 1
+/snapshot/1/source/19/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/19/label/justification "centred"
+/snapshot/1/source/19/vumeter/visible 0
+/snapshot/1/source/19/vumeter/level -60.0
+/snapshot/1/source/19/aperture 35.0
+/snapshot/1/source/19/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/19/radius/visible 0
+/snapshot/1/source/19/history/visible 0
+/snapshot/1/source/19/history/size 100
+/snapshot/1/source/19/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/19/history/thickness 1.0
+/snapshot/1/source/20/visible 1
+/snapshot/1/source/20/editable 1
+/snapshot/1/source/20/select 0
+/snapshot/1/source/20/hidewhenmute 0
+/snapshot/1/source/20/aed 126.87 9.09028 2.5318
+/snapshot/1/source/20/constraint/circular 0
+/snapshot/1/source/20/coordinates/visible 1
+/snapshot/1/source/20/orientation/mode "default"
+/snapshot/1/source/20/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/20/orientation/visible 1
+/snapshot/1/source/20/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/20/proportion 100.0
+/snapshot/1/source/20/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/20/label "20"
+/snapshot/1/source/20/label/visible 1
+/snapshot/1/source/20/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/20/label/justification "centred"
+/snapshot/1/source/20/vumeter/visible 0
+/snapshot/1/source/20/vumeter/level -60.0
+/snapshot/1/source/20/aperture 35.0
+/snapshot/1/source/20/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/20/radius/visible 0
+/snapshot/1/source/20/history/visible 0
+/snapshot/1/source/20/history/size 100
+/snapshot/1/source/20/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/20/history/thickness 1.0
+/snapshot/1/source/21/visible 1
+/snapshot/1/source/21/editable 1
+/snapshot/1/source/21/select 0
+/snapshot/1/source/21/hidewhenmute 0
+/snapshot/1/source/21/aed -38.8534 59.3464 3.62679
+/snapshot/1/source/21/constraint/circular 0
+/snapshot/1/source/21/coordinates/visible 1
+/snapshot/1/source/21/orientation/mode "default"
+/snapshot/1/source/21/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/21/orientation/visible 1
+/snapshot/1/source/21/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/21/proportion 100.0
+/snapshot/1/source/21/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/21/label "21"
+/snapshot/1/source/21/label/visible 1
+/snapshot/1/source/21/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/21/label/justification "centred"
+/snapshot/1/source/21/vumeter/visible 0
+/snapshot/1/source/21/vumeter/level -60.0
+/snapshot/1/source/21/aperture 35.0
+/snapshot/1/source/21/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/21/radius/visible 0
+/snapshot/1/source/21/history/visible 0
+/snapshot/1/source/21/history/size 100
+/snapshot/1/source/21/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/21/history/thickness 1.0
+/snapshot/1/source/22/visible 1
+/snapshot/1/source/22/editable 1
+/snapshot/1/source/22/select 0
+/snapshot/1/source/22/hidewhenmute 0
+/snapshot/1/source/22/aed 38.8534 59.1845 3.6096
+/snapshot/1/source/22/constraint/circular 0
+/snapshot/1/source/22/coordinates/visible 1
+/snapshot/1/source/22/orientation/mode "default"
+/snapshot/1/source/22/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/22/orientation/visible 1
+/snapshot/1/source/22/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/22/proportion 100.0
+/snapshot/1/source/22/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/22/label "22"
+/snapshot/1/source/22/label/visible 1
+/snapshot/1/source/22/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/22/label/justification "centred"
+/snapshot/1/source/22/vumeter/visible 0
+/snapshot/1/source/22/vumeter/level -60.0
+/snapshot/1/source/22/aperture 35.0
+/snapshot/1/source/22/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/22/radius/visible 0
+/snapshot/1/source/22/history/visible 0
+/snapshot/1/source/22/history/size 100
+/snapshot/1/source/22/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/22/history/thickness 1.0
+/snapshot/1/source/23/visible 1
+/snapshot/1/source/23/editable 1
+/snapshot/1/source/23/select 0
+/snapshot/1/source/23/hidewhenmute 0
+/snapshot/1/source/23/aed -141.147 59.1845 3.6096
+/snapshot/1/source/23/constraint/circular 0
+/snapshot/1/source/23/coordinates/visible 1
+/snapshot/1/source/23/orientation/mode "default"
+/snapshot/1/source/23/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/23/orientation/visible 1
+/snapshot/1/source/23/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/23/proportion 100.0
+/snapshot/1/source/23/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/23/label "23"
+/snapshot/1/source/23/label/visible 1
+/snapshot/1/source/23/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/23/label/justification "centred"
+/snapshot/1/source/23/vumeter/visible 0
+/snapshot/1/source/23/vumeter/level -60.0
+/snapshot/1/source/23/aperture 35.0
+/snapshot/1/source/23/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/23/radius/visible 0
+/snapshot/1/source/23/history/visible 0
+/snapshot/1/source/23/history/size 100
+/snapshot/1/source/23/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/23/history/thickness 1.0
+/snapshot/1/source/24/visible 1
+/snapshot/1/source/24/editable 1
+/snapshot/1/source/24/select 0
+/snapshot/1/source/24/hidewhenmute 0
+/snapshot/1/source/24/aed 141.147 59.3464 3.62679
+/snapshot/1/source/24/constraint/circular 0
+/snapshot/1/source/24/coordinates/visible 1
+/snapshot/1/source/24/orientation/mode "default"
+/snapshot/1/source/24/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/24/orientation/visible 1
+/snapshot/1/source/24/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/24/proportion 100.0
+/snapshot/1/source/24/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/24/label "24"
+/snapshot/1/source/24/label/visible 1
+/snapshot/1/source/24/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/24/label/justification "centred"
+/snapshot/1/source/24/vumeter/visible 0
+/snapshot/1/source/24/vumeter/level -60.0
+/snapshot/1/source/24/aperture 35.0
+/snapshot/1/source/24/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/24/radius/visible 0
+/snapshot/1/source/24/history/visible 0
+/snapshot/1/source/24/history/size 100
+/snapshot/1/source/24/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/24/history/thickness 1.0
+/snapshot/1/source/25/visible 1
+/snapshot/1/source/25/editable 1
+/snapshot/1/source/25/select 0
+/snapshot/1/source/25/hidewhenmute 0
+/snapshot/1/source/25/aed 90.0 90.0 2.4
+/snapshot/1/source/25/constraint/circular 0
+/snapshot/1/source/25/coordinates/visible 1
+/snapshot/1/source/25/orientation/mode "default"
+/snapshot/1/source/25/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/25/orientation/visible 1
+/snapshot/1/source/25/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/25/proportion 100.0
+/snapshot/1/source/25/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/25/label "25"
+/snapshot/1/source/25/label/visible 1
+/snapshot/1/source/25/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/25/label/justification "centred"
+/snapshot/1/source/25/vumeter/visible 0
+/snapshot/1/source/25/vumeter/level -60.0
+/snapshot/1/source/25/aperture 35.0
+/snapshot/1/source/25/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/25/radius/visible 0
+/snapshot/1/source/25/history/visible 0
+/snapshot/1/source/25/history/size 100
+/snapshot/1/source/25/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/25/history/thickness 1.0
+/snapshot/1/source/26/visible 1
+/snapshot/1/source/26/editable 1
+/snapshot/1/source/26/select 0
+/snapshot/1/source/26/hidewhenmute 0
+/snapshot/1/source/26/aed -33.6901 5.01927 4.34332
+/snapshot/1/source/26/constraint/circular 0
+/snapshot/1/source/26/coordinates/visible 1
+/snapshot/1/source/26/orientation/mode "default"
+/snapshot/1/source/26/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/26/orientation/visible 1
+/snapshot/1/source/26/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/26/proportion 100.0
+/snapshot/1/source/26/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/26/label "26"
+/snapshot/1/source/26/label/visible 1
+/snapshot/1/source/26/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/26/label/justification "centred"
+/snapshot/1/source/26/vumeter/visible 0
+/snapshot/1/source/26/vumeter/level -60.0
+/snapshot/1/source/26/aperture 35.0
+/snapshot/1/source/26/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/26/radius/visible 0
+/snapshot/1/source/26/history/visible 0
+/snapshot/1/source/26/history/size 100
+/snapshot/1/source/26/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/26/history/thickness 1.0
+/snapshot/1/source/27/visible 1
+/snapshot/1/source/27/editable 1
+/snapshot/1/source/27/select 0
+/snapshot/1/source/27/hidewhenmute 0
+/snapshot/1/source/27/aed 33.6901 5.01927 4.34332
+/snapshot/1/source/27/constraint/circular 0
+/snapshot/1/source/27/coordinates/visible 1
+/snapshot/1/source/27/orientation/mode "default"
+/snapshot/1/source/27/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/27/orientation/visible 1
+/snapshot/1/source/27/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/27/proportion 100.0
+/snapshot/1/source/27/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/27/label "27"
+/snapshot/1/source/27/label/visible 1
+/snapshot/1/source/27/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/27/label/justification "centred"
+/snapshot/1/source/27/vumeter/visible 0
+/snapshot/1/source/27/vumeter/level -60.0
+/snapshot/1/source/27/aperture 35.0
+/snapshot/1/source/27/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/27/radius/visible 0
+/snapshot/1/source/27/history/visible 0
+/snapshot/1/source/27/history/size 100
+/snapshot/1/source/27/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/27/history/thickness 1.0
+/snapshot/1/source/28/visible 1
+/snapshot/1/source/28/editable 1
+/snapshot/1/source/28/select 0
+/snapshot/1/source/28/hidewhenmute 0
+/snapshot/1/source/28/aed 0.0 17.2234 4.18779
+/snapshot/1/source/28/constraint/circular 0
+/snapshot/1/source/28/coordinates/visible 1
+/snapshot/1/source/28/orientation/mode "default"
+/snapshot/1/source/28/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/source/28/orientation/visible 1
+/snapshot/1/source/28/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/source/28/proportion 100.0
+/snapshot/1/source/28/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/28/label "28"
+/snapshot/1/source/28/label/visible 1
+/snapshot/1/source/28/label/color 0.0 0.0 0.0 1.0
+/snapshot/1/source/28/label/justification "centred"
+/snapshot/1/source/28/vumeter/visible 0
+/snapshot/1/source/28/vumeter/level -60.0
+/snapshot/1/source/28/aperture 35.0
+/snapshot/1/source/28/aperture/color 1.0 1.0 1.0 1.0
+/snapshot/1/source/28/radius/visible 0
+/snapshot/1/source/28/history/visible 0
+/snapshot/1/source/28/history/size 100
+/snapshot/1/source/28/history/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/28/history/thickness 1.0
+/snapshot/1/speaker/number 28
+/snapshot/1/speakers/aed -26.2502 29.473 4.67467 26.2502 29.473 4.67467 -36.8699 28.4212 4.83244 36.8699 28.4212 4.83244 -90.0 43.1913 3.36043 90.0 43.1913 3.36043 -138.674 30.7779 4.49472 138.674 30.7779 4.49472 0.0 27.0721 5.05371 -180.0 29.2914 4.70106 -37.7784 16.5886 4.34329 37.7784 16.5886 4.34329 -90.0 27.3239 2.70141 90.0 26.845 2.74592 -139.578 18.031 4.00606 139.578 18.031 4.00606 -53.1301 9.09028 2.5318 53.1301 9.09028 2.5318 -126.87 9.09028 2.5318 126.87 9.09028 2.5318 -38.8534 59.3464 3.62679 38.8534 59.1845 3.6096 -141.147 59.1845 3.6096 141.147 59.3464 3.62679 90.0 90.0 2.4 -33.6901 5.01927 4.34332 33.6901 5.01927 4.34332 0.0 17.2234 4.18779
+/snapshot/1/speaker/1/visible 1
+/snapshot/1/speaker/1/editable 0
+/snapshot/1/speaker/1/select 0
+/snapshot/1/speaker/1/aed -26.2502 29.473 4.67467
+/snapshot/1/speaker/1/constraint/circular 0
+/snapshot/1/speaker/1/coordinates/visible 1
+/snapshot/1/speaker/1/orientation/mode "default"
+/snapshot/1/speaker/1/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/1/orientation/visible 0
+/snapshot/1/speaker/1/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/1/proportion 100.0
+/snapshot/1/speaker/1/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/1/label "L"
+/snapshot/1/speaker/1/label/visible 1
+/snapshot/1/speaker/1/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/1/label/justification "centred"
+/snapshot/1/speaker/1/vumeter/visible 0
+/snapshot/1/speaker/1/vumeter/level -60.0
+/snapshot/1/speaker/2/visible 1
+/snapshot/1/speaker/2/editable 0
+/snapshot/1/speaker/2/select 0
+/snapshot/1/speaker/2/aed 26.2502 29.473 4.67467
+/snapshot/1/speaker/2/constraint/circular 0
+/snapshot/1/speaker/2/coordinates/visible 1
+/snapshot/1/speaker/2/orientation/mode "default"
+/snapshot/1/speaker/2/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/2/orientation/visible 0
+/snapshot/1/speaker/2/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/2/proportion 100.0
+/snapshot/1/speaker/2/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/2/label "R"
+/snapshot/1/speaker/2/label/visible 1
+/snapshot/1/speaker/2/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/2/label/justification "centred"
+/snapshot/1/speaker/2/vumeter/visible 0
+/snapshot/1/speaker/2/vumeter/level -60.0
+/snapshot/1/speaker/3/visible 1
+/snapshot/1/speaker/3/editable 0
+/snapshot/1/speaker/3/select 0
+/snapshot/1/speaker/3/aed -36.8699 28.4212 4.83244
+/snapshot/1/speaker/3/constraint/circular 0
+/snapshot/1/speaker/3/coordinates/visible 1
+/snapshot/1/speaker/3/orientation/mode "default"
+/snapshot/1/speaker/3/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/3/orientation/visible 0
+/snapshot/1/speaker/3/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/3/proportion 100.0
+/snapshot/1/speaker/3/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/3/label "C1"
+/snapshot/1/speaker/3/label/visible 1
+/snapshot/1/speaker/3/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/3/label/justification "centred"
+/snapshot/1/speaker/3/vumeter/visible 0
+/snapshot/1/speaker/3/vumeter/level -60.0
+/snapshot/1/speaker/4/visible 1
+/snapshot/1/speaker/4/editable 0
+/snapshot/1/speaker/4/select 0
+/snapshot/1/speaker/4/aed 36.8699 28.4212 4.83244
+/snapshot/1/speaker/4/constraint/circular 0
+/snapshot/1/speaker/4/coordinates/visible 1
+/snapshot/1/speaker/4/orientation/mode "default"
+/snapshot/1/speaker/4/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/4/orientation/visible 0
+/snapshot/1/speaker/4/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/4/proportion 100.0
+/snapshot/1/speaker/4/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/4/label "C2"
+/snapshot/1/speaker/4/label/visible 1
+/snapshot/1/speaker/4/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/4/label/justification "centred"
+/snapshot/1/speaker/4/vumeter/visible 0
+/snapshot/1/speaker/4/vumeter/level -60.0
+/snapshot/1/speaker/5/visible 1
+/snapshot/1/speaker/5/editable 0
+/snapshot/1/speaker/5/select 0
+/snapshot/1/speaker/5/aed -90.0 43.1913 3.36043
+/snapshot/1/speaker/5/constraint/circular 0
+/snapshot/1/speaker/5/coordinates/visible 1
+/snapshot/1/speaker/5/orientation/mode "default"
+/snapshot/1/speaker/5/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/5/orientation/visible 0
+/snapshot/1/speaker/5/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/5/proportion 100.0
+/snapshot/1/speaker/5/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/5/label "C3"
+/snapshot/1/speaker/5/label/visible 1
+/snapshot/1/speaker/5/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/5/label/justification "centred"
+/snapshot/1/speaker/5/vumeter/visible 0
+/snapshot/1/speaker/5/vumeter/level -60.0
+/snapshot/1/speaker/6/visible 1
+/snapshot/1/speaker/6/editable 0
+/snapshot/1/speaker/6/select 0
+/snapshot/1/speaker/6/aed 90.0 43.1913 3.36043
+/snapshot/1/speaker/6/constraint/circular 0
+/snapshot/1/speaker/6/coordinates/visible 1
+/snapshot/1/speaker/6/orientation/mode "default"
+/snapshot/1/speaker/6/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/6/orientation/visible 0
+/snapshot/1/speaker/6/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/6/proportion 100.0
+/snapshot/1/speaker/6/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/6/label "C4"
+/snapshot/1/speaker/6/label/visible 1
+/snapshot/1/speaker/6/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/6/label/justification "centred"
+/snapshot/1/speaker/6/vumeter/visible 0
+/snapshot/1/speaker/6/vumeter/level -60.0
+/snapshot/1/speaker/7/visible 1
+/snapshot/1/speaker/7/editable 0
+/snapshot/1/speaker/7/select 0
+/snapshot/1/speaker/7/aed -138.674 30.7779 4.49472
+/snapshot/1/speaker/7/constraint/circular 0
+/snapshot/1/speaker/7/coordinates/visible 1
+/snapshot/1/speaker/7/orientation/mode "default"
+/snapshot/1/speaker/7/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/7/orientation/visible 0
+/snapshot/1/speaker/7/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/7/proportion 100.0
+/snapshot/1/speaker/7/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/7/label "C5"
+/snapshot/1/speaker/7/label/visible 1
+/snapshot/1/speaker/7/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/7/label/justification "centred"
+/snapshot/1/speaker/7/vumeter/visible 0
+/snapshot/1/speaker/7/vumeter/level -60.0
+/snapshot/1/speaker/8/visible 1
+/snapshot/1/speaker/8/editable 0
+/snapshot/1/speaker/8/select 0
+/snapshot/1/speaker/8/aed 138.674 30.7779 4.49472
+/snapshot/1/speaker/8/constraint/circular 0
+/snapshot/1/speaker/8/coordinates/visible 1
+/snapshot/1/speaker/8/orientation/mode "default"
+/snapshot/1/speaker/8/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/8/orientation/visible 0
+/snapshot/1/speaker/8/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/8/proportion 100.0
+/snapshot/1/speaker/8/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/8/label "C6"
+/snapshot/1/speaker/8/label/visible 1
+/snapshot/1/speaker/8/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/8/label/justification "centred"
+/snapshot/1/speaker/8/vumeter/visible 0
+/snapshot/1/speaker/8/vumeter/level -60.0
+/snapshot/1/speaker/9/visible 1
+/snapshot/1/speaker/9/editable 0
+/snapshot/1/speaker/9/select 0
+/snapshot/1/speaker/9/aed 0.0 27.0721 5.05371
+/snapshot/1/speaker/9/constraint/circular 0
+/snapshot/1/speaker/9/coordinates/visible 1
+/snapshot/1/speaker/9/orientation/mode "default"
+/snapshot/1/speaker/9/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/9/orientation/visible 0
+/snapshot/1/speaker/9/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/9/proportion 100.0
+/snapshot/1/speaker/9/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/9/label "C7"
+/snapshot/1/speaker/9/label/visible 1
+/snapshot/1/speaker/9/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/9/label/justification "centred"
+/snapshot/1/speaker/9/vumeter/visible 0
+/snapshot/1/speaker/9/vumeter/level -60.0
+/snapshot/1/speaker/10/visible 1
+/snapshot/1/speaker/10/editable 0
+/snapshot/1/speaker/10/select 0
+/snapshot/1/speaker/10/aed -180.0 29.2914 4.70106
+/snapshot/1/speaker/10/constraint/circular 0
+/snapshot/1/speaker/10/coordinates/visible 1
+/snapshot/1/speaker/10/orientation/mode "default"
+/snapshot/1/speaker/10/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/10/orientation/visible 0
+/snapshot/1/speaker/10/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/10/proportion 100.0
+/snapshot/1/speaker/10/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/10/label "C8"
+/snapshot/1/speaker/10/label/visible 1
+/snapshot/1/speaker/10/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/10/label/justification "centred"
+/snapshot/1/speaker/10/vumeter/visible 0
+/snapshot/1/speaker/10/vumeter/level -60.0
+/snapshot/1/speaker/11/visible 1
+/snapshot/1/speaker/11/editable 0
+/snapshot/1/speaker/11/select 0
+/snapshot/1/speaker/11/aed -37.7784 16.5886 4.34329
+/snapshot/1/speaker/11/constraint/circular 0
+/snapshot/1/speaker/11/coordinates/visible 1
+/snapshot/1/speaker/11/orientation/mode "default"
+/snapshot/1/speaker/11/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/11/orientation/visible 0
+/snapshot/1/speaker/11/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/11/proportion 100.0
+/snapshot/1/speaker/11/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/11/label "M1"
+/snapshot/1/speaker/11/label/visible 1
+/snapshot/1/speaker/11/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/11/label/justification "centred"
+/snapshot/1/speaker/11/vumeter/visible 0
+/snapshot/1/speaker/11/vumeter/level -60.0
+/snapshot/1/speaker/12/visible 1
+/snapshot/1/speaker/12/editable 0
+/snapshot/1/speaker/12/select 0
+/snapshot/1/speaker/12/aed 37.7784 16.5886 4.34329
+/snapshot/1/speaker/12/constraint/circular 0
+/snapshot/1/speaker/12/coordinates/visible 1
+/snapshot/1/speaker/12/orientation/mode "default"
+/snapshot/1/speaker/12/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/12/orientation/visible 0
+/snapshot/1/speaker/12/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/12/proportion 100.0
+/snapshot/1/speaker/12/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/12/label "M2"
+/snapshot/1/speaker/12/label/visible 1
+/snapshot/1/speaker/12/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/12/label/justification "centred"
+/snapshot/1/speaker/12/vumeter/visible 0
+/snapshot/1/speaker/12/vumeter/level -60.0
+/snapshot/1/speaker/13/visible 1
+/snapshot/1/speaker/13/editable 0
+/snapshot/1/speaker/13/select 0
+/snapshot/1/speaker/13/aed -90.0 27.3239 2.70141
+/snapshot/1/speaker/13/constraint/circular 0
+/snapshot/1/speaker/13/coordinates/visible 1
+/snapshot/1/speaker/13/orientation/mode "default"
+/snapshot/1/speaker/13/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/13/orientation/visible 0
+/snapshot/1/speaker/13/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/13/proportion 100.0
+/snapshot/1/speaker/13/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/13/label "M3"
+/snapshot/1/speaker/13/label/visible 1
+/snapshot/1/speaker/13/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/13/label/justification "centred"
+/snapshot/1/speaker/13/vumeter/visible 0
+/snapshot/1/speaker/13/vumeter/level -60.0
+/snapshot/1/speaker/14/visible 1
+/snapshot/1/speaker/14/editable 0
+/snapshot/1/speaker/14/select 0
+/snapshot/1/speaker/14/aed 90.0 26.845 2.74592
+/snapshot/1/speaker/14/constraint/circular 0
+/snapshot/1/speaker/14/coordinates/visible 1
+/snapshot/1/speaker/14/orientation/mode "default"
+/snapshot/1/speaker/14/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/14/orientation/visible 0
+/snapshot/1/speaker/14/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/14/proportion 100.0
+/snapshot/1/speaker/14/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/14/label "M4"
+/snapshot/1/speaker/14/label/visible 1
+/snapshot/1/speaker/14/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/14/label/justification "centred"
+/snapshot/1/speaker/14/vumeter/visible 0
+/snapshot/1/speaker/14/vumeter/level -60.0
+/snapshot/1/speaker/15/visible 1
+/snapshot/1/speaker/15/editable 0
+/snapshot/1/speaker/15/select 0
+/snapshot/1/speaker/15/aed -139.578 18.031 4.00606
+/snapshot/1/speaker/15/constraint/circular 0
+/snapshot/1/speaker/15/coordinates/visible 1
+/snapshot/1/speaker/15/orientation/mode "default"
+/snapshot/1/speaker/15/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/15/orientation/visible 0
+/snapshot/1/speaker/15/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/15/proportion 100.0
+/snapshot/1/speaker/15/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/15/label "M5"
+/snapshot/1/speaker/15/label/visible 1
+/snapshot/1/speaker/15/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/15/label/justification "centred"
+/snapshot/1/speaker/15/vumeter/visible 0
+/snapshot/1/speaker/15/vumeter/level -60.0
+/snapshot/1/speaker/16/visible 1
+/snapshot/1/speaker/16/editable 0
+/snapshot/1/speaker/16/select 0
+/snapshot/1/speaker/16/aed 139.578 18.031 4.00606
+/snapshot/1/speaker/16/constraint/circular 0
+/snapshot/1/speaker/16/coordinates/visible 1
+/snapshot/1/speaker/16/orientation/mode "default"
+/snapshot/1/speaker/16/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/16/orientation/visible 0
+/snapshot/1/speaker/16/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/16/proportion 100.0
+/snapshot/1/speaker/16/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/16/label "M6"
+/snapshot/1/speaker/16/label/visible 1
+/snapshot/1/speaker/16/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/16/label/justification "centred"
+/snapshot/1/speaker/16/vumeter/visible 0
+/snapshot/1/speaker/16/vumeter/level -60.0
+/snapshot/1/speaker/17/visible 1
+/snapshot/1/speaker/17/editable 0
+/snapshot/1/speaker/17/select 0
+/snapshot/1/speaker/17/aed -53.1301 9.09028 2.5318
+/snapshot/1/speaker/17/constraint/circular 0
+/snapshot/1/speaker/17/coordinates/visible 1
+/snapshot/1/speaker/17/orientation/mode "default"
+/snapshot/1/speaker/17/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/17/orientation/visible 0
+/snapshot/1/speaker/17/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/17/proportion 100.0
+/snapshot/1/speaker/17/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/17/label "L1"
+/snapshot/1/speaker/17/label/visible 1
+/snapshot/1/speaker/17/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/17/label/justification "centred"
+/snapshot/1/speaker/17/vumeter/visible 0
+/snapshot/1/speaker/17/vumeter/level -60.0
+/snapshot/1/speaker/18/visible 1
+/snapshot/1/speaker/18/editable 0
+/snapshot/1/speaker/18/select 0
+/snapshot/1/speaker/18/aed 53.1301 9.09028 2.5318
+/snapshot/1/speaker/18/constraint/circular 0
+/snapshot/1/speaker/18/coordinates/visible 1
+/snapshot/1/speaker/18/orientation/mode "default"
+/snapshot/1/speaker/18/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/18/orientation/visible 0
+/snapshot/1/speaker/18/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/18/proportion 100.0
+/snapshot/1/speaker/18/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/18/label "L2"
+/snapshot/1/speaker/18/label/visible 1
+/snapshot/1/speaker/18/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/18/label/justification "centred"
+/snapshot/1/speaker/18/vumeter/visible 0
+/snapshot/1/speaker/18/vumeter/level -60.0
+/snapshot/1/speaker/19/visible 1
+/snapshot/1/speaker/19/editable 0
+/snapshot/1/speaker/19/select 0
+/snapshot/1/speaker/19/aed -126.87 9.09028 2.5318
+/snapshot/1/speaker/19/constraint/circular 0
+/snapshot/1/speaker/19/coordinates/visible 1
+/snapshot/1/speaker/19/orientation/mode "default"
+/snapshot/1/speaker/19/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/19/orientation/visible 0
+/snapshot/1/speaker/19/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/19/proportion 100.0
+/snapshot/1/speaker/19/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/19/label "L3"
+/snapshot/1/speaker/19/label/visible 1
+/snapshot/1/speaker/19/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/19/label/justification "centred"
+/snapshot/1/speaker/19/vumeter/visible 0
+/snapshot/1/speaker/19/vumeter/level -60.0
+/snapshot/1/speaker/20/visible 1
+/snapshot/1/speaker/20/editable 0
+/snapshot/1/speaker/20/select 0
+/snapshot/1/speaker/20/aed 126.87 9.09028 2.5318
+/snapshot/1/speaker/20/constraint/circular 0
+/snapshot/1/speaker/20/coordinates/visible 1
+/snapshot/1/speaker/20/orientation/mode "default"
+/snapshot/1/speaker/20/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/20/orientation/visible 0
+/snapshot/1/speaker/20/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/20/proportion 100.0
+/snapshot/1/speaker/20/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/20/label "L4"
+/snapshot/1/speaker/20/label/visible 1
+/snapshot/1/speaker/20/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/20/label/justification "centred"
+/snapshot/1/speaker/20/vumeter/visible 0
+/snapshot/1/speaker/20/vumeter/level -60.0
+/snapshot/1/speaker/21/visible 1
+/snapshot/1/speaker/21/editable 0
+/snapshot/1/speaker/21/select 0
+/snapshot/1/speaker/21/aed -38.8534 59.3464 3.62679
+/snapshot/1/speaker/21/constraint/circular 0
+/snapshot/1/speaker/21/coordinates/visible 1
+/snapshot/1/speaker/21/orientation/mode "default"
+/snapshot/1/speaker/21/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/21/orientation/visible 0
+/snapshot/1/speaker/21/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/21/proportion 100.0
+/snapshot/1/speaker/21/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/21/label "H1"
+/snapshot/1/speaker/21/label/visible 1
+/snapshot/1/speaker/21/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/21/label/justification "centred"
+/snapshot/1/speaker/21/vumeter/visible 0
+/snapshot/1/speaker/21/vumeter/level -60.0
+/snapshot/1/speaker/22/visible 1
+/snapshot/1/speaker/22/editable 0
+/snapshot/1/speaker/22/select 0
+/snapshot/1/speaker/22/aed 38.8534 59.1845 3.6096
+/snapshot/1/speaker/22/constraint/circular 0
+/snapshot/1/speaker/22/coordinates/visible 1
+/snapshot/1/speaker/22/orientation/mode "default"
+/snapshot/1/speaker/22/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/22/orientation/visible 0
+/snapshot/1/speaker/22/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/22/proportion 100.0
+/snapshot/1/speaker/22/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/22/label "H2"
+/snapshot/1/speaker/22/label/visible 1
+/snapshot/1/speaker/22/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/22/label/justification "centred"
+/snapshot/1/speaker/22/vumeter/visible 0
+/snapshot/1/speaker/22/vumeter/level -60.0
+/snapshot/1/speaker/23/visible 1
+/snapshot/1/speaker/23/editable 0
+/snapshot/1/speaker/23/select 0
+/snapshot/1/speaker/23/aed -141.147 59.1845 3.6096
+/snapshot/1/speaker/23/constraint/circular 0
+/snapshot/1/speaker/23/coordinates/visible 1
+/snapshot/1/speaker/23/orientation/mode "default"
+/snapshot/1/speaker/23/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/23/orientation/visible 0
+/snapshot/1/speaker/23/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/23/proportion 100.0
+/snapshot/1/speaker/23/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/23/label "H3"
+/snapshot/1/speaker/23/label/visible 1
+/snapshot/1/speaker/23/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/23/label/justification "centred"
+/snapshot/1/speaker/23/vumeter/visible 0
+/snapshot/1/speaker/23/vumeter/level -60.0
+/snapshot/1/speaker/24/visible 1
+/snapshot/1/speaker/24/editable 0
+/snapshot/1/speaker/24/select 0
+/snapshot/1/speaker/24/aed 141.147 59.3464 3.62679
+/snapshot/1/speaker/24/constraint/circular 0
+/snapshot/1/speaker/24/coordinates/visible 1
+/snapshot/1/speaker/24/orientation/mode "default"
+/snapshot/1/speaker/24/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/24/orientation/visible 0
+/snapshot/1/speaker/24/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/24/proportion 100.0
+/snapshot/1/speaker/24/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/24/label "H4"
+/snapshot/1/speaker/24/label/visible 1
+/snapshot/1/speaker/24/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/24/label/justification "centred"
+/snapshot/1/speaker/24/vumeter/visible 0
+/snapshot/1/speaker/24/vumeter/level -60.0
+/snapshot/1/speaker/25/visible 1
+/snapshot/1/speaker/25/editable 0
+/snapshot/1/speaker/25/select 0
+/snapshot/1/speaker/25/aed 90.0 90.0 2.4
+/snapshot/1/speaker/25/constraint/circular 0
+/snapshot/1/speaker/25/coordinates/visible 1
+/snapshot/1/speaker/25/orientation/mode "default"
+/snapshot/1/speaker/25/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/25/orientation/visible 0
+/snapshot/1/speaker/25/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/25/proportion 100.0
+/snapshot/1/speaker/25/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/25/label "H5"
+/snapshot/1/speaker/25/label/visible 1
+/snapshot/1/speaker/25/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/25/label/justification "centred"
+/snapshot/1/speaker/25/vumeter/visible 0
+/snapshot/1/speaker/25/vumeter/level -60.0
+/snapshot/1/speaker/26/visible 1
+/snapshot/1/speaker/26/editable 0
+/snapshot/1/speaker/26/select 0
+/snapshot/1/speaker/26/aed -33.6901 5.01927 4.34332
+/snapshot/1/speaker/26/constraint/circular 0
+/snapshot/1/speaker/26/coordinates/visible 1
+/snapshot/1/speaker/26/orientation/mode "default"
+/snapshot/1/speaker/26/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/26/orientation/visible 0
+/snapshot/1/speaker/26/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/26/proportion 100.0
+/snapshot/1/speaker/26/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/26/label "SW1+L"
+/snapshot/1/speaker/26/label/visible 1
+/snapshot/1/speaker/26/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/26/label/justification "centred"
+/snapshot/1/speaker/26/vumeter/visible 0
+/snapshot/1/speaker/26/vumeter/level -60.0
+/snapshot/1/speaker/27/visible 1
+/snapshot/1/speaker/27/editable 0
+/snapshot/1/speaker/27/select 0
+/snapshot/1/speaker/27/aed 33.6901 5.01927 4.34332
+/snapshot/1/speaker/27/constraint/circular 0
+/snapshot/1/speaker/27/coordinates/visible 1
+/snapshot/1/speaker/27/orientation/mode "default"
+/snapshot/1/speaker/27/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/27/orientation/visible 0
+/snapshot/1/speaker/27/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/27/proportion 100.0
+/snapshot/1/speaker/27/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/27/label "SW2+R"
+/snapshot/1/speaker/27/label/visible 1
+/snapshot/1/speaker/27/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/27/label/justification "centred"
+/snapshot/1/speaker/27/vumeter/visible 0
+/snapshot/1/speaker/27/vumeter/level -60.0
+/snapshot/1/speaker/28/visible 1
+/snapshot/1/speaker/28/editable 0
+/snapshot/1/speaker/28/select 0
+/snapshot/1/speaker/28/aed 0.0 17.2234 4.18779
+/snapshot/1/speaker/28/constraint/circular 0
+/snapshot/1/speaker/28/coordinates/visible 1
+/snapshot/1/speaker/28/orientation/mode "default"
+/snapshot/1/speaker/28/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/28/orientation/visible 0
+/snapshot/1/speaker/28/lookat/xyz 0.0 0.0 0.0
+/snapshot/1/speaker/28/proportion 100.0
+/snapshot/1/speaker/28/color 0.0 0.0 0.0 1.0
+/snapshot/1/speaker/28/label "AtmoC"
+/snapshot/1/speaker/28/label/visible 1
+/snapshot/1/speaker/28/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/speaker/28/label/justification "centred"
+/snapshot/1/speaker/28/vumeter/visible 0
+/snapshot/1/speaker/28/vumeter/level -60.0
+/snapshot/1/stereo/number 0
+/snapshot/1/subwoofer/number 0
+/snapshot/1/listener/visible 1
+/snapshot/1/listener/editable 0
+/snapshot/1/listener/select 0
+/snapshot/1/listener/aed 90.0 0.0 0.0
+/snapshot/1/listener/constraint/circular 0
+/snapshot/1/listener/coordinates/visible 1
+/snapshot/1/listener/orientation/mode "default"
+/snapshot/1/listener/orientation 0.0 0.0 0.0 1.0
+/snapshot/1/listener/orientation/visible 0
+/snapshot/1/listener/lookat/xyz 0.0 1.0 0.0
+/snapshot/1/listener/proportion 100.0
+/snapshot/1/listener/color 0.0 0.0 0.0 0.0
+/snapshot/1/listener/label "listener"
+/snapshot/1/listener/label/visible 0
+/snapshot/1/listener/label/color 1.0 1.0 1.0 1.0
+/snapshot/1/listener/label/justification "centred"
+/snapshot/1/listener/headphones/visible 0
+/snapshot/1/multi/number 0
+/snapshot/1/microphone/number 0
+/snapshot/1/eigenmike/number 0
+/snapshot/1/format "aed"
+/snapshot/1/background/color 0.709804 0.709804 0.709804 1.0
+/snapshot/1/backgroundimage/file "none"
+/snapshot/1/backgroundimage/visible 1
+/snapshot/1/backgroundimage/opacity 100.0
+/snapshot/1/backgroundimage/scale 100.0
+/snapshot/1/backgroundimage/angle 0.0
+/snapshot/1/backgroundimage/offset/xy 0.0 0.0
+/snapshot/1/backgroundimage/quality "medium"
+/snapshot/1/display/zoom 41.4654
+/snapshot/1/display/offset/xyz 0.0 0.0 0.0
+/snapshot/1/display/zoom/lock 0
+/snapshot/1/axis/visible 1
+/snapshot/1/axis/label/visible 1
+/snapshot/1/axis/origin/visible 1
+/snapshot/1/axis/color 1.0 1.0 1.0 1.0
+/snapshot/1/axis/thickness 2.0
+/snapshot/1/grid/visible 1
+/snapshot/1/grid/mode "circular"
+/snapshot/1/grid/spacing 1.0
+/snapshot/1/grid/line/number 30
+/snapshot/1/grid/angulardivisions/number 8
+/snapshot/1/grid/angulardivisions/visible 1
+/snapshot/1/grid/dashed 0
+/snapshot/1/grid/color 1.0 1.0 1.0 0.501961
+/snapshot/1/grid/thickness 1.0
+/snapshot/1/grid/unitcircle/visible 1
+/snapshot/1/grid/unitcircle/color 0.501961 0.501961 0.501961 0.239216
+/snapshot/1/grid/unitcircle/radius 1.0
+/snapshot/1/legend/visible 1
+/snapshot/1/legend/color 1.0 1.0 1.0 1.0
+/snapshot/1/legend/unit "meters"
+/snapshot/1/emphasis/source 1
+/snapshot/1/emphasis/stereo 1
+/snapshot/1/emphasis/speaker 0
+/snapshot/1/emphasis/microphone 0
+/snapshot/1/ruler/visible 0
+/snapshot/1/ruler/color 1.0 1.0 1.0 1.0
+/snapshot/1/ruler/unit "meters"
+/snapshot/1/hoa/number 0
+/snapshot/1/anchor/number 0
+/snapshot/1/phone/number 0
+/snapshot/1/area/number 0
+/snapshot/1/path/number 0
+/snapshot/1/speakerhull/visible 0
+/snapshot/1/speakerhull/color 0.0 0.0 0.0 1.0
+/snapshot/1/speakerhull/fill 0
+/snapshot/1/speakerhull/fill/color 0.0 0.0 0.0 0.298039
+/snapshot/1/settings/visible 0
+/snapshot/1/settings/editable 1
+/snapshot/1/layout "single"
+/snapshot/1/source/1/pres 90.0
+/snapshot/1/source/1/warm 30.0
+/snapshot/1/source/1/bril 30.0
+/snapshot/1/source/1/prer 48.0
+/snapshot/1/source/1/revp 50.0
+/snapshot/1/source/1/env 24.0
+/snapshot/1/source/1/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/1/axis/mute 0
+/snapshot/1/source/1/axis/bypass 0
+/snapshot/1/source/1/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/1/omni/mute 0
+/snapshot/1/source/1/omni/bypass 0
+/snapshot/1/source/1/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/1/doppler 0
+/snapshot/1/source/1/air 1
+/snapshot/1/source/1/air/freq 10000.0
+/snapshot/1/source/1/drop 6.0
+/snapshot/1/source/1/drop/mode "log2"
+/snapshot/1/source/1/radius 1.0
+/snapshot/1/source/1/room/destination 1
+/snapshot/1/source/1/mute 0
+/snapshot/1/source/1/solo 0
+/snapshot/1/source/1/direct/mute 0
+/snapshot/1/source/1/early/mute 0
+/snapshot/1/source/1/cluster/mute 0
+/snapshot/1/source/1/reverb/mute 0
+/snapshot/1/source/1/early/width 30.0
+/snapshot/1/source/1/early/shape 50.0
+/snapshot/1/source/1/spread 0.0
+/snapshot/1/source/1/panrev 0.0
+/snapshot/1/source/1/lock 0
+/snapshot/1/source/2/pres 90.0
+/snapshot/1/source/2/warm 30.0
+/snapshot/1/source/2/bril 30.0
+/snapshot/1/source/2/prer 48.0
+/snapshot/1/source/2/revp 50.0
+/snapshot/1/source/2/env 24.0
+/snapshot/1/source/2/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/2/axis/mute 0
+/snapshot/1/source/2/axis/bypass 0
+/snapshot/1/source/2/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/2/omni/mute 0
+/snapshot/1/source/2/omni/bypass 0
+/snapshot/1/source/2/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/2/doppler 0
+/snapshot/1/source/2/air 1
+/snapshot/1/source/2/air/freq 10000.0
+/snapshot/1/source/2/drop 6.0
+/snapshot/1/source/2/drop/mode "log2"
+/snapshot/1/source/2/radius 1.0
+/snapshot/1/source/2/room/destination 1
+/snapshot/1/source/2/mute 0
+/snapshot/1/source/2/solo 0
+/snapshot/1/source/2/direct/mute 0
+/snapshot/1/source/2/early/mute 0
+/snapshot/1/source/2/cluster/mute 0
+/snapshot/1/source/2/reverb/mute 0
+/snapshot/1/source/2/early/width 30.0
+/snapshot/1/source/2/early/shape 50.0
+/snapshot/1/source/2/spread 0.0
+/snapshot/1/source/2/panrev 0.0
+/snapshot/1/source/2/lock 0
+/snapshot/1/source/3/pres 90.0
+/snapshot/1/source/3/warm 30.0
+/snapshot/1/source/3/bril 30.0
+/snapshot/1/source/3/prer 48.0
+/snapshot/1/source/3/revp 50.0
+/snapshot/1/source/3/env 24.0
+/snapshot/1/source/3/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/3/axis/mute 0
+/snapshot/1/source/3/axis/bypass 0
+/snapshot/1/source/3/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/3/omni/mute 0
+/snapshot/1/source/3/omni/bypass 0
+/snapshot/1/source/3/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/3/doppler 0
+/snapshot/1/source/3/air 1
+/snapshot/1/source/3/air/freq 10000.0
+/snapshot/1/source/3/drop 6.0
+/snapshot/1/source/3/drop/mode "log2"
+/snapshot/1/source/3/radius 1.0
+/snapshot/1/source/3/room/destination 1
+/snapshot/1/source/3/mute 0
+/snapshot/1/source/3/solo 0
+/snapshot/1/source/3/direct/mute 0
+/snapshot/1/source/3/early/mute 0
+/snapshot/1/source/3/cluster/mute 0
+/snapshot/1/source/3/reverb/mute 0
+/snapshot/1/source/3/early/width 30.0
+/snapshot/1/source/3/early/shape 50.0
+/snapshot/1/source/3/spread 0.0
+/snapshot/1/source/3/panrev 0.0
+/snapshot/1/source/3/lock 0
+/snapshot/1/source/4/pres 90.0
+/snapshot/1/source/4/warm 30.0
+/snapshot/1/source/4/bril 30.0
+/snapshot/1/source/4/prer 48.0
+/snapshot/1/source/4/revp 50.0
+/snapshot/1/source/4/env 24.0
+/snapshot/1/source/4/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/4/axis/mute 0
+/snapshot/1/source/4/axis/bypass 0
+/snapshot/1/source/4/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/4/omni/mute 0
+/snapshot/1/source/4/omni/bypass 0
+/snapshot/1/source/4/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/4/doppler 0
+/snapshot/1/source/4/air 1
+/snapshot/1/source/4/air/freq 10000.0
+/snapshot/1/source/4/drop 6.0
+/snapshot/1/source/4/drop/mode "log2"
+/snapshot/1/source/4/radius 1.0
+/snapshot/1/source/4/room/destination 1
+/snapshot/1/source/4/mute 0
+/snapshot/1/source/4/solo 0
+/snapshot/1/source/4/direct/mute 0
+/snapshot/1/source/4/early/mute 0
+/snapshot/1/source/4/cluster/mute 0
+/snapshot/1/source/4/reverb/mute 0
+/snapshot/1/source/4/early/width 30.0
+/snapshot/1/source/4/early/shape 50.0
+/snapshot/1/source/4/spread 0.0
+/snapshot/1/source/4/panrev 0.0
+/snapshot/1/source/4/lock 0
+/snapshot/1/source/5/pres 90.0
+/snapshot/1/source/5/warm 30.0
+/snapshot/1/source/5/bril 30.0
+/snapshot/1/source/5/prer 48.0
+/snapshot/1/source/5/revp 50.0
+/snapshot/1/source/5/env 24.0
+/snapshot/1/source/5/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/5/axis/mute 0
+/snapshot/1/source/5/axis/bypass 0
+/snapshot/1/source/5/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/5/omni/mute 0
+/snapshot/1/source/5/omni/bypass 0
+/snapshot/1/source/5/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/5/doppler 0
+/snapshot/1/source/5/air 1
+/snapshot/1/source/5/air/freq 10000.0
+/snapshot/1/source/5/drop 6.0
+/snapshot/1/source/5/drop/mode "log2"
+/snapshot/1/source/5/radius 1.0
+/snapshot/1/source/5/room/destination 1
+/snapshot/1/source/5/mute 0
+/snapshot/1/source/5/solo 0
+/snapshot/1/source/5/direct/mute 0
+/snapshot/1/source/5/early/mute 0
+/snapshot/1/source/5/cluster/mute 0
+/snapshot/1/source/5/reverb/mute 0
+/snapshot/1/source/5/early/width 30.0
+/snapshot/1/source/5/early/shape 50.0
+/snapshot/1/source/5/spread 0.0
+/snapshot/1/source/5/panrev 0.0
+/snapshot/1/source/5/lock 0
+/snapshot/1/source/6/pres 90.0
+/snapshot/1/source/6/warm 30.0
+/snapshot/1/source/6/bril 30.0
+/snapshot/1/source/6/prer 48.0
+/snapshot/1/source/6/revp 50.0
+/snapshot/1/source/6/env 24.0
+/snapshot/1/source/6/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/6/axis/mute 0
+/snapshot/1/source/6/axis/bypass 0
+/snapshot/1/source/6/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/6/omni/mute 0
+/snapshot/1/source/6/omni/bypass 0
+/snapshot/1/source/6/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/6/doppler 0
+/snapshot/1/source/6/air 1
+/snapshot/1/source/6/air/freq 10000.0
+/snapshot/1/source/6/drop 6.0
+/snapshot/1/source/6/drop/mode "log2"
+/snapshot/1/source/6/radius 1.0
+/snapshot/1/source/6/room/destination 1
+/snapshot/1/source/6/mute 0
+/snapshot/1/source/6/solo 0
+/snapshot/1/source/6/direct/mute 0
+/snapshot/1/source/6/early/mute 0
+/snapshot/1/source/6/cluster/mute 0
+/snapshot/1/source/6/reverb/mute 0
+/snapshot/1/source/6/early/width 30.0
+/snapshot/1/source/6/early/shape 50.0
+/snapshot/1/source/6/spread 0.0
+/snapshot/1/source/6/panrev 0.0
+/snapshot/1/source/6/lock 0
+/snapshot/1/source/7/pres 90.0
+/snapshot/1/source/7/warm 30.0
+/snapshot/1/source/7/bril 30.0
+/snapshot/1/source/7/prer 48.0
+/snapshot/1/source/7/revp 50.0
+/snapshot/1/source/7/env 24.0
+/snapshot/1/source/7/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/7/axis/mute 0
+/snapshot/1/source/7/axis/bypass 0
+/snapshot/1/source/7/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/7/omni/mute 0
+/snapshot/1/source/7/omni/bypass 0
+/snapshot/1/source/7/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/7/doppler 0
+/snapshot/1/source/7/air 1
+/snapshot/1/source/7/air/freq 10000.0
+/snapshot/1/source/7/drop 6.0
+/snapshot/1/source/7/drop/mode "log2"
+/snapshot/1/source/7/radius 1.0
+/snapshot/1/source/7/room/destination 1
+/snapshot/1/source/7/mute 0
+/snapshot/1/source/7/solo 0
+/snapshot/1/source/7/direct/mute 0
+/snapshot/1/source/7/early/mute 0
+/snapshot/1/source/7/cluster/mute 0
+/snapshot/1/source/7/reverb/mute 0
+/snapshot/1/source/7/early/width 30.0
+/snapshot/1/source/7/early/shape 50.0
+/snapshot/1/source/7/spread 0.0
+/snapshot/1/source/7/panrev 0.0
+/snapshot/1/source/7/lock 0
+/snapshot/1/source/8/pres 90.0
+/snapshot/1/source/8/warm 30.0
+/snapshot/1/source/8/bril 30.0
+/snapshot/1/source/8/prer 48.0
+/snapshot/1/source/8/revp 50.0
+/snapshot/1/source/8/env 24.0
+/snapshot/1/source/8/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/8/axis/mute 0
+/snapshot/1/source/8/axis/bypass 0
+/snapshot/1/source/8/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/8/omni/mute 0
+/snapshot/1/source/8/omni/bypass 0
+/snapshot/1/source/8/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/8/doppler 0
+/snapshot/1/source/8/air 1
+/snapshot/1/source/8/air/freq 10000.0
+/snapshot/1/source/8/drop 6.0
+/snapshot/1/source/8/drop/mode "log2"
+/snapshot/1/source/8/radius 1.0
+/snapshot/1/source/8/room/destination 1
+/snapshot/1/source/8/mute 0
+/snapshot/1/source/8/solo 0
+/snapshot/1/source/8/direct/mute 0
+/snapshot/1/source/8/early/mute 0
+/snapshot/1/source/8/cluster/mute 0
+/snapshot/1/source/8/reverb/mute 0
+/snapshot/1/source/8/early/width 30.0
+/snapshot/1/source/8/early/shape 50.0
+/snapshot/1/source/8/spread 0.0
+/snapshot/1/source/8/panrev 0.0
+/snapshot/1/source/8/lock 0
+/snapshot/1/source/9/pres 90.0
+/snapshot/1/source/9/warm 30.0
+/snapshot/1/source/9/bril 30.0
+/snapshot/1/source/9/prer 48.0
+/snapshot/1/source/9/revp 50.0
+/snapshot/1/source/9/env 24.0
+/snapshot/1/source/9/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/9/axis/mute 0
+/snapshot/1/source/9/axis/bypass 0
+/snapshot/1/source/9/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/9/omni/mute 0
+/snapshot/1/source/9/omni/bypass 0
+/snapshot/1/source/9/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/9/doppler 0
+/snapshot/1/source/9/air 1
+/snapshot/1/source/9/air/freq 10000.0
+/snapshot/1/source/9/drop 6.0
+/snapshot/1/source/9/drop/mode "log2"
+/snapshot/1/source/9/radius 1.0
+/snapshot/1/source/9/room/destination 1
+/snapshot/1/source/9/mute 0
+/snapshot/1/source/9/solo 0
+/snapshot/1/source/9/direct/mute 0
+/snapshot/1/source/9/early/mute 0
+/snapshot/1/source/9/cluster/mute 0
+/snapshot/1/source/9/reverb/mute 0
+/snapshot/1/source/9/early/width 30.0
+/snapshot/1/source/9/early/shape 50.0
+/snapshot/1/source/9/spread 0.0
+/snapshot/1/source/9/panrev 0.0
+/snapshot/1/source/9/lock 0
+/snapshot/1/source/10/pres 90.0
+/snapshot/1/source/10/warm 30.0
+/snapshot/1/source/10/bril 30.0
+/snapshot/1/source/10/prer 48.0
+/snapshot/1/source/10/revp 50.0
+/snapshot/1/source/10/env 24.0
+/snapshot/1/source/10/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/10/axis/mute 0
+/snapshot/1/source/10/axis/bypass 0
+/snapshot/1/source/10/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/10/omni/mute 0
+/snapshot/1/source/10/omni/bypass 0
+/snapshot/1/source/10/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/10/doppler 0
+/snapshot/1/source/10/air 1
+/snapshot/1/source/10/air/freq 10000.0
+/snapshot/1/source/10/drop 6.0
+/snapshot/1/source/10/drop/mode "log2"
+/snapshot/1/source/10/radius 1.0
+/snapshot/1/source/10/room/destination 1
+/snapshot/1/source/10/mute 0
+/snapshot/1/source/10/solo 0
+/snapshot/1/source/10/direct/mute 0
+/snapshot/1/source/10/early/mute 0
+/snapshot/1/source/10/cluster/mute 0
+/snapshot/1/source/10/reverb/mute 0
+/snapshot/1/source/10/early/width 30.0
+/snapshot/1/source/10/early/shape 50.0
+/snapshot/1/source/10/spread 0.0
+/snapshot/1/source/10/panrev 0.0
+/snapshot/1/source/10/lock 0
+/snapshot/1/source/11/pres 90.0
+/snapshot/1/source/11/warm 30.0
+/snapshot/1/source/11/bril 30.0
+/snapshot/1/source/11/prer 48.0
+/snapshot/1/source/11/revp 50.0
+/snapshot/1/source/11/env 24.0
+/snapshot/1/source/11/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/11/axis/mute 0
+/snapshot/1/source/11/axis/bypass 0
+/snapshot/1/source/11/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/11/omni/mute 0
+/snapshot/1/source/11/omni/bypass 0
+/snapshot/1/source/11/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/11/doppler 0
+/snapshot/1/source/11/air 1
+/snapshot/1/source/11/air/freq 10000.0
+/snapshot/1/source/11/drop 6.0
+/snapshot/1/source/11/drop/mode "log2"
+/snapshot/1/source/11/radius 1.0
+/snapshot/1/source/11/room/destination 1
+/snapshot/1/source/11/mute 0
+/snapshot/1/source/11/solo 0
+/snapshot/1/source/11/direct/mute 0
+/snapshot/1/source/11/early/mute 0
+/snapshot/1/source/11/cluster/mute 0
+/snapshot/1/source/11/reverb/mute 0
+/snapshot/1/source/11/early/width 30.0
+/snapshot/1/source/11/early/shape 50.0
+/snapshot/1/source/11/spread 0.0
+/snapshot/1/source/11/panrev 0.0
+/snapshot/1/source/11/lock 0
+/snapshot/1/source/12/pres 90.0
+/snapshot/1/source/12/warm 30.0
+/snapshot/1/source/12/bril 30.0
+/snapshot/1/source/12/prer 48.0
+/snapshot/1/source/12/revp 50.0
+/snapshot/1/source/12/env 24.0
+/snapshot/1/source/12/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/12/axis/mute 0
+/snapshot/1/source/12/axis/bypass 0
+/snapshot/1/source/12/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/12/omni/mute 0
+/snapshot/1/source/12/omni/bypass 0
+/snapshot/1/source/12/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/12/doppler 0
+/snapshot/1/source/12/air 1
+/snapshot/1/source/12/air/freq 10000.0
+/snapshot/1/source/12/drop 6.0
+/snapshot/1/source/12/drop/mode "log2"
+/snapshot/1/source/12/radius 1.0
+/snapshot/1/source/12/room/destination 1
+/snapshot/1/source/12/mute 0
+/snapshot/1/source/12/solo 0
+/snapshot/1/source/12/direct/mute 0
+/snapshot/1/source/12/early/mute 0
+/snapshot/1/source/12/cluster/mute 0
+/snapshot/1/source/12/reverb/mute 0
+/snapshot/1/source/12/early/width 30.0
+/snapshot/1/source/12/early/shape 50.0
+/snapshot/1/source/12/spread 0.0
+/snapshot/1/source/12/panrev 0.0
+/snapshot/1/source/12/lock 0
+/snapshot/1/source/13/pres 90.0
+/snapshot/1/source/13/warm 30.0
+/snapshot/1/source/13/bril 30.0
+/snapshot/1/source/13/prer 48.0
+/snapshot/1/source/13/revp 50.0
+/snapshot/1/source/13/env 24.0
+/snapshot/1/source/13/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/13/axis/mute 0
+/snapshot/1/source/13/axis/bypass 0
+/snapshot/1/source/13/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/13/omni/mute 0
+/snapshot/1/source/13/omni/bypass 0
+/snapshot/1/source/13/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/13/doppler 0
+/snapshot/1/source/13/air 1
+/snapshot/1/source/13/air/freq 10000.0
+/snapshot/1/source/13/drop 6.0
+/snapshot/1/source/13/drop/mode "log2"
+/snapshot/1/source/13/radius 1.0
+/snapshot/1/source/13/room/destination 1
+/snapshot/1/source/13/mute 0
+/snapshot/1/source/13/solo 0
+/snapshot/1/source/13/direct/mute 0
+/snapshot/1/source/13/early/mute 0
+/snapshot/1/source/13/cluster/mute 0
+/snapshot/1/source/13/reverb/mute 0
+/snapshot/1/source/13/early/width 30.0
+/snapshot/1/source/13/early/shape 50.0
+/snapshot/1/source/13/spread 0.0
+/snapshot/1/source/13/panrev 0.0
+/snapshot/1/source/13/lock 0
+/snapshot/1/source/14/pres 90.0
+/snapshot/1/source/14/warm 30.0
+/snapshot/1/source/14/bril 30.0
+/snapshot/1/source/14/prer 48.0
+/snapshot/1/source/14/revp 50.0
+/snapshot/1/source/14/env 24.0
+/snapshot/1/source/14/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/14/axis/mute 0
+/snapshot/1/source/14/axis/bypass 0
+/snapshot/1/source/14/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/14/omni/mute 0
+/snapshot/1/source/14/omni/bypass 0
+/snapshot/1/source/14/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/14/doppler 0
+/snapshot/1/source/14/air 1
+/snapshot/1/source/14/air/freq 10000.0
+/snapshot/1/source/14/drop 6.0
+/snapshot/1/source/14/drop/mode "log2"
+/snapshot/1/source/14/radius 1.0
+/snapshot/1/source/14/room/destination 1
+/snapshot/1/source/14/mute 0
+/snapshot/1/source/14/solo 0
+/snapshot/1/source/14/direct/mute 0
+/snapshot/1/source/14/early/mute 0
+/snapshot/1/source/14/cluster/mute 0
+/snapshot/1/source/14/reverb/mute 0
+/snapshot/1/source/14/early/width 30.0
+/snapshot/1/source/14/early/shape 50.0
+/snapshot/1/source/14/spread 0.0
+/snapshot/1/source/14/panrev 0.0
+/snapshot/1/source/14/lock 0
+/snapshot/1/source/15/pres 90.0
+/snapshot/1/source/15/warm 30.0
+/snapshot/1/source/15/bril 30.0
+/snapshot/1/source/15/prer 48.0
+/snapshot/1/source/15/revp 50.0
+/snapshot/1/source/15/env 24.0
+/snapshot/1/source/15/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/15/axis/mute 0
+/snapshot/1/source/15/axis/bypass 0
+/snapshot/1/source/15/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/15/omni/mute 0
+/snapshot/1/source/15/omni/bypass 0
+/snapshot/1/source/15/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/15/doppler 0
+/snapshot/1/source/15/air 1
+/snapshot/1/source/15/air/freq 10000.0
+/snapshot/1/source/15/drop 6.0
+/snapshot/1/source/15/drop/mode "log2"
+/snapshot/1/source/15/radius 1.0
+/snapshot/1/source/15/room/destination 1
+/snapshot/1/source/15/mute 0
+/snapshot/1/source/15/solo 0
+/snapshot/1/source/15/direct/mute 0
+/snapshot/1/source/15/early/mute 0
+/snapshot/1/source/15/cluster/mute 0
+/snapshot/1/source/15/reverb/mute 0
+/snapshot/1/source/15/early/width 30.0
+/snapshot/1/source/15/early/shape 50.0
+/snapshot/1/source/15/spread 0.0
+/snapshot/1/source/15/panrev 0.0
+/snapshot/1/source/15/lock 0
+/snapshot/1/source/16/pres 90.0
+/snapshot/1/source/16/warm 30.0
+/snapshot/1/source/16/bril 30.0
+/snapshot/1/source/16/prer 48.0
+/snapshot/1/source/16/revp 50.0
+/snapshot/1/source/16/env 24.0
+/snapshot/1/source/16/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/16/axis/mute 0
+/snapshot/1/source/16/axis/bypass 0
+/snapshot/1/source/16/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/16/omni/mute 0
+/snapshot/1/source/16/omni/bypass 0
+/snapshot/1/source/16/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/16/doppler 0
+/snapshot/1/source/16/air 1
+/snapshot/1/source/16/air/freq 10000.0
+/snapshot/1/source/16/drop 6.0
+/snapshot/1/source/16/drop/mode "log2"
+/snapshot/1/source/16/radius 1.0
+/snapshot/1/source/16/room/destination 1
+/snapshot/1/source/16/mute 0
+/snapshot/1/source/16/solo 0
+/snapshot/1/source/16/direct/mute 0
+/snapshot/1/source/16/early/mute 0
+/snapshot/1/source/16/cluster/mute 0
+/snapshot/1/source/16/reverb/mute 0
+/snapshot/1/source/16/early/width 30.0
+/snapshot/1/source/16/early/shape 50.0
+/snapshot/1/source/16/spread 0.0
+/snapshot/1/source/16/panrev 0.0
+/snapshot/1/source/16/lock 0
+/snapshot/1/source/17/pres 90.0
+/snapshot/1/source/17/warm 30.0
+/snapshot/1/source/17/bril 30.0
+/snapshot/1/source/17/prer 48.0
+/snapshot/1/source/17/revp 50.0
+/snapshot/1/source/17/env 24.0
+/snapshot/1/source/17/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/17/axis/mute 0
+/snapshot/1/source/17/axis/bypass 0
+/snapshot/1/source/17/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/17/omni/mute 0
+/snapshot/1/source/17/omni/bypass 0
+/snapshot/1/source/17/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/17/doppler 0
+/snapshot/1/source/17/air 1
+/snapshot/1/source/17/air/freq 10000.0
+/snapshot/1/source/17/drop 6.0
+/snapshot/1/source/17/drop/mode "log2"
+/snapshot/1/source/17/radius 1.0
+/snapshot/1/source/17/room/destination 1
+/snapshot/1/source/17/mute 0
+/snapshot/1/source/17/solo 0
+/snapshot/1/source/17/direct/mute 0
+/snapshot/1/source/17/early/mute 0
+/snapshot/1/source/17/cluster/mute 0
+/snapshot/1/source/17/reverb/mute 0
+/snapshot/1/source/17/early/width 30.0
+/snapshot/1/source/17/early/shape 50.0
+/snapshot/1/source/17/spread 0.0
+/snapshot/1/source/17/panrev 0.0
+/snapshot/1/source/17/lock 0
+/snapshot/1/source/18/pres 90.0
+/snapshot/1/source/18/warm 30.0
+/snapshot/1/source/18/bril 30.0
+/snapshot/1/source/18/prer 48.0
+/snapshot/1/source/18/revp 50.0
+/snapshot/1/source/18/env 24.0
+/snapshot/1/source/18/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/18/axis/mute 0
+/snapshot/1/source/18/axis/bypass 0
+/snapshot/1/source/18/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/18/omni/mute 0
+/snapshot/1/source/18/omni/bypass 0
+/snapshot/1/source/18/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/18/doppler 0
+/snapshot/1/source/18/air 1
+/snapshot/1/source/18/air/freq 10000.0
+/snapshot/1/source/18/drop 6.0
+/snapshot/1/source/18/drop/mode "log2"
+/snapshot/1/source/18/radius 1.0
+/snapshot/1/source/18/room/destination 1
+/snapshot/1/source/18/mute 0
+/snapshot/1/source/18/solo 0
+/snapshot/1/source/18/direct/mute 0
+/snapshot/1/source/18/early/mute 0
+/snapshot/1/source/18/cluster/mute 0
+/snapshot/1/source/18/reverb/mute 0
+/snapshot/1/source/18/early/width 30.0
+/snapshot/1/source/18/early/shape 50.0
+/snapshot/1/source/18/spread 0.0
+/snapshot/1/source/18/panrev 0.0
+/snapshot/1/source/18/lock 0
+/snapshot/1/source/19/pres 90.0
+/snapshot/1/source/19/warm 30.0
+/snapshot/1/source/19/bril 30.0
+/snapshot/1/source/19/prer 48.0
+/snapshot/1/source/19/revp 50.0
+/snapshot/1/source/19/env 24.0
+/snapshot/1/source/19/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/19/axis/mute 0
+/snapshot/1/source/19/axis/bypass 0
+/snapshot/1/source/19/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/19/omni/mute 0
+/snapshot/1/source/19/omni/bypass 0
+/snapshot/1/source/19/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/19/doppler 0
+/snapshot/1/source/19/air 1
+/snapshot/1/source/19/air/freq 10000.0
+/snapshot/1/source/19/drop 6.0
+/snapshot/1/source/19/drop/mode "log2"
+/snapshot/1/source/19/radius 1.0
+/snapshot/1/source/19/room/destination 1
+/snapshot/1/source/19/mute 0
+/snapshot/1/source/19/solo 0
+/snapshot/1/source/19/direct/mute 0
+/snapshot/1/source/19/early/mute 0
+/snapshot/1/source/19/cluster/mute 0
+/snapshot/1/source/19/reverb/mute 0
+/snapshot/1/source/19/early/width 30.0
+/snapshot/1/source/19/early/shape 50.0
+/snapshot/1/source/19/spread 0.0
+/snapshot/1/source/19/panrev 0.0
+/snapshot/1/source/19/lock 0
+/snapshot/1/source/20/pres 90.0
+/snapshot/1/source/20/warm 30.0
+/snapshot/1/source/20/bril 30.0
+/snapshot/1/source/20/prer 48.0
+/snapshot/1/source/20/revp 50.0
+/snapshot/1/source/20/env 24.0
+/snapshot/1/source/20/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/20/axis/mute 0
+/snapshot/1/source/20/axis/bypass 0
+/snapshot/1/source/20/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/20/omni/mute 0
+/snapshot/1/source/20/omni/bypass 0
+/snapshot/1/source/20/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/20/doppler 0
+/snapshot/1/source/20/air 1
+/snapshot/1/source/20/air/freq 10000.0
+/snapshot/1/source/20/drop 6.0
+/snapshot/1/source/20/drop/mode "log2"
+/snapshot/1/source/20/radius 1.0
+/snapshot/1/source/20/room/destination 1
+/snapshot/1/source/20/mute 0
+/snapshot/1/source/20/solo 0
+/snapshot/1/source/20/direct/mute 0
+/snapshot/1/source/20/early/mute 0
+/snapshot/1/source/20/cluster/mute 0
+/snapshot/1/source/20/reverb/mute 0
+/snapshot/1/source/20/early/width 30.0
+/snapshot/1/source/20/early/shape 50.0
+/snapshot/1/source/20/spread 0.0
+/snapshot/1/source/20/panrev 0.0
+/snapshot/1/source/20/lock 0
+/snapshot/1/source/21/pres 90.0
+/snapshot/1/source/21/warm 30.0
+/snapshot/1/source/21/bril 30.0
+/snapshot/1/source/21/prer 48.0
+/snapshot/1/source/21/revp 50.0
+/snapshot/1/source/21/env 24.0
+/snapshot/1/source/21/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/21/axis/mute 0
+/snapshot/1/source/21/axis/bypass 0
+/snapshot/1/source/21/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/21/omni/mute 0
+/snapshot/1/source/21/omni/bypass 0
+/snapshot/1/source/21/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/21/doppler 0
+/snapshot/1/source/21/air 1
+/snapshot/1/source/21/air/freq 10000.0
+/snapshot/1/source/21/drop 6.0
+/snapshot/1/source/21/drop/mode "log2"
+/snapshot/1/source/21/radius 1.0
+/snapshot/1/source/21/room/destination 1
+/snapshot/1/source/21/mute 0
+/snapshot/1/source/21/solo 0
+/snapshot/1/source/21/direct/mute 0
+/snapshot/1/source/21/early/mute 0
+/snapshot/1/source/21/cluster/mute 0
+/snapshot/1/source/21/reverb/mute 0
+/snapshot/1/source/21/early/width 30.0
+/snapshot/1/source/21/early/shape 50.0
+/snapshot/1/source/21/spread 0.0
+/snapshot/1/source/21/panrev 0.0
+/snapshot/1/source/21/lock 0
+/snapshot/1/source/22/pres 90.0
+/snapshot/1/source/22/warm 30.0
+/snapshot/1/source/22/bril 30.0
+/snapshot/1/source/22/prer 48.0
+/snapshot/1/source/22/revp 50.0
+/snapshot/1/source/22/env 24.0
+/snapshot/1/source/22/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/22/axis/mute 0
+/snapshot/1/source/22/axis/bypass 0
+/snapshot/1/source/22/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/22/omni/mute 0
+/snapshot/1/source/22/omni/bypass 0
+/snapshot/1/source/22/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/22/doppler 0
+/snapshot/1/source/22/air 1
+/snapshot/1/source/22/air/freq 10000.0
+/snapshot/1/source/22/drop 6.0
+/snapshot/1/source/22/drop/mode "log2"
+/snapshot/1/source/22/radius 1.0
+/snapshot/1/source/22/room/destination 1
+/snapshot/1/source/22/mute 0
+/snapshot/1/source/22/solo 0
+/snapshot/1/source/22/direct/mute 0
+/snapshot/1/source/22/early/mute 0
+/snapshot/1/source/22/cluster/mute 0
+/snapshot/1/source/22/reverb/mute 0
+/snapshot/1/source/22/early/width 30.0
+/snapshot/1/source/22/early/shape 50.0
+/snapshot/1/source/22/spread 0.0
+/snapshot/1/source/22/panrev 0.0
+/snapshot/1/source/22/lock 0
+/snapshot/1/source/23/pres 90.0
+/snapshot/1/source/23/warm 30.0
+/snapshot/1/source/23/bril 30.0
+/snapshot/1/source/23/prer 48.0
+/snapshot/1/source/23/revp 50.0
+/snapshot/1/source/23/env 24.0
+/snapshot/1/source/23/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/23/axis/mute 0
+/snapshot/1/source/23/axis/bypass 0
+/snapshot/1/source/23/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/23/omni/mute 0
+/snapshot/1/source/23/omni/bypass 0
+/snapshot/1/source/23/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/23/doppler 0
+/snapshot/1/source/23/air 1
+/snapshot/1/source/23/air/freq 10000.0
+/snapshot/1/source/23/drop 6.0
+/snapshot/1/source/23/drop/mode "log2"
+/snapshot/1/source/23/radius 1.0
+/snapshot/1/source/23/room/destination 1
+/snapshot/1/source/23/mute 0
+/snapshot/1/source/23/solo 0
+/snapshot/1/source/23/direct/mute 0
+/snapshot/1/source/23/early/mute 0
+/snapshot/1/source/23/cluster/mute 0
+/snapshot/1/source/23/reverb/mute 0
+/snapshot/1/source/23/early/width 30.0
+/snapshot/1/source/23/early/shape 50.0
+/snapshot/1/source/23/spread 0.0
+/snapshot/1/source/23/panrev 0.0
+/snapshot/1/source/23/lock 0
+/snapshot/1/source/24/pres 90.0
+/snapshot/1/source/24/warm 30.0
+/snapshot/1/source/24/bril 30.0
+/snapshot/1/source/24/prer 48.0
+/snapshot/1/source/24/revp 50.0
+/snapshot/1/source/24/env 24.0
+/snapshot/1/source/24/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/24/axis/mute 0
+/snapshot/1/source/24/axis/bypass 0
+/snapshot/1/source/24/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/24/omni/mute 0
+/snapshot/1/source/24/omni/bypass 0
+/snapshot/1/source/24/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/24/doppler 0
+/snapshot/1/source/24/air 1
+/snapshot/1/source/24/air/freq 10000.0
+/snapshot/1/source/24/drop 6.0
+/snapshot/1/source/24/drop/mode "log2"
+/snapshot/1/source/24/radius 1.0
+/snapshot/1/source/24/room/destination 1
+/snapshot/1/source/24/mute 0
+/snapshot/1/source/24/solo 0
+/snapshot/1/source/24/direct/mute 0
+/snapshot/1/source/24/early/mute 0
+/snapshot/1/source/24/cluster/mute 0
+/snapshot/1/source/24/reverb/mute 0
+/snapshot/1/source/24/early/width 30.0
+/snapshot/1/source/24/early/shape 50.0
+/snapshot/1/source/24/spread 0.0
+/snapshot/1/source/24/panrev 0.0
+/snapshot/1/source/24/lock 0
+/snapshot/1/source/25/pres 90.0
+/snapshot/1/source/25/warm 30.0
+/snapshot/1/source/25/bril 30.0
+/snapshot/1/source/25/prer 48.0
+/snapshot/1/source/25/revp 50.0
+/snapshot/1/source/25/env 24.0
+/snapshot/1/source/25/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/25/axis/mute 0
+/snapshot/1/source/25/axis/bypass 0
+/snapshot/1/source/25/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/25/omni/mute 0
+/snapshot/1/source/25/omni/bypass 0
+/snapshot/1/source/25/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/25/doppler 0
+/snapshot/1/source/25/air 1
+/snapshot/1/source/25/air/freq 10000.0
+/snapshot/1/source/25/drop 6.0
+/snapshot/1/source/25/drop/mode "log2"
+/snapshot/1/source/25/radius 1.0
+/snapshot/1/source/25/room/destination 1
+/snapshot/1/source/25/mute 0
+/snapshot/1/source/25/solo 0
+/snapshot/1/source/25/direct/mute 0
+/snapshot/1/source/25/early/mute 0
+/snapshot/1/source/25/cluster/mute 0
+/snapshot/1/source/25/reverb/mute 0
+/snapshot/1/source/25/early/width 30.0
+/snapshot/1/source/25/early/shape 50.0
+/snapshot/1/source/25/spread 0.0
+/snapshot/1/source/25/panrev 0.0
+/snapshot/1/source/25/lock 0
+/snapshot/1/source/26/pres 90.0
+/snapshot/1/source/26/warm 30.0
+/snapshot/1/source/26/bril 30.0
+/snapshot/1/source/26/prer 48.0
+/snapshot/1/source/26/revp 50.0
+/snapshot/1/source/26/env 24.0
+/snapshot/1/source/26/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/26/axis/mute 0
+/snapshot/1/source/26/axis/bypass 0
+/snapshot/1/source/26/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/26/omni/mute 0
+/snapshot/1/source/26/omni/bypass 0
+/snapshot/1/source/26/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/26/doppler 0
+/snapshot/1/source/26/air 1
+/snapshot/1/source/26/air/freq 10000.0
+/snapshot/1/source/26/drop 6.0
+/snapshot/1/source/26/drop/mode "log2"
+/snapshot/1/source/26/radius 1.0
+/snapshot/1/source/26/room/destination 1
+/snapshot/1/source/26/mute 0
+/snapshot/1/source/26/solo 0
+/snapshot/1/source/26/direct/mute 0
+/snapshot/1/source/26/early/mute 0
+/snapshot/1/source/26/cluster/mute 0
+/snapshot/1/source/26/reverb/mute 0
+/snapshot/1/source/26/early/width 30.0
+/snapshot/1/source/26/early/shape 50.0
+/snapshot/1/source/26/spread 0.0
+/snapshot/1/source/26/panrev 0.0
+/snapshot/1/source/26/lock 0
+/snapshot/1/source/27/pres 90.0
+/snapshot/1/source/27/warm 30.0
+/snapshot/1/source/27/bril 30.0
+/snapshot/1/source/27/prer 48.0
+/snapshot/1/source/27/revp 50.0
+/snapshot/1/source/27/env 24.0
+/snapshot/1/source/27/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/27/axis/mute 0
+/snapshot/1/source/27/axis/bypass 0
+/snapshot/1/source/27/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/27/omni/mute 0
+/snapshot/1/source/27/omni/bypass 0
+/snapshot/1/source/27/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/27/doppler 0
+/snapshot/1/source/27/air 1
+/snapshot/1/source/27/air/freq 10000.0
+/snapshot/1/source/27/drop 6.0
+/snapshot/1/source/27/drop/mode "log2"
+/snapshot/1/source/27/radius 1.0
+/snapshot/1/source/27/room/destination 1
+/snapshot/1/source/27/mute 0
+/snapshot/1/source/27/solo 0
+/snapshot/1/source/27/direct/mute 0
+/snapshot/1/source/27/early/mute 0
+/snapshot/1/source/27/cluster/mute 0
+/snapshot/1/source/27/reverb/mute 0
+/snapshot/1/source/27/early/width 30.0
+/snapshot/1/source/27/early/shape 50.0
+/snapshot/1/source/27/spread 0.0
+/snapshot/1/source/27/panrev 0.0
+/snapshot/1/source/27/lock 0
+/snapshot/1/source/28/pres 90.0
+/snapshot/1/source/28/warm 30.0
+/snapshot/1/source/28/bril 30.0
+/snapshot/1/source/28/prer 48.0
+/snapshot/1/source/28/revp 50.0
+/snapshot/1/source/28/env 24.0
+/snapshot/1/source/28/axis/params 0.0 0.0 0.0 0.0 177.0 5657.0
+/snapshot/1/source/28/axis/mute 0
+/snapshot/1/source/28/axis/bypass 0
+/snapshot/1/source/28/omni/params 0.0 1.7 0.0 -3.8 177.0 5657.0
+/snapshot/1/source/28/omni/mute 0
+/snapshot/1/source/28/omni/bypass 0
+/snapshot/1/source/28/color 0.490196 1.0 0.0 1.0
+/snapshot/1/source/28/doppler 0
+/snapshot/1/source/28/air 1
+/snapshot/1/source/28/air/freq 10000.0
+/snapshot/1/source/28/drop 6.0
+/snapshot/1/source/28/drop/mode "log2"
+/snapshot/1/source/28/radius 1.0
+/snapshot/1/source/28/room/destination 1
+/snapshot/1/source/28/mute 0
+/snapshot/1/source/28/solo 0
+/snapshot/1/source/28/direct/mute 0
+/snapshot/1/source/28/early/mute 0
+/snapshot/1/source/28/cluster/mute 0
+/snapshot/1/source/28/reverb/mute 0
+/snapshot/1/source/28/early/width 30.0
+/snapshot/1/source/28/early/shape 50.0
+/snapshot/1/source/28/spread 0.0
+/snapshot/1/source/28/panrev 0.0
+/snapshot/1/source/28/lock 0
+/snapshot/1/room/number 1
+/snapshot/1/room/1/reverberance 65.0
+/snapshot/1/room/1/heaviness 25.0
+/snapshot/1/room/1/liveness 35.0
+/snapshot/1/room/1/reverb/fl 250.0
+/snapshot/1/room/1/reverb/fh 8000.0
+/snapshot/1/room/1/reverb/air 1
+/snapshot/1/room/1/reverb/air/freq 10000.0
+/snapshot/1/room/1/reverb/infinite 0
+/snapshot/1/room/1/reverb/roomsize 2000.0
+/snapshot/1/room/1/early/min 22.22
+/snapshot/1/room/1/early/max 39.71
+/snapshot/1/room/1/early/distr 0.5
+/snapshot/1/room/1/cluster/min 42.47
+/snapshot/1/room/1/cluster/max 105.64
+/snapshot/1/room/1/cluster/distr 0.5
+/snapshot/1/room/1/reverb/min 95.37
+/snapshot/1/room/1/reverb/density 0.86
+/snapshot/1/room/1/reverb/roomoffset 0.0
+/snapshot/1/room/1/reverb/panrev 0.0
+/snapshot/1/room/1/reverb/panrev/aed 0.0 0.0 1.0
+/snapshot/1/room/1/mute 0
+/snapshot/1/internals 8
+/snapshot/1/viewer/visible 1
+/snapshot/1/viewer/only 0
+/snapshot/1/style "factors"
+/snapshot/1/usurp 0
+/snapshot/1/end
+/snapshot/mode "store everything except window"
+/snapshot/lock 0

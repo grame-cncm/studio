@@ -1,0 +1,116 @@
+# ==============================================================================
+# File: "/Volumes/marvin/Users/max/Desktop/GRAME STUDIO/gramestudio-spat-base/data/gramespat-speakerconfig-layout-BASE.txt"
+# Exported by: max
+# max@maxbookpro - macOS 26.5.1
+# 08-sep-2026 17:50:08
+# Origin: spat5.speaker.config [5.3.9] - Max [9.1.5 (3db35fa476d)] - arm64
+# Content: 108 OSC messages
+# ==============================================================================
+/speaker/number 28
+/speakers/correction/delay "off"
+/speakers/correction/gain "off"
+/speakers/aed -26.2502 29.473 4.67467 26.2502 29.473 4.67467 -36.8699 28.4212 4.83244 36.8699 28.4212 4.83244 -90.0 43.1913 3.36043 90.0 43.1913 3.36043 -138.674 30.7779 4.49472 138.674 30.7779 4.49472 0.0 27.0721 5.05371 -180.0 29.2914 4.70106 -37.7784 16.5886 4.34329 37.7784 16.5886 4.34329 -90.0 27.3239 2.70141 90.0 26.845 2.74592 -139.578 18.031 4.00606 139.578 18.031 4.00606 -53.1301 9.09028 2.5318 53.1301 9.09028 2.5318 -126.87 9.09028 2.5318 126.87 9.09028 2.5318 -38.8534 59.3464 3.62679 38.8534 59.1845 3.6096 -141.147 59.1845 3.6096 141.147 59.3464 3.62679 90.0 90.0 2.4 -33.6901 5.01927 4.34332 33.6901 5.01927 4.34332 0.0 17.2234 4.18779
+/speaker/1/delay 0.0
+/speaker/2/delay 0.0
+/speaker/3/delay 0.0
+/speaker/4/delay 0.0
+/speaker/5/delay 0.0
+/speaker/6/delay 0.0
+/speaker/7/delay 0.0
+/speaker/8/delay 0.0
+/speaker/9/delay 0.0
+/speaker/10/delay 0.0
+/speaker/11/delay 0.0
+/speaker/12/delay 0.0
+/speaker/13/delay 0.0
+/speaker/14/delay 0.0
+/speaker/15/delay 0.0
+/speaker/16/delay 0.0
+/speaker/17/delay 0.0
+/speaker/18/delay 0.0
+/speaker/19/delay 0.0
+/speaker/20/delay 0.0
+/speaker/21/delay 0.0
+/speaker/22/delay 0.0
+/speaker/23/delay 0.0
+/speaker/24/delay 0.0
+/speaker/25/delay 0.0
+/speaker/26/delay 0.0
+/speaker/27/delay 0.0
+/speaker/28/delay 0.0
+/speaker/1/gain/db 0.0
+/speaker/2/gain/db 0.0
+/speaker/3/gain/db 0.0
+/speaker/4/gain/db 0.0
+/speaker/5/gain/db 0.0
+/speaker/6/gain/db 0.0
+/speaker/7/gain/db 0.0
+/speaker/8/gain/db 0.0
+/speaker/9/gain/db 0.0
+/speaker/10/gain/db 0.0
+/speaker/11/gain/db 0.0
+/speaker/12/gain/db 0.0
+/speaker/13/gain/db 0.0
+/speaker/14/gain/db 0.0
+/speaker/15/gain/db 0.0
+/speaker/16/gain/db 0.0
+/speaker/17/gain/db 0.0
+/speaker/18/gain/db 0.0
+/speaker/19/gain/db 0.0
+/speaker/20/gain/db 0.0
+/speaker/21/gain/db 0.0
+/speaker/22/gain/db 0.0
+/speaker/23/gain/db 0.0
+/speaker/24/gain/db 0.0
+/speaker/25/gain/db 0.0
+/speaker/26/gain/db 0.0
+/speaker/27/gain/db 0.0
+/speaker/28/gain/db 0.0
+/speaker/1/name "L"
+/speaker/2/name "R"
+/speaker/3/name "C1"
+/speaker/4/name "C2"
+/speaker/5/name "C3"
+/speaker/6/name "C4"
+/speaker/7/name "C5"
+/speaker/8/name "C6"
+/speaker/9/name "C7"
+/speaker/10/name "C8"
+/speaker/11/name "M1"
+/speaker/12/name "M2"
+/speaker/13/name "M3"
+/speaker/14/name "M4"
+/speaker/15/name "M5"
+/speaker/16/name "M6"
+/speaker/17/name "L1"
+/speaker/18/name "L2"
+/speaker/19/name "L3"
+/speaker/20/name "L4"
+/speaker/21/name "H1"
+/speaker/22/name "H2"
+/speaker/23/name "H3"
+/speaker/24/name "H4"
+/speaker/25/name "H5"
+/speaker/26/name "SW1+L"
+/speaker/27/name "SW2+R"
+/speaker/28/name "AtmoC"
+/usurp 0
+/window/title "Speaker Config"
+/window/visible 0
+/window/moveable 1
+/window/resizable 1
+/window/enable 1
+/window/bounds 480 200 770 770
+/window/background/color 0.827451 0.827451 0.827451 1.0
+/window/opaque 1
+/window/titlebar 1
+/window/fullscreen 0
+/window/minimise 0
+/window/scale 100.0
+/window/rendering/engine ""
+/window/rendering/fps/visible 0
+/window/floating 0
+/window/hidesondeactivate 0
+/window/buttons/close 1
+/window/buttons/minimise 1
+/window/buttons/maximise 1
