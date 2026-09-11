@@ -1,15 +1,15 @@
 # Créer des patches Max avec Faust, une interface et `py2max`
 
 Ce dossier réunit une méthode de travail pour produire des patches Max complets :
-le DSP est écrit en **Faust** et embarqué dans `faustgen~`, tandis que la
+le DSP est écrit en **Faust** et embarqué dans `mc.faustgen~`, tandis que la
 topologie Max et son interface sont générées en **Python** avec
-[`py2max`](py2max/). Les exemples prêts à ouvrir sont dans
+[`py2max`](py2max/). Les exemples généres avec cette méthode sont dans
 [`max-patches/`](max-patches/).
 
 Cette approche convient particulièrement à une collaboration avec un LLM : le
-modèle peut écrire ou modifier le script Python, le code Faust et les
+modèle peut écrire ou modifier le script Python qui pilote l'outil `py2max`, le code Faust et les
 connexions, puis le script produit un fichier `.maxpat` JSON que Max ouvre
-normalement. Le résultat reste un patch Max lisible et éditable à la main.
+normalement. Le résultat reste un patch Max lisible et éditable à la main. Cette méthode est plus fiable que de demander au LLM d'écrire directement le patch Max au format JSON.
 
 ## Pré-requis
 
@@ -34,20 +34,30 @@ génération peut aussi ajouter `faust/py2max` à `sys.path`.
 Un patch complet comporte habituellement les quatre couches suivantes :
 
 1. **DSP Faust** — le texte Faust est placé dans la propriété `sourcecode` de
-   `faustgen~`. Ses contrôles (`hslider`, `nentry`, `button`, etc.) deviennent
+   `mc.faustgen~`. Ses contrôles (`hslider`, `nentry`, `button`, etc.) deviennent
    des paramètres adressables dans Max.
-2. **Entrées et sorties Max** — `adc~`/`ezadc~`, MIDI, ou une source Max
-   alimentent `faustgen~`; ses sorties audio rejoignent `ezdac~`, `dac~` ou les
+2. **Entrées et sorties Max** — `mc.adc~`/`mc.ezadc~`, MIDI, ou une source Max
+   alimentent `mc.faustgen~`; ses sorties audio rejoignent `mc.ezdac~`,
+   `mc.dac~` ou les
    traitements suivants.
 3. **Interface utilisateur** — des `flonum`, `live.dial`, `slider`, `toggle`,
    `kslider` et commentaires sont reliés à des messages de la forme
-   `nomDuParametre $1`, envoyés à `faustgen~`.
+   `nomDuParametre $1`, envoyés à `mc.faustgen~`.
 4. **Initialisation** — `loadbang` et des messages `set valeur` donnent des
    valeurs de départ prévisibles aux widgets et au DSP.
 
 Les exemples existants, notamment
 [`generate_faustgen_additive_poly_midi.py`](max-patches/generate_faustgen_additive_poly_midi.py),
 illustrent cette structure pour un synthétiseur additif polyphonique.
+
+### Règle multicanal
+
+Privilégiez les objets Max au format **MC** (`mc.*`) dès qu’un équivalent est
+disponible, afin que le patch puisse conserver et faire évoluer son nombre de
+canaux sans dupliquer le câblage. En particulier, utilisez `mc.faustgen~` à la
+place de `faustgen~`, et privilégiez `mc.ezadc~`, `mc.ezdac~`, `mc.mixdown~`,
+etc. Les objets non-MC restent appropriés pour le contrôle, le MIDI et les
+objets qui n’ont pas d’équivalent MC.
 
 ## Flux de travail avec un LLM
 
@@ -66,10 +76,10 @@ Un brief efficace précise :
 
 Exemple de demande :
 
-> Crée un générateur `py2max` pour un effet stéréo. Embarque dans `faustgen~`
+> Crée un générateur `py2max` pour un effet stéréo. Embarque dans `mc.faustgen~`
 > un délai Faust avec les paramètres `time`, `feedback` et `mix`. Ajoute des
 > `live.dial` étiquetés, initialise-les avec `loadbang`, relie l’entrée
-> `ezadc~` au DSP et le DSP à `ezdac~`. Utilise une disposition lisible et
+> `mc.ezadc~` au DSP et le DSP à `mc.ezdac~`. Utilise une disposition lisible et
 > conserve le code Faust dans une constante `FAUST_SOURCE`.
 
 Le LLM doit générer un script Python vérifiable. Exécutez-le ensuite, ouvrez le
@@ -96,13 +106,13 @@ p = Patcher(OUT, semantic_ids=True, validate_connections=True)
 p.rect = [80.0, 80.0, 800.0, 500.0]
 p.add_comment("Mon effet Faust", patching_rect=[30, 20, 300, 28], fontsize=18)
 
-source = p.add_textbox("ezadc~", maxclass="ezadc~", numinlets=1, numoutlets=2,
+source = p.add_textbox("mc.ezadc~", maxclass="mc.ezadc~", numinlets=1, numoutlets=2,
                        patching_rect=[30, 100, 48, 48])
-dsp = p.add_textbox("faustgen~", numinlets=2, numoutlets=2,
+dsp = p.add_textbox("mc.faustgen~", numinlets=2, numoutlets=2,
                     outlettype=["signal", "signal"], sourcecode=FAUST_SOURCE,
                     sourcecode_size=len(FAUST_SOURCE.encode("utf-8")),
                     patching_rect=[300, 110, 70, 22])
-output = p.add_textbox("ezdac~", maxclass="ezdac~", numinlets=2, numoutlets=0,
+output = p.add_textbox("mc.ezdac~", maxclass="mc.ezdac~", numinlets=2, numoutlets=0,
                        patching_rect=[600, 100, 48, 48])
 p.add_line(source, dsp)
 p.add_line(source, dsp, outlet=1, inlet=1)
@@ -126,7 +136,7 @@ for name, value, lo, hi, y in [("time", 250, 1, 1000, 220),
 p.save()
 ```
 
-Adaptez le nombre d’entrées et sorties de `faustgen~` au `process` Faust. Pour
+Adaptez le nombre d’entrées et sorties de `mc.faustgen~` au `process` Faust. Pour
 un instrument MIDI polyphonique, utilisez les paramètres standards `/freq`,
 `/gain`, `/gate` et les objets MIDI montrés dans l’exemple additif.
 
@@ -137,7 +147,7 @@ python3 faust/max-patches/generate_faustgen_additive_poly_midi.py
 python3 -m py2max preview faust/max-patches/faustgen-additive-poly-midi.maxpat
 ```
 
-Ouvrez ensuite le `.maxpat` dans Max. Vérifiez que `faustgen~` trouve Faust et
+Ouvrez ensuite le `.maxpat` dans Max. Vérifiez que `mc.faustgen~` trouve Faust et
 compile sans erreur, que chaque widget modifie le paramètre annoncé, et que les
 canaux audio correspondent au routage prévu. Gardez le script Python et le
 patch généré ensemble : le premier est la source reproductible du second.
