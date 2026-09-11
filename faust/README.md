@@ -49,8 +49,10 @@ Un patch complet comporte habituellement les quatre couches suivantes :
 3. **Interface utilisateur** — des `flonum`, `live.dial`, `slider`, `toggle`,
    `kslider` et commentaires sont reliés à des messages de la forme
    `nomDuParametre $1`, envoyés à `mc.faustgen~`.
-4. **Initialisation** — `loadbang` et des messages `set valeur` donnent des
-   valeurs de départ prévisibles aux widgets et au DSP.
+4. **Initialisation** — `loadbang` et des messages numériques donnent des
+   valeurs de départ prévisibles aux widgets et au DSP. N’utilisez pas
+   seulement `set valeur` : ce message met à jour un widget mais n’émet pas la
+   valeur vers le DSP.
 
 Les exemples existants, notamment
 [`generate_faustgen_additive_poly_midi.py`](max-patches/generate_faustgen_additive_poly_midi.py),
@@ -145,6 +147,77 @@ p.save()
 Adaptez le nombre d’entrées et sorties de `mc.faustgen~` au `process` Faust. Pour
 un instrument MIDI polyphonique, utilisez les paramètres standards `/freq`,
 `/gain`, `/gate` et les objets MIDI montrés dans l’exemple additif.
+
+## Alternative reproductible : DSP Faust autonome, interface générée et tests
+
+Pour les effets plus complexes, surtout lorsqu’ils ont beaucoup de paramètres,
+préférez cette variante. Le DSP Faust, le générateur Max et les tests sont
+séparés ; chaque couche a une responsabilité unique :
+
+```text
+faustgen-mon-effet.dsp
+        ↓ paramètres hslider extraits
+generate_faustgen_mon_effet.py  ──→  faustgen-mon-effet.maxpat
+        ↓                                      ↓
+test_faustgen_mon_effet.py  ─────→  vérification dans Max
+```
+
+L’exemple complet est le spatialiseur mono vers six sorties avec Zita Rev1 :
+
+- [`max-patches/faustgen-mono-6out-zita.dsp`](max-patches/faustgen-mono-6out-zita.dsp)
+  contient uniquement le DSP. Il distribue le son sec sur un anneau de six
+  haut-parleurs et emploie trois instances stéréo de
+  `re.zita_rev1_stereo` pour les paires 1–2, 3–4 et 5–6.
+- [`max-patches/generate_faustgen_mono_6out_zita.py`](max-patches/generate_faustgen_mono_6out_zita.py)
+  lit les déclarations `hslider`, crée les widgets et les messages Max, puis
+  écrit le `.maxpat` avec `py2max`.
+- [`max-patches/test_faustgen_mono_6out_zita.py`](max-patches/test_faustgen_mono_6out_zita.py)
+  régénère le patch et contrôle son contrat structurel.
+
+Cette organisation évite de recopier dans Python les valeurs initiales et les
+plages des paramètres Faust. Chaque contrôle Faust (`hslider`, `nentry`,
+`button`, etc.) doit cependant avoir un libellé **unique** dans le DSP. Par
+défaut, employez comme libellé son identifiant stable, par exemple
+`zita_predelay = hslider("zita_predelay", 60, 20, 100, 1);`. Faustgen utilise
+ce libellé comme adresse de paramètre ; deux contrôles partageant un même
+libellé deviennent ambigus, et un libellé contenant des espaces ne peut pas
+être envoyé de façon fiable par un message Max de la forme `nom $1`.
+
+Lorsqu’un DSP doit conserver des libellés plus élaborés ou une hiérarchie de
+groupes, ne devinez pas son adresse depuis le texte Faust : générez son JSON
+avec `faust -json mon-effet.dsp`, puis utilisez le champ `shortname` ou le
+champ `path` associé à chaque contrôle pour produire les messages Max. Ces
+champs constituent alors l’identifiant de liaison entre le DSP et l’interface.
+Le générateur de l’exemple 6 sorties adopte la convention simple et refuse les
+déclarations où le nom Faust et le libellé divergent ; il produit à partir de
+cet identifiant un commentaire plus lisible dans Max.
+
+Les valeurs initiales sont envoyées avec un message numérique relié à la fois
+au widget et au message de paramètre. Ainsi, les valeurs affichées et celles du
+DSP sont synchronisées dès l’ouverture du patch, sans dépendre du comportement
+silencieux de `set`.
+
+### Exécuter la boucle
+
+```bash
+# Génère le patch et vérifie DSP, paramètres, source embarquée et topologie MC.
+python3 faust/max-patches/test_faustgen_mono_6out_zita.py
+
+# Test final : ouvre le patch dans Max et vérifie la console.
+open -a Max faust/max-patches/faustgen-mono-6out-zita.maxpat
+```
+
+Le test Python vérifie que le `sourcecode` embarqué est identique au fichier
+`.dsp`, que l’objet est `mc.faustgen~`, que le routage de sortie est bien
+`mc.dac~ 1 2 3 4 5 6`, que les trois Zita sont présentes et que les huit
+paramètres Faust ont chacun un message Max. Le test Max reste nécessaire : il
+valide la compilation réelle par Faustgen et doit afficher
+`Compilation from source code succeeded, 1 input(s), 6 output(s)`.
+
+Le patch inclut aussi une sinusoïde interne de 220 Hz activable. Elle permet de
+contrôler le panoramique sans connecter d’entrée physique : activez l’audio,
+activez cette source, puis placez `azimuth` à `0`, `1/6`, … `5/6` pour vérifier
+la focalisation successive du signal sec sur les sorties 1 à 6.
 
 ## Générer et contrôler le résultat
 
