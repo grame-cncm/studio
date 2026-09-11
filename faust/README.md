@@ -23,8 +23,14 @@ Après un clonage du dépôt principal :
 git submodule update --init --recursive
 python3 -m venv .venv
 . .venv/bin/activate
-pip install -e faust/py2max
+python -m pip install --upgrade pip
+python -m pip install -e faust/py2max
 ```
+
+`py2max` utilise un backend de construction moderne déclaré dans
+`pyproject.toml`; une ancienne version de `pip` ne sait pas l’installer en mode
+éditable. Utilisez donc `python -m pip`, plutôt que le binaire `pip`, après
+l’activation de l’environnement virtuel.
 
 Pour travailler directement depuis le clone sans installation, le script de
 génération peut aussi ajouter `faust/py2max` à `sys.path`.
