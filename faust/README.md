@@ -235,8 +235,8 @@ patch généré ensemble : le premier est la source reproductible du second.
 
 ## Ressources
 
-- [`py2max/README.md`](py2max/README.md) : installation, API, validation,
+- [`py2max/README.md`](https://github.com/shakfu/py2max/blob/8cfffa12db344f70279e0bfac90c99384c3b7b2c/README.md) : installation, API, validation,
   layouts et aperçu SVG ;
-- [`py2max/docs/user_guide/quickstart.md`](py2max/docs/user_guide/quickstart.md)
+- [`py2max/docs/user_guide/quickstart.md`](https://github.com/shakfu/py2max/blob/8cfffa12db344f70279e0bfac90c99384c3b7b2c/docs/user_guide/quickstart.md)
   : principes de construction d’un patch ;
 - [`max-patches/`](max-patches/) : générateurs et patches Faust/Max du projet.
