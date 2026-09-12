@@ -1,5 +1,7 @@
 # Créer des patches Max avec Faust, une interface et `py2max`
 
+[English version](README-en.md)
+
 Ce dossier réunit une méthode de travail pour produire des patches Max complets :
 le DSP est écrit en **Faust** et embarqué dans `mc.faustgen~`, tandis que la
 topologie Max et son interface sont générées en **Python** avec
