@@ -1,0 +1,88 @@
+# Faust in Max/MSP with py2max
+
+[Version française](README.md)
+
+[`py2max`](py2max/) creates Max patches (`.maxpat`) in Python.
+Audio processing is written in Faust and embedded in `mc.faustgen~`.
+The projects use the same [Faust sources](../dsp/) as PureData and follow the
+[common workflow](../README-en.md#a-common-workflow).
+
+## Installation
+
+You need Max with the **faustgen** package, Python **3.9 or newer**, and the
+**Faust** compiler available as `faust`. From the repository root:
+
+```bash
+git submodule update --init
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e faust/maxmsp/py2max
+```
+
+## Generate the patches
+
+Generate every project:
+
+```bash
+python faust/maxmsp/max-patches/generate_all.py
+```
+
+Or run one project's generator:
+
+```bash
+python faust/maxmsp/max-patches/generate_faustgen_mono_6out_zita.py
+```
+
+Scripts also accept `--output-dir directory`, `--faust compiler-path`, and
+`--check`, which compares existing patches without modifying them.
+
+Open the `.maxpat` in Max, configure your audio device and channel count, and
+enable **DSP**. Controls display the defaults defined in Faust and control
+the DSP. Mono effects include **test-220Hz** to select an internal sine wave
+instead of the audio input.
+
+For the synthesizer, use a MIDI input or the on-screen keyboard.
+**C-major** plays a chord; **velocity** and **duration-ms** adjust on-screen
+notes. **output-level** adjusts volume, **mute** silences output, and
+**all-notes-off** releases the notes. MIDI controllers 1–4 adjust the partials.
+
+## Edit the sound and interface
+
+Edit the corresponding `.dsp` in [`../dsp/`](../dsp/), then regenerate the Max
+and PureData patches. Controls, ranges and defaults come from Faust JSON;
+you only need to define them once in the DSP.
+
+You can also double-click `mc.faustgen~` in Max and choose **Edit DSP code**
+to edit the embedded Faust. Copy those edits back to the common file to
+preserve them when regenerating. For abclib, edit
+[`faustgen-abclib-2d-vbap6.dsp`](../dsp/faustgen-abclib-2d-vbap6.dsp);
+required libraries are incorporated into the embedded code.
+
+Each `generate_*.py` contains a `build_patch()` function describing the
+project's blocks and routing. Edit it to customize the interface or
+connections. Reusable functions live in
+[`max_helpers.py`](max-patches/max_helpers.py).
+
+When creating a project with an LLM, specify its purpose, Faust algorithm,
+channels and controls. Ask for a common `.dsp` file and a generator per
+environment, starting from an existing project.
+
+## Available projects
+
+| Project | Audio inputs → outputs | Patch |
+| --- | --- | --- |
+| Additive MIDI synthesis, 16 voices | 0 → 2 | [Additive MIDI](max-patches/faustgen-additive-poly-midi.maxpat) |
+| Circular quadraphonic panning | 1 → 4 | [Quad panner](max-patches/faustgen-quad-panner.maxpat) |
+| Rotating field of eight sources | 8 → 16 | [8×16 panner](max-patches/faustgen-8x16-panner.maxpat) |
+| Independent VBAP for each input | 8 → 16 | [8×16 per-input](max-patches/faustgen-8x16-per-input-panner.maxpat) |
+| Independent VBAP and Freeverb per output | 8 → 16 | [VBAP + Freeverb](max-patches/faustgen-8x16-per-input-vbap-reverb.maxpat) |
+| Stereo panning and Zita Rev1 | 1 → 2 | [Stereo Zita](max-patches/faustgen-mono-stereo-spatial-reverb.maxpat) |
+| Circular panning and three stereo Zita reverbs | 1 → 6 | [Six-output Zita](max-patches/faustgen-mono-6out-zita.maxpat) |
+| abclib VBAP with adjustable speaker angles | 1 → 6 | [abclib VBAP6](max-patches/faustgen-abclib-2d-vbap6.maxpat) |
+
+## Resources
+
+- [py2max guide](py2max/README.md)
+- [Generators and patches](max-patches/)
+- [PureData environment](../puredata/README-en.md)

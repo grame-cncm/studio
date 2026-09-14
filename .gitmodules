@@ -1,3 +1,12 @@
-[submodule "faust/py2max"]
-	path = faust/py2max
+[submodule "faust/maxmsp/py2max"]
+	path = faust/maxmsp/py2max
 	url = https://github.com/shakfu/py2max.git
+[submodule "faust/puredata/py2pd"]
+	path = faust/puredata/py2pd
+	url = https://github.com/shakfu/py2pd.git
+[submodule "faust/puredata/pd-faustgen"]
+	path = faust/puredata/pd-faustgen
+	url = https://github.com/sletz/pd-faustgen.git
+[submodule "faust/dsp/libraries/abclib"]
+	path = faust/dsp/libraries/abclib
+	url = https://github.com/alainbonardi/abclib.git

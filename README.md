@@ -1,59 +1,68 @@
-# GRAME Studio — Documentation
+# Studio GRAME — Documentation
 
-*September 2026*
+[English version](README-en.md)
 
-## Overview and setup
+*Septembre 2026*
 
-The GRAME Studio is a dedicated space for creating, researching, and mixing
-electroacoustic music and immersive audio productions.
+## Présentation et configuration
 
-- **Loudspeaker system:** 25.2 Neumann monitoring array connected via AES67.
-- **Supported formats:** wideband stereo, octophony, quadraphony, heptaphony,
-  Dolby Atmos, and up to fourth-order Ambisonics.
-- **Calibration:** fully calibrated, equalized, and time-aligned using the
-  Neumann MA 1 solution and Smaart.
+Le Studio GRAME est un espace dédié à la création et au mixage de musiques
+électroacoustiques et de productions audio immersives.
+
+- **Système d'écoute :** 25.2 enceintes Neumann interconnectées en AES67.
+- **Formats supportés :** stéréo large bande, octophonie, quadriphonie,
+  heptaphonie, Dolby Atmos et Ambisonie jusqu'à l'ordre 4.
+- **Calibration :** système égalisé et aligné en temps via Neumann MA 1 et
+  Smaart.
 
 > [!WARNING]
-> **Internal hardware DSP equalization and delays**
+> **Délais et égalisations**
 >
-> All EQs and delays are stored directly in the Neumann loudspeakers' internal
-> DSP to form a perfect acoustic dome.
+> Les égalisations et délais sont directement enregistrés dans le DSP interne
+> des enceintes afin de reconstituer un dôme acoustique parfait.
 >
-> **Do not add your own delays in your software.** Simply replicate the
-> physical speaker coordinates provided in the Excel/CSV files.
+> **N'ajoutez aucun délai dans votre logiciel.** Reproduisez uniquement les
+> distances physiques fournies dans le fichier Excel/CSV.
 
-### Default hardware access
+### Accès matériel par défaut
 
-- **Audio interface:** RME Digiface Dante + Neumann MT48.
-- **Spatial routing:** pre-configured models (stereo, 4.1, 6.1, 8.1, 7.1.4,
-  etc.).
-- **“Thru” mode:** provides direct 1:1 access to every individual speaker from
-  the RME audio outputs (see the Excel reference sheet).
+- **Interface audio :** RME Digiface Dante + Neumann MT48.
+- **Modèles intégrés :** stéréo, 4.1, 6.1, 8.1, 7.1.4, Thru, etc.
+- **Mode « Thru » :** permet d'adresser directement chaque enceinte ; chaque
+  sortie RME correspond en 1:1 à une enceinte spécifique.
 
+## Contenu du dossier
 
-## Repository contents
+1. **FT STUDIO GRAME CNCM** — fiche technique complète des équipements
+   (enceintes, ordinateurs, logiciels, microphones et périphériques).
 
-1. **FT STUDIO GRAME CNCM** — complete technical specification sheet covering
-   loudspeakers, workstation computers, the software environment, microphones,
-   and outboard gear.
+2. **`grame-studio-layouts/`** — plans du studio modélisés sous SketchUp et
+   exportés pour une compatibilité multi-logiciels : `.skp`, `.3ds`, `.dae`,
+   `.dwg`, `.mtl`, `.obj` et `.pdf` (2D).
 
-2. **`grame-studio-layouts/`** — 2D and 3D architectural models of the studio,
-   created in SketchUp and exported for cross-platform compatibility: `.skp`,
-   `.3ds`, `.dae`, `.dwg`, `.mtl`, `.obj`, and `.pdf` (2D).
+3. **`gramestudio-spat-base/`** — projet MaxMSP incluant l'environnement IRCAM
+   Spat5 avec deux modèles prêts à l'emploi.
 
-3. **`gramestudio-spat-base/`** — MaxMSP project featuring IRCAM Spat5
-   integration with two ready-to-use models.
+   - Installez la bibliothèque IRCAM Spat5 avant d'ouvrir le projet.
+   - Le dossier `code/` contient un outil HTML de glisser-déposer : importez un
+     fichier Excel/CSV pour générer automatiquement des listes de coordonnées
+     compatibles avec Spat5 ou votre propre moteur de spatialisation.
 
-   - Install the IRCAM Spat5 library before opening the project.
-   - The `code/` folder includes an HTML drag-and-drop utility: upload an
-     Excel/CSV sheet to automatically generate Spat5-compatible positional
-     lists or coordinates for a custom engine.
+4. **`speaker description/`** — description précise de l'emplacement des 28
+   haut-parleurs aux formats `.csv` et `.xlsx` :
 
-4. **`speaker description/`** — exact positions of the 28 loudspeakers in
-   `.csv` and `.xlsx` formats:
+   - coordonnées cartésiennes (`X`, `Y`, `Z`) ;
+   - coordonnées sphériques (`A`, `D`, `E` : azimut, distance, élévation).
 
-   - Cartesian coordinates (`X`, `Y`, `Z`);
-   - spherical coordinates (`A`, `D`, `E`: azimuth, distance, elevation).
+5. **`technical information/`** — informations techniques détaillées et
+   documentation matérielle du studio.
 
-5. **`technical information/`** — detailed technical documentation and studio
-   hardware reference guides.
+6. **[`faust/`](faust/README.md)** — instruments et effets avec des sources Faust
+   communes et des patches générés en Python pour deux environnements :
+
+   - [Max/MSP avec py2max et mc.faustgen~](faust/maxmsp/README.md) ;
+   - [PureData avec py2pd et faustgen2~](faust/puredata/README.md).
+
+   La [méthode commune](faust/README.md#une-méthode-commune) explique comment
+   modifier le DSP et générer les patches des deux environnements. Les
+   dépendances, dont abclib, sont incluses comme sous-modules Git.

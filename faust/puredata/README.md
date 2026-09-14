@@ -1,0 +1,157 @@
+# Faust dans PureData avec py2pd
+
+[English version](README-en.md)
+
+[`py2pd`](https://github.com/shakfu/py2pd) permet de créer, lire et modifier
+les patches PureData (`.pd`) en Python. Avec
+[`pd-faustgen`](https://github.com/sletz/pd-faustgen), vous pouvez aussi écrire
+le DSP en Faust et générer son interface et son câblage avec py2pd.
+
+## Installation
+
+Il faut Python **3.13 ou plus récent**, `uv` et PureData pour ouvrir et écouter
+les patches. Pour les projets Faust, il faut aussi le compilateur **Faust**
+accessible par la commande `faust`. Depuis la racine du dépôt :
+
+```bash
+git submodule update --init
+uv venv faust/puredata/.venv --python 3.13
+uv pip install --python faust/puredata/.venv/bin/python -e faust/puredata/py2pd
+. faust/puredata/.venv/bin/activate
+```
+
+## Créer un patch en Python
+
+Ajoutez les objets, reliez leurs ports, puis enregistrez le patch :
+
+```python
+from py2pd import Patcher
+
+patch = Patcher("my-patch.pd")
+osc = patch.add("osc~ 440")
+gain = patch.add("*~ 0.1")
+dac = patch.add("dac~ 1 2")
+patch.link(osc, gain)
+patch.link(gain, dac)
+patch.link(gain, dac, inlet=1)
+patch.save()
+patch.save_svg("my-patch.svg")
+```
+
+Les ports sont numérotés à partir de zéro. `link()` utilise les ports 0 par
+défaut ; `inlet=` et `outlet=` permettent de choisir les autres ports.
+Utilisez `add_msg()` pour les messages, `add_comment()` pour les commentaires
+et `add_hslider()`, `add_toggle()` ou `add_numberbox()` pour les contrôles.
+
+## Modifier un patch existant
+
+```python
+from py2pd import parse_file, to_builder
+
+patch = to_builder(parse_file("input.pd"))
+patch.add_comment("Modifié avec py2pd")
+patch.save("edited.pd")
+```
+
+## Coder en Faust dans PureData avec faustgen2~
+
+L’objet `faustgen2~ mon-effet` charge le fichier `mon-effet.dsp` placé à côté
+du patch et compile le DSP dans PureData, comme `mc.faustgen~` dans Max.
+Chaque canal audio possède sa propre connexion dans Pd.
+
+### Installer l’external
+
+Le fork [`sletz/pd-faustgen`](https://github.com/sletz/pd-faustgen) est inclus
+dans le sous-module [`pd-faustgen/`](pd-faustgen/).
+Sur macOS, le script fourni permet de le compiler avec une installation de
+Faust incluant LLVM, ainsi que CMake, make, Autotools et `llvm-config` :
+
+```bash
+python faust/puredata/scripts/build_faustgen.py
+```
+
+Si nécessaire, précisez les chemins de votre installation :
+
+```bash
+python faust/puredata/scripts/build_faustgen.py \
+  --faust-library /usr/local/lib/libfaustwithllvm.a \
+  --llvm-config /opt/local/bin/llvm-config
+```
+
+Dans votre installation PureData habituelle, ajoutez le dossier
+`faust/puredata/pd-faustgen/external` au chemin de recherche de Pd,
+puis redémarrez PureData.
+
+Pour câbler vous-même `faustgen2~`, l’entrée et la sortie 0 servent au contrôle ;
+les ports audio commencent à 1. Un DSP stéréo avec deux entrées et deux sorties
+nécessite donc `num_inlets=3` et `num_outlets=3` dans py2pd.
+
+## Projets Faust disponibles
+
+Les huit projets utilisent les mêmes [sources Faust](../dsp/) que
+[Max/MSP](../maxmsp/README.md) :
+
+| Projet | Entrées → sorties audio | Patch |
+| --- | --- | --- |
+| Synthèse additive MIDI, 16 voix | 0 → 2 | [Additive MIDI](pd-patches/faustgen-additive-poly-midi.pd) |
+| Panoramique circulaire quadriphonique | 1 → 4 | [Quad panner](pd-patches/faustgen-quad-panner.pd) |
+| Rotation d’un champ de huit sources | 8 → 16 | [8×16 panner](pd-patches/faustgen-8x16-panner.pd) |
+| VBAP indépendant pour chaque entrée | 8 → 16 | [8×16 per-input](pd-patches/faustgen-8x16-per-input-panner.pd) |
+| VBAP indépendant et Freeverb par sortie | 8 → 16 | [VBAP + Freeverb](pd-patches/faustgen-8x16-per-input-vbap-reverb.pd) |
+| Panoramique stéréo et Zita Rev1 | 1 → 2 | [Stereo Zita](pd-patches/faustgen-mono-stereo-spatial-reverb.pd) |
+| Panoramique circulaire et trois Zita stéréo | 1 → 6 | [Six-output Zita](pd-patches/faustgen-mono-6out-zita.pd) |
+| VBAP abclib, angles des enceintes réglables | 1 → 6 | [abclib VBAP6](pd-patches/faustgen-abclib-2d-vbap6.pd) |
+
+Pour générer tous ces patches et leurs aperçus SVG :
+
+```bash
+python faust/puredata/pd-patches/generate_all.py
+```
+
+Chaque projet lit son [fichier Faust commun dans `../dsp/`](../dsp/).
+Son script `generate_*.py` contient un `build_patch()` explicite, qui assemble
+les blocs audio, les contrôles et éventuellement le MIDI à l’aide de
+[`pd_helpers.py`](pd-patches/pd_helpers.py).
+
+Pour modifier durablement le son, éditez le `.dsp` commun puis régénérez les
+patches des deux environnements. Pour personnaliser l’interface Pd ou les
+connexions, modifiez le `build_patch()` du générateur. Consultez la
+[méthode commune](../README.md#une-méthode-commune).
+
+Vous pouvez régénérer un seul projet :
+
+```bash
+python faust/puredata/pd-patches/generate_faustgen_mono_6out_zita.py
+```
+
+Chaque générateur de projet accepte `--output-dir dossier`,
+`--faust chemin-du-compilateur` et `--check` pour comparer les patches, les DSP et les aperçus sans les modifier.
+Le `.dsp` placé à côté du patch est une copie remplacée à la régénération.
+Reportez dans `../dsp/` les modifications faites dans cette copie pour les conserver.
+
+Ouvrez le `.pd`, configurez le nombre de canaux audio nécessaire et activez
+**DSP**. Les effets mono proposent un bouton **test-220Hz** pour choisir une
+sinusoïde interne à la place de l’entrée audio. Modifiez les valeurs des
+contrôles, puis utilisez **compile** ou **autocompile** après une modification
+du Faust. Dans les messages Pd, les séparateurs des libellés Faust deviennent
+des tirets : `input1_azimuth` se pilote avec `input1-azimuth $1`.
+
+Pour le synthétiseur, choisissez une entrée MIDI dans PureData, ou utilisez
+**MIDI-note** et **play**, ou le bouton **C-major** pour jouer un accord.
+**velocity** et **duration-ms** règlent les notes jouées à l’écran ;
+**output-level** règle le volume, **mute** coupe le son et **all-notes-off**
+relâche les notes. Les contrôleurs MIDI 1 à 4 pilotent les quatre partiels.
+
+Pour abclib, modifiez
+[`faustgen-abclib-2d-vbap6.dsp`](../dsp/faustgen-abclib-2d-vbap6.dsp),
+puis exécutez `generate_abclib_2d_vbap6.py`. Le générateur produit un `.dsp`
+autonome à partir des
+[bibliothèques du sous-module abclib](../dsp/libraries/abclib/faustCodes/library/),
+que le patch charge directement. **theta** règle l’angle de la source ;
+**a0** à **a5** règlent les angles des six enceintes, en degrés.
+
+## Ressources
+
+- [Guide py2pd](py2pd/README.md) et [documentation de l’API](py2pd/docs/index.md)
+- [Guide pd-faustgen](https://github.com/sletz/pd-faustgen)
+- [PureData](https://puredata.info)

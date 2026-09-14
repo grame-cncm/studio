@@ -1,0 +1,249 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1274" height="1010">
+  <defs>
+    <style>
+      .node { fill: #f5f5f5; stroke: #333; stroke-width: 1; }
+      .node-msg { fill: #fff8e1; }
+      .node-subpatch { fill: #e3f2fd; }
+      .node-gui { fill: #f3e5f5; }
+      .node-text { font-family: monospace; font-size: 11px; fill: #333; }
+      .connection { stroke: #666; stroke-width: 1.5; fill: none; }
+    </style>
+  </defs>
+
+  <!-- Connections -->
+  <path class="connection" d="M 581 220 C 581 235, 563 235, 563 250"/>
+  <path class="connection" d="M 486 170 C 486 185, 581 185, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 65, 826 65, 826 60"/>
+  <path class="connection" d="M 826 80 C 826 90, 829 90, 829 100"/>
+  <path class="connection" d="M 829 120 C 829 135, 820 135, 820 150"/>
+  <path class="connection" d="M 581 220 C 581 185, 820 185, 820 150"/>
+  <path class="connection" d="M 820 170 C 820 185, 876 185, 876 200"/>
+  <path class="connection" d="M 829 120 C 829 135, 920 135, 920 150"/>
+  <path class="connection" d="M 581 220 C 581 185, 920 185, 920 150"/>
+  <path class="connection" d="M 920 170 C 920 185, 876 185, 876 200"/>
+  <path class="connection" d="M 50 140 C 50 150, 63 150, 63 160"/>
+  <path class="connection" d="M 50 140 C 50 150, 63 150, 63 160"/>
+  <path class="connection" d="M 50 140 C 50 150, 63 150, 63 160"/>
+  <path class="connection" d="M 63 180 C 63 190, 101 190, 101 200"/>
+  <path class="connection" d="M 101 220 C 101 210, 581 210, 581 200"/>
+  <path class="connection" d="M 220 140 C 220 150, 233 150, 233 160"/>
+  <path class="connection" d="M 220 140 C 220 150, 233 150, 233 160"/>
+  <path class="connection" d="M 220 140 C 220 150, 233 150, 233 160"/>
+  <path class="connection" d="M 233 180 C 233 190, 268 190, 268 200"/>
+  <path class="connection" d="M 268 220 C 268 210, 581 210, 581 200"/>
+  <path class="connection" d="M 150 790 C 150 780, 59 780, 59 770"/>
+  <path class="connection" d="M 59 790 C 59 815, 84 815, 84 840"/>
+  <path class="connection" d="M 260 790 C 260 800, 262 800, 262 810"/>
+  <path class="connection" d="M 262 830 C 262 835, 84 835, 84 840"/>
+  <path class="connection" d="M 260 790 C 260 800, 322 800, 322 810"/>
+  <path class="connection" d="M 322 830 C 322 835, 84 835, 84 840"/>
+  <path class="connection" d="M 260 790 C 260 800, 382 800, 382 810"/>
+  <path class="connection" d="M 382 830 C 382 835, 84 835, 84 840"/>
+  <path class="connection" d="M 84 860 C 84 870, 63 870, 63 880"/>
+  <path class="connection" d="M 84 860 C 84 870, 63 870, 63 880"/>
+  <path class="connection" d="M 63 900 C 63 910, 101 910, 101 920"/>
+  <path class="connection" d="M 101 940 C 101 570, 581 570, 581 200"/>
+  <path class="connection" d="M 479 830 C 479 835, 84 835, 84 840"/>
+  <path class="connection" d="M 426 70 C 426 420, 476 420, 476 770"/>
+  <path class="connection" d="M 476 790 C 476 800, 479 800, 479 810"/>
+  <path class="connection" d="M 679 830 C 679 835, 84 835, 84 840"/>
+  <path class="connection" d="M 426 70 C 426 420, 676 420, 676 770"/>
+  <path class="connection" d="M 676 790 C 676 800, 679 800, 679 810"/>
+  <path class="connection" d="M 870 830 C 870 515, 581 515, 581 200"/>
+  <path class="connection" d="M 1070 830 C 1070 840, 1070 840, 1070 850"/>
+  <path class="connection" d="M 1070 870 C 1070 880, 1100 880, 1100 890"/>
+  <path class="connection" d="M 1100 910 C 1100 555, 581 555, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 440, 1160 440, 1160 810"/>
+  <path class="connection" d="M 1160 830 C 1160 820, 1070 820, 1070 810"/>
+  <path class="connection" d="M 59 370 C 59 360, 170 360, 170 350"/>
+  <path class="connection" d="M 170 370 C 170 285, 581 285, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 225, 59 225, 59 380"/>
+  <path class="connection" d="M 59 400 C 59 375, 59 375, 59 350"/>
+  <path class="connection" d="M 389 370 C 389 360, 497 360, 497 350"/>
+  <path class="connection" d="M 497 370 C 497 285, 581 285, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 225, 386 225, 386 380"/>
+  <path class="connection" d="M 386 400 C 386 375, 389 375, 389 350"/>
+  <path class="connection" d="M 719 370 C 719 360, 837 360, 837 350"/>
+  <path class="connection" d="M 837 370 C 837 285, 581 285, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 225, 716 225, 716 380"/>
+  <path class="connection" d="M 716 400 C 716 375, 719 375, 719 350"/>
+  <path class="connection" d="M 1049 370 C 1049 360, 1167 360, 1167 350"/>
+  <path class="connection" d="M 1167 370 C 1167 285, 581 285, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 225, 1046 225, 1046 380"/>
+  <path class="connection" d="M 1046 400 C 1046 375, 1049 375, 1049 350"/>
+  <path class="connection" d="M 59 455 C 59 445, 177 445, 177 435"/>
+  <path class="connection" d="M 177 455 C 177 327, 581 327, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 267, 59 267, 59 465"/>
+  <path class="connection" d="M 59 485 C 59 460, 59 460, 59 435"/>
+  <path class="connection" d="M 389 455 C 389 445, 507 445, 507 435"/>
+  <path class="connection" d="M 507 455 C 507 327, 581 327, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 267, 393 267, 393 465"/>
+  <path class="connection" d="M 393 485 C 393 460, 389 460, 389 435"/>
+  <path class="connection" d="M 719 455 C 719 445, 834 445, 834 435"/>
+  <path class="connection" d="M 834 455 C 834 327, 581 327, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 267, 716 267, 716 465"/>
+  <path class="connection" d="M 716 485 C 716 460, 719 460, 719 435"/>
+  <path class="connection" d="M 1049 455 C 1049 445, 1164 445, 1164 435"/>
+  <path class="connection" d="M 1164 455 C 1164 327, 581 327, 581 200"/>
+  <path class="connection" d="M 426 70 C 426 267, 1046 267, 1046 465"/>
+  <path class="connection" d="M 1046 485 C 1046 460, 1049 460, 1049 435"/>
+  <path class="connection" d="M 1090 80 C 1090 140, 581 140, 581 200"/>
+  <path class="connection" d="M 1070 130 C 1070 140, 1162 140, 1162 150"/>
+  <path class="connection" d="M 1162 170 C 1162 185, 581 185, 581 200"/>
+  <path class="connection" d="M 1070 270 C 1070 260, 1140 260, 1140 250"/>
+  <path class="connection" d="M 1140 270 C 1140 260, 1220 260, 1220 250"/>
+
+  <!-- Nodes -->
+  <rect class="node" x="20" y="20" width="366" height="20" rx="2"/>
+  <text class="node-text" x="24" y="35">Additive MIDI / synthese additive MIDI - 16 voices</text>
+  <rect class="node" x="20" y="50" width="352" height="20" rx="2"/>
+  <text class="node-text" x="24" y="65">Audio: 0 inputs / entrees -&gt; 2 outputs / sorties</text>
+  <rect class="node" x="390" y="50" width="72" height="20" rx="2"/>
+  <text class="node-text" x="394" y="65">loadbang</text>
+  <rect class="node" x="440" y="200" width="282" height="20" rx="2"/>
+  <text class="node-text" x="444" y="215">faustgen2~ faustgen-additive-poly-midi</text>
+  <rect class="node" x="440" y="250" width="247" height="20" rx="2"/>
+  <text class="node-text" x="444" y="265">print faustgen-additive-poly-midi</text>
+  <rect class="node" x="440" y="150" width="93" height="20" rx="2"/>
+  <text class="node-text" x="444" y="165">r \$0-faust</text>
+  <rect class="node" x="840" y="200" width="72" height="20" rx="2"/>
+  <text class="node-text" x="844" y="215">dac~ 1 2</text>
+  <rect class="node node-gui" x="790" y="100" width="79" height="20" rx="2"/>
+  <text class="node-text" x="794" y="115">NumberBox</text>
+  <rect class="node node-msg" x="790" y="60" width="72" height="20" rx="2"/>
+  <text class="node-text" x="794" y="75">msg: 0.2</text>
+  <rect class="node" x="790" y="150" width="60" height="20" rx="2"/>
+  <text class="node-text" x="794" y="165">*~</text>
+  <rect class="node" x="890" y="150" width="60" height="20" rx="2"/>
+  <text class="node-text" x="894" y="165">*~</text>
+  <rect class="node" x="20" y="95" width="184" height="20" rx="2"/>
+  <text class="node-text" x="24" y="110">MIDI input / entree MIDI</text>
+  <rect class="node" x="20" y="120" width="60" height="20" rx="2"/>
+  <text class="node-text" x="24" y="135">notein</text>
+  <rect class="node" x="20" y="160" width="86" height="20" rx="2"/>
+  <text class="node-text" x="24" y="175">pack f f f</text>
+  <rect class="node node-msg" x="20" y="200" width="163" height="20" rx="2"/>
+  <text class="node-text" x="24" y="215">msg: note \$1 \$2 \$3</text>
+  <rect class="node" x="190" y="120" width="60" height="20" rx="2"/>
+  <text class="node-text" x="194" y="135">ctlin</text>
+  <rect class="node" x="190" y="160" width="86" height="20" rx="2"/>
+  <text class="node-text" x="194" y="175">pack f f f</text>
+  <rect class="node node-msg" x="190" y="200" width="156" height="20" rx="2"/>
+  <text class="node-text" x="194" y="215">msg: ctl \$1 \$2 \$3</text>
+  <rect class="node" x="20" y="720" width="366" height="20" rx="2"/>
+  <text class="node-text" x="24" y="735">Play a note or chord / jouer une note ou un accord</text>
+  <rect class="node node-gui" x="20" y="770" width="79" height="20" rx="2"/>
+  <text class="node-text" x="24" y="785">NumberBox</text>
+  <rect class="node node-gui" x="120" y="770" width="60" height="20" rx="2"/>
+  <text class="node-text" x="124" y="785">Bang</text>
+  <rect class="node" x="20" y="840" width="128" height="20" rx="2"/>
+  <text class="node-text" x="24" y="855">makenote 100 250</text>
+  <rect class="node node-gui" x="230" y="770" width="60" height="20" rx="2"/>
+  <text class="node-text" x="234" y="785">Bang</text>
+  <rect class="node node-msg" x="230" y="810" width="65" height="20" rx="2"/>
+  <text class="node-text" x="234" y="825">msg: 60</text>
+  <rect class="node node-msg" x="290" y="810" width="65" height="20" rx="2"/>
+  <text class="node-text" x="294" y="825">msg: 64</text>
+  <rect class="node node-msg" x="350" y="810" width="65" height="20" rx="2"/>
+  <text class="node-text" x="354" y="825">msg: 67</text>
+  <rect class="node" x="20" y="880" width="86" height="20" rx="2"/>
+  <text class="node-text" x="24" y="895">pack f f 1</text>
+  <rect class="node node-msg" x="20" y="920" width="163" height="20" rx="2"/>
+  <text class="node-text" x="24" y="935">msg: note \$1 \$2 \$3</text>
+  <rect class="node node-gui" x="440" y="810" width="79" height="20" rx="2"/>
+  <text class="node-text" x="444" y="825">NumberBox</text>
+  <rect class="node node-msg" x="440" y="770" width="72" height="20" rx="2"/>
+  <text class="node-text" x="444" y="785">msg: 100</text>
+  <rect class="node node-gui" x="640" y="810" width="79" height="20" rx="2"/>
+  <text class="node-text" x="644" y="825">NumberBox</text>
+  <rect class="node node-msg" x="640" y="770" width="72" height="20" rx="2"/>
+  <text class="node-text" x="644" y="785">msg: 250</text>
+  <rect class="node node-gui" x="840" y="810" width="60" height="20" rx="2"/>
+  <text class="node-text" x="844" y="825">Bang</text>
+  <rect class="node node-gui" x="1040" y="810" width="60" height="20" rx="2"/>
+  <text class="node-text" x="1044" y="825">Toggle</text>
+  <rect class="node" x="1040" y="850" width="60" height="20" rx="2"/>
+  <text class="node-text" x="1044" y="865">== 0</text>
+  <rect class="node node-msg" x="1040" y="890" width="121" height="20" rx="2"/>
+  <text class="node-text" x="1044" y="905">msg: active \$1</text>
+  <rect class="node node-msg" x="1130" y="810" width="60" height="20" rx="2"/>
+  <text class="node-text" x="1134" y="825">msg: 0</text>
+  <rect class="node" x="20" y="330" width="60" height="20" rx="2"/>
+  <text class="node-text" x="24" y="345">attack</text>
+  <rect class="node node-gui" x="20" y="350" width="79" height="20" rx="2"/>
+  <text class="node-text" x="24" y="365">NumberBox</text>
+  <rect class="node node-msg" x="110" y="350" width="121" height="20" rx="2"/>
+  <text class="node-text" x="114" y="365">msg: attack \$1</text>
+  <rect class="node node-msg" x="20" y="380" width="79" height="20" rx="2"/>
+  <text class="node-text" x="24" y="395">msg: 0.01</text>
+  <rect class="node" x="350" y="330" width="60" height="20" rx="2"/>
+  <text class="node-text" x="354" y="345">decay</text>
+  <rect class="node node-gui" x="350" y="350" width="79" height="20" rx="2"/>
+  <text class="node-text" x="354" y="365">NumberBox</text>
+  <rect class="node node-msg" x="440" y="350" width="114" height="20" rx="2"/>
+  <text class="node-text" x="444" y="365">msg: decay \$1</text>
+  <rect class="node node-msg" x="350" y="380" width="72" height="20" rx="2"/>
+  <text class="node-text" x="354" y="395">msg: 0.2</text>
+  <rect class="node" x="680" y="330" width="72" height="20" rx="2"/>
+  <text class="node-text" x="684" y="345">partial1</text>
+  <rect class="node node-gui" x="680" y="350" width="79" height="20" rx="2"/>
+  <text class="node-text" x="684" y="365">NumberBox</text>
+  <rect class="node node-msg" x="770" y="350" width="135" height="20" rx="2"/>
+  <text class="node-text" x="774" y="365">msg: partial1 \$1</text>
+  <rect class="node node-msg" x="680" y="380" width="72" height="20" rx="2"/>
+  <text class="node-text" x="684" y="395">msg: 1.0</text>
+  <rect class="node" x="1010" y="330" width="72" height="20" rx="2"/>
+  <text class="node-text" x="1014" y="345">partial2</text>
+  <rect class="node node-gui" x="1010" y="350" width="79" height="20" rx="2"/>
+  <text class="node-text" x="1014" y="365">NumberBox</text>
+  <rect class="node node-msg" x="1100" y="350" width="135" height="20" rx="2"/>
+  <text class="node-text" x="1104" y="365">msg: partial2 \$1</text>
+  <rect class="node node-msg" x="1010" y="380" width="72" height="20" rx="2"/>
+  <text class="node-text" x="1014" y="395">msg: 0.5</text>
+  <rect class="node" x="20" y="415" width="72" height="20" rx="2"/>
+  <text class="node-text" x="24" y="430">partial3</text>
+  <rect class="node node-gui" x="20" y="435" width="79" height="20" rx="2"/>
+  <text class="node-text" x="24" y="450">NumberBox</text>
+  <rect class="node node-msg" x="110" y="435" width="135" height="20" rx="2"/>
+  <text class="node-text" x="114" y="450">msg: partial3 \$1</text>
+  <rect class="node node-msg" x="20" y="465" width="79" height="20" rx="2"/>
+  <text class="node-text" x="24" y="480">msg: 0.25</text>
+  <rect class="node" x="350" y="415" width="72" height="20" rx="2"/>
+  <text class="node-text" x="354" y="430">partial4</text>
+  <rect class="node node-gui" x="350" y="435" width="79" height="20" rx="2"/>
+  <text class="node-text" x="354" y="450">NumberBox</text>
+  <rect class="node node-msg" x="440" y="435" width="135" height="20" rx="2"/>
+  <text class="node-text" x="444" y="450">msg: partial4 \$1</text>
+  <rect class="node node-msg" x="350" y="465" width="86" height="20" rx="2"/>
+  <text class="node-text" x="354" y="480">msg: 0.125</text>
+  <rect class="node" x="680" y="415" width="65" height="20" rx="2"/>
+  <text class="node-text" x="684" y="430">release</text>
+  <rect class="node node-gui" x="680" y="435" width="79" height="20" rx="2"/>
+  <text class="node-text" x="684" y="450">NumberBox</text>
+  <rect class="node node-msg" x="770" y="435" width="128" height="20" rx="2"/>
+  <text class="node-text" x="774" y="450">msg: release \$1</text>
+  <rect class="node node-msg" x="680" y="465" width="72" height="20" rx="2"/>
+  <text class="node-text" x="684" y="480">msg: 0.3</text>
+  <rect class="node" x="1010" y="415" width="65" height="20" rx="2"/>
+  <text class="node-text" x="1014" y="430">sustain</text>
+  <rect class="node node-gui" x="1010" y="435" width="79" height="20" rx="2"/>
+  <text class="node-text" x="1014" y="450">NumberBox</text>
+  <rect class="node node-msg" x="1100" y="435" width="128" height="20" rx="2"/>
+  <text class="node-text" x="1104" y="450">msg: sustain \$1</text>
+  <rect class="node node-msg" x="1010" y="465" width="72" height="20" rx="2"/>
+  <text class="node-text" x="1014" y="480">msg: 0.7</text>
+  <rect class="node node-msg" x="1040" y="60" width="100" height="20" rx="2"/>
+  <text class="node-text" x="1044" y="75">msg: compile</text>
+  <rect class="node node-gui" x="1040" y="110" width="60" height="20" rx="2"/>
+  <text class="node-text" x="1044" y="125">Toggle</text>
+  <rect class="node node-msg" x="1070" y="150" width="184" height="20" rx="2"/>
+  <text class="node-text" x="1074" y="165">msg: autocompile \$1 100</text>
+  <rect class="node node-gui" x="1040" y="250" width="60" height="20" rx="2"/>
+  <text class="node-text" x="1044" y="265">Toggle</text>
+  <rect class="node node-msg" x="1090" y="250" width="100" height="20" rx="2"/>
+  <text class="node-text" x="1094" y="265">msg: dsp \$1</text>
+  <rect class="node" x="1190" y="250" width="60" height="20" rx="2"/>
+  <text class="node-text" x="1194" y="265">s pd</text>
+  <rect class="node" x="20" y="970" width="401" height="20" rx="2"/>
+  <text class="node-text" x="24" y="985">Edit .dsp then compile / modifier le .dsp puis compiler</text>
+</svg>
