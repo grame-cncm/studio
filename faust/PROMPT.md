@@ -96,3 +96,83 @@ Vérifie les huit canaux, le passage par toutes les enceintes, l’arrêt,
 la reprise, le sens inverse et la conservation de l’énergie d’une source.
 Vérifie aussi que les sons internes peuvent être activés puis coupés et que
 les deux patches chargent leur external Faust avec les mêmes paramètres.
+
+## Projet : Mnémosphère HOA4
+
+### Version simple
+
+Crée un effet de spatialisation original « Mnémosphère » en ambisonie 3D
+d’ordre 4, en utilisant abclib. Transforme une entrée mono en quatre nuages
+de grains qui tournent sur des trajectoires différentes dans la sphère.
+Ajoute une respiration de la précision spatiale et des échos qui se propagent
+entre les composantes ambisoniques. Prévois des contrôles de granulation,
+de mémoire, de mouvement, de dispersion et de niveau.
+
+Suis la méthode commune pour fournir un DSP partagé et des patches Max et
+PureData prêts à ouvrir. Exporte le champ sur 25 canaux ACN/SN3D, avec un
+enregistrement WAV et une préécoute stéréo séparée. Ajoute un son de test,
+vérifie le format ambisonique et le fonctionnement audio dans les deux
+environnements, puis documente l’utilisation en français et en anglais.
+
+### Version détaillée
+
+Crée `faust/dsp/faustgen-mnemosphere-hoa4.dsp`. Utilise les fonctions
+`granulator`, `encoder3D`, `wider3D`, `fxDecorrelation3D` et le décodeur 3D
+d’abclib, fourni par le sous-module du dépôt. Conserve le code et les licences
+des bibliothèques d’origine dans les exports autonomes.
+
+Distribue une entrée mono, filtrée pour éliminer le continu, dans quatre
+granulateurs indépendants, alimentés par des bruits décorrélés pour choisir
+les grains et leurs délais. Donne aux voix des tailles de grains et des
+profondeurs de mémoire légèrement différentes. Encode chaque voix en 3D
+d’ordre 4, avec des rotations alternées et des excursions d’élévation
+déphasées. Borne les élévations à ±80° et les délais à la capacité mémoire.
+
+Mélange le champ granulaire avec une source directe encodée. Fais respirer
+la focalisation spatiale à une vitesse apparentée au mouvement par le nombre
+d’or. Utilise `wider3D`, en compensant son gain omnidirectionnel, puis
+`fxDecorrelation3D` pour révéler progressivement les échos des composantes
+supérieures vers les composantes inférieures. Borne les réinjections pour
+conserver un effet stable. L’arrêt fige les trajectoires et la respiration ;
+la mémoire sonore continue de vivre.
+
+Déclare dans Faust les contrôles suivants, puis génère les interfaces depuis
+le JSON :
+
+| Contrôle | Valeur initiale | Plage |
+| --- | --- | --- |
+| `grain_ms` | 90 | 15 à 240 ms |
+| `memory_ms` | 1100 | 50 à 2000 ms |
+| `scarcity` | 0.25 | 0 à 0.95 |
+| `grain_feedback` | 0.28 | 0 à 0.65 |
+| `grain_mix` | 0.85 | 0 à 1 |
+| `orbit_hz` | 0.035 | −0.3 à 0.3 tour/s |
+| `running` | 1 | 0 ou 1 |
+| `azimuth` | 23 | −180 à 180° |
+| `elevation` | 17 | −70 à 70° |
+| `latitude` | 48 | 0 à 70° |
+| `focus` | 0.85 | 0 à 1 |
+| `breathing` | 0.55 | 0 à 1 |
+| `diffraction` | 0.45 | 0 à 1 |
+| `echo_ms` | 330 | 20 à 800 ms |
+| `echo_feedback` | 0.22 | 0 à 0.6 |
+| `level` | 0.25 | 0 à 0.7 |
+
+Fournis 27 sorties DSP : les 25 premières contiennent les composantes
+ACN 0 à 24 en SN3D ; les deux dernières offrent une préécoute stéréo par deux
+enceintes virtuelles à ±30°, avec optimisation maxRe. Présente cette écoute
+comme une préécoute sans HRTF, destinée à essayer l’effet.
+
+Crée un `generate_faustgen_mnemosphere_hoa4.py` explicite par environnement.
+Dans Max, sépare le bus MC en un bus HOA de 25 canaux vers `mc.sfrecord~ 25`
+et un bus de préécoute vers `mc.dac~ 1 2`. Dans PureData, connecte les sorties
+audio 1 à 25 de `faustgen2~` à `writesf~ 25`, et les sorties 26 et 27 à
+`dac~ 1 2`. Ajoute le choix du fichier WAV, l’enregistrement et l’arrêt,
+en flottant 32 bits, un sélecteur de son de test désactivé à l’ouverture,
+et les contrôles de DSP et de compilation propres à chaque hôte.
+
+Garde les composantes HOA destinées à un véritable décodeur ambisonique ;
+les 25 canaux ne correspondent pas directement à 25 enceintes. Vérifie
+l’ordre ACN, la normalisation SN3D jusqu’au degré 4, l’activité des canaux,
+les queues de mémoire, la stabilité et le nombre de canaux du WAV.
+Intègre le projet au catalogue et aux README français et anglais.

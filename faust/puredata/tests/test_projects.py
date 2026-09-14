@@ -23,6 +23,7 @@ from common.faust import (  # noqa: E402
 PD = Path(os.environ.get("PD_BIN", ROOT / "pd-faustgen/pure-data/src/pd"))
 EXTERNAL = Path(os.environ.get("FAUSTGEN_EXTERNAL", ROOT / "pd-faustgen/external/faustgen2~.pd_darwin"))
 SYNTH = "faustgen-additive-poly-midi"
+MNEMOSPHERE = "faustgen-mnemosphere-hoa4"
 requires_pd = pytest.mark.skipif(not PD.is_file() or not EXTERNAL.is_file(), reason="build pd-faustgen first")
 requires_faust = pytest.mark.skipif(shutil.which("faust") is None, reason="faust not found")
 
@@ -163,7 +164,7 @@ def scheduled(p, load, time):
 @requires_pd
 @requires_faust
 @pytest.mark.skipif(shutil.which("c++") is None, reason="C++ compiler not found")
-@pytest.mark.parametrize("stem", [name for name in PROJECTS if name != SYNTH])
+@pytest.mark.parametrize("stem", [name for name in PROJECTS if name not in {SYNTH, MNEMOSPHERE}])
 def test_every_audio_channel_matches_faust_after_controls_and_compile(tmp_path, stem):
     metadata = analyze_dsp(PATCHES / f"{stem}.dsp")
     before, after = settings(stem)

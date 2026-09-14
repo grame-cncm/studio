@@ -76,6 +76,7 @@ et un générateur par environnement, en partant d’un projet existant.
 | Synthèse additive MIDI, 16 voix | 0 → 2 | [Additive MIDI](max-patches/faustgen-additive-poly-midi.maxpat) |
 | Panoramique circulaire quadriphonique | 1 → 4 | [Quad panner](max-patches/faustgen-quad-panner.maxpat) |
 | Deux orbites stéréo sur huit enceintes | 2 → 8 | [Stereo Orbit](max-patches/faustgen-stereo-orbit.maxpat) |
+| Granulation et mémoire ambisonique 3D d’ordre 4 | 1 → 25 HOA + 2 stéréo | [Mnémosphère](max-patches/faustgen-mnemosphere-hoa4.maxpat) |
 | Rotation d’un champ de huit sources | 8 → 16 | [8×16 panner](max-patches/faustgen-8x16-panner.maxpat) |
 | VBAP indépendant pour chaque entrée | 8 → 16 | [8×16 per-input](max-patches/faustgen-8x16-per-input-panner.maxpat) |
 | VBAP indépendant et Freeverb par sortie | 8 → 16 | [VBAP + Freeverb](max-patches/faustgen-8x16-per-input-vbap-reverb.maxpat) |
@@ -99,6 +100,48 @@ pour une rotation commune. **spread** étale chaque source sur le cercle
 (0 : deux enceintes voisines, 1 : toutes les enceintes), et **level** règle
 le niveau de sortie. Pour commencer, activez **test-tones** et gardez
 `speed = 0.08`, `counterrotate = 1`, `spread = 0` et `level = 0.5`.
+
+## Mnémosphère HOA4
+
+Ouvrez [le patch](max-patches/faustgen-mnemosphere-hoa4.maxpat), activez **DSP**
+et **test-220Hz**, ou branchez une voix, un instrument ou une percussion
+sur l’entrée 1. Quatre granulateurs explorent le passé récent du son et
+projettent leurs grains sur des trajectoires alternées dans la sphère.
+La précision spatiale respire, tandis que les échos se diffusent progressivement
+entre les composantes ambisoniques.
+
+**grain_ms** règle la taille des grains, **memory_ms** la profondeur de
+mémoire, **scarcity** leur raréfaction et **grain_feedback** leur persistance.
+**grain_mix** va de la source directe encodée (0) au champ granulaire (1).
+**orbit_hz** règle la vitesse signée des trajectoires ; **running** à 0
+fige les positions et la respiration, tout en laissant vivre la mémoire sonore.
+**azimuth**, **elevation** et **latitude** placent les nuages et règlent leur
+excursion verticale. **focus** à 1 privilégie la précision, à 0 le champ
+omnidirectionnel ; **breathing** module cette précision. **diffraction**,
+**echo_ms** et **echo_feedback** règlent les échos spatiaux ; **level** règle
+le niveau général.
+
+Pour une pluie de particules, essayez `grain_ms = 35`, `scarcity = 0.6`,
+`grain_mix = 1` et `orbit_hz = 0.09`. Pour une mémoire suspendue, essayez
+`grain_ms = 180`, `memory_ms = 1800`, `grain_feedback = 0.45` et `running = 0`.
+Gardez un niveau modéré et ajustez la diffraction à l’écoute.
+
+Les sorties DSP 1 à 25 sont le champ **3D d’ordre 4, ACN/SN3D** :
+ACN 0 est omnidirectionnel, puis les degrés 1, 2, 3 et 4 occupent respectivement
+les canaux ACN 1–3, 4–8, 9–15 et 16–24. Ces composantes vont à un décodeur
+ambisonique adapté aux enceintes ou à un décodeur binaural. La préécoute
+stéréo utilise les deux sorties DSP supplémentaires et arrive sur les sorties
+audio 1 et 2 ; elle représente deux enceintes virtuelles à ±30°, sans HRTF.
+
+Pour enregistrer le champ, cliquez sur **open**, choisissez un fichier **WAV**,
+puis sur le message sous **record**, et sur **0** sous **stop**. `mc.sfrecord~ 25`
+enregistre les 25 composantes en flottant 32 bits. Ouvrez de nouveau un fichier
+pour une nouvelle prise.
+
+Importez le WAV dans votre environnement de décodage en indiquant
+**ACN/SN3D, ordre 4**. Les deux canaux de préécoute restent hors du fichier.
+Le [DSP commun](../dsp/faustgen-mnemosphere-hoa4.dsp) utilise le granulateur,
+l’encodeur 3D, l’élargisseur et la décorrélation d’abclib.
 
 ## Ressources
 

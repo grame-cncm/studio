@@ -17,6 +17,7 @@ PROJECTS = {
     "faustgen-additive-poly-midi": "Additive MIDI / synthese additive MIDI - 16 voices",
     "faustgen-quad-panner": "Quadraphonic panner / panoramique quadriphonique",
     "faustgen-stereo-orbit": "Stereo Orbit / Orbite stereo - eight speakers / huit enceintes",
+    "faustgen-mnemosphere-hoa4": "Mnemosphere HOA4 / Mnemosphere - 3D ACN SN3D + stereo preview",
     "faustgen-8x16-panner": "8 inputs to 16 speakers / 8 entrees vers 16 enceintes",
     "faustgen-8x16-per-input-panner": "Independent 8x16 VBAP / VBAP 8x16 independant",
     "faustgen-8x16-per-input-vbap-reverb": "Independent 8x16 VBAP + Freeverb",
@@ -127,8 +128,51 @@ def load_project(stem: str, faust: str = "faust") -> FaustProject:
                            check=True, capture_output=True, text=True)
             lines = [line for line in expanded.read_text().splitlines()
                      if not re.match(r"declare (?:compile_options|library_path\d+|filename) ", line)]
-            source = f"// Generated from faust/dsp/{path.name}; edit that source and regenerate.\n" + "\n".join(lines) + "\n"
+            if expanded.stat().st_size > 1_000_000:
+                # Box expansion duplicates lambdas in complex HOA graphs.
+                # Include the upstream source instead, retaining its licenses.
+                source = bundle_local_libraries(source, path.parent)
+            else:
+                source = "\n".join(lines) + "\n"
+            source = f"// Generated from faust/dsp/{path.name}; edit that source and regenerate.\n" + source
     return FaustProject(stem, PROJECTS[stem], source, metadata)
+
+
+def bundle_local_libraries(source: str, directory: Path) -> str:
+    """Embed local libraries, leaving standard Faust imports available to JIT."""
+    def library(match):
+        path = directory / match[1]
+        aliases = {}
+        imported = set()
+
+        def include(path):
+            def local_import(match):
+                child = path.parent / match[1]
+                if not child.is_file():
+                    return match[0]
+                child = child.resolve()
+                if child in imported:
+                    return ""
+                imported.add(child)
+                return include(child)
+
+            return re.sub(r'import\("([^"]+)"\);', local_import, path.read_text())
+
+        lines = []
+        for line in include(path).splitlines():
+            line = re.sub(r'^[ \t]+', lambda match: match[0].expandtabs(4), line).rstrip()
+            alias = re.fullmatch(r'(\w+)\s*=\s*library\("([^"]+)"\);', line)
+            if alias:
+                name, target = alias.groups()
+                if name in aliases:
+                    if aliases[name] != target:
+                        raise ValueError(f"Conflicting bundled library alias: {name}")
+                    continue
+                aliases[name] = target
+            lines.append(line)
+        return "environment {\n" + "\n".join(lines) + "\n}"
+
+    return re.sub(r'library\("(libraries/[^"]+)"\)', library, source)
 
 
 def project_builder(directory: Path, stem: str):

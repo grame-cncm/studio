@@ -16,7 +16,7 @@ from common import faust  # noqa: E402
 from max_helpers import control_address, generate as generate_max  # noqa: E402
 from pd_helpers import generate as generate_pd, pd_name  # noqa: E402
 
-SIGNATURES = [(0, 2), (1, 4), (2, 8), (8, 16), (8, 16), (8, 16), (1, 2), (1, 6), (1, 6)]
+SIGNATURES = [(0, 2), (1, 4), (2, 8), (1, 27), (8, 16), (8, 16), (8, 16), (1, 2), (1, 6), (1, 6)]
 
 
 def document(path):
@@ -37,7 +37,8 @@ def test_same_dsp_ports_controls_and_initialization_in_both_hosts(tmp_path, stem
     assert dsp["text"] == "mc.faustgen~"
     assert dsp["sourcecode"] == dsp_path.read_text() == project.source
     assert dsp["sourcecode_size"] == len(project.source.encode("utf-8"))
-    assert boxes["dac_1"]["text"] == "mc.dac~ " + " ".join(map(str, range(1, project.outputs + 1)))
+    audio_outputs = 2 if stem == "faustgen-mnemosphere-hoa4" else project.outputs
+    assert boxes["dac_1"]["text"] == "mc.dac~ " + " ".join(map(str, range(1, audio_outputs + 1)))
     assert f"faustgen2~ {stem}" in pd_path.read_text()
     assert "/Users/" not in project.source and "/private/" not in project.source
     for line in lines:

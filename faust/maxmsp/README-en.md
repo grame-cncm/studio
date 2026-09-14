@@ -75,6 +75,7 @@ environment, starting from an existing project.
 | Additive MIDI synthesis, 16 voices | 0 → 2 | [Additive MIDI](max-patches/faustgen-additive-poly-midi.maxpat) |
 | Circular quadraphonic panning | 1 → 4 | [Quad panner](max-patches/faustgen-quad-panner.maxpat) |
 | Two stereo orbits on eight speakers | 2 → 8 | [Stereo Orbit](max-patches/faustgen-stereo-orbit.maxpat) |
+| Fourth-order 3D ambisonic granular memory | 1 → 25 HOA + 2 stereo | [Mnemosphere](max-patches/faustgen-mnemosphere-hoa4.maxpat) |
 | Rotating field of eight sources | 8 → 16 | [8×16 panner](max-patches/faustgen-8x16-panner.maxpat) |
 | Independent VBAP for each input | 8 → 16 | [8×16 per-input](max-patches/faustgen-8x16-per-input-panner.maxpat) |
 | Independent VBAP and Freeverb per output | 8 → 16 | [VBAP + Freeverb](max-patches/faustgen-8x16-per-input-vbap-reverb.maxpat) |
@@ -98,6 +99,44 @@ rotation. **spread** distributes each source around the ring (0: two adjacent
 speakers, 1: all speakers), and **level** sets the output level. Start with
 **test-tones** enabled, `speed = 0.08`, `counterrotate = 1`, `spread = 0`
 and `level = 0.5`.
+
+## Mnemosphere HOA4
+
+Open [the patch](max-patches/faustgen-mnemosphere-hoa4.maxpat), enable **DSP**
+and **test-220Hz**, or connect a voice, instrument or percussion source to
+input 1. Four granulators explore the recent past of the input and project
+their grains along alternating trajectories in the sphere. Spatial precision
+breathes while echoes gradually spread between ambisonic components.
+
+**grain_ms** sets grain size, **memory_ms** sets memory depth, **scarcity**
+reduces grain density, and **grain_feedback** sets persistence. **grain_mix**
+blends the directly encoded source (0) with the granular field (1).
+**orbit_hz** sets signed trajectory speed; **running** at 0 freezes positions
+and breathing while the sonic memory continues. **azimuth**, **elevation**
+and **latitude** place the clouds and set their vertical excursion.
+**focus** at 1 favors precision, and at 0 an omnidirectional field;
+**breathing** modulates precision. **diffraction**, **echo_ms** and
+**echo_feedback** control spatial echoes; **level** sets the overall level.
+
+For particle rain, try `grain_ms = 35`, `scarcity = 0.6`, `grain_mix = 1`
+and `orbit_hz = 0.09`. For suspended memory, try `grain_ms = 180`,
+`memory_ms = 1800`, `grain_feedback = 0.45` and `running = 0`. Keep the
+level moderate and adjust diffraction by ear.
+
+DSP outputs 1 to 25 contain **fourth-order 3D HOA, ACN/SN3D**:
+ACN 0 is omnidirectional; degrees 1, 2, 3 and 4 occupy ACN channels
+1–3, 4–8, 9–15 and 16–24. Feed these components to a speaker-array HOA
+decoder or a binaural decoder. Stereo preview uses the two extra DSP outputs
+and reaches audio outputs 1 and 2; it represents two virtual speakers at
+±30°, without HRTFs.
+
+To record the field, click **open**, choose a **WAV** file, then click the message
+under **record** and **0** under **stop**. `mc.sfrecord~ 25` records the 25
+components as 32-bit float. Open a file again for each new take.
+
+Import the WAV into your decoding environment as **ACN/SN3D, order 4**.
+The two preview channels stay outside the recording. The [common DSP](../dsp/faustgen-mnemosphere-hoa4.dsp)
+uses abclib’s granulator, 3D encoder, wider and decorrelator.
 
 ## Resources
 
