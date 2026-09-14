@@ -1,5 +1,5 @@
 // Generated from faust/dsp/faustgen-abclib-2d-vbap6.dsp; edit that source and regenerate.
-declare version "2.88.0";
+declare version "2.88.1";
 declare author "Alain Bonardi, Paul Goutmann, David Fierro & Adrien Zanni";
 declare basics_lib_name "Faust Basic Element Library";
 declare basics_lib_version "1.23.0";

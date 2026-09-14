@@ -55,14 +55,30 @@ def add_audio_input(p: Patcher, dsp, load, project: FaustProject, *, test_tone=F
                         outlettype=["multichannelsignal"], patching_rect=[30, 100, 220, 22])
     source = adc
     if test_tone:
-        tone = p.add_textbox("mc.cycle~ 220", numinlets=2, numoutlets=1,
-                             outlettype=["multichannelsignal"], patching_rect=[30, 150, 100, 22])
+        if project.inputs == 1:
+            tone = p.add_textbox("mc.cycle~ 220", numinlets=2, numoutlets=1,
+                                 outlettype=["multichannelsignal"], patching_rect=[30, 150, 100, 22])
+        else:
+            tone = p.add_textbox(f"mc.pack~ {project.inputs}", numinlets=project.inputs,
+                                 numoutlets=1, outlettype=["multichannelsignal"],
+                                 patching_rect=[30, 230, 120, 22])
+            for channel in range(project.inputs):
+                oscillator = p.add_textbox(f"cycle~ {220 + channel * 110}", numinlets=2,
+                                           numoutlets=1, outlettype=["signal"],
+                                           patching_rect=[30 + channel * 130, 150, 110, 22])
+                gain = p.add_textbox("*~ 0.1", numinlets=2, numoutlets=1, outlettype=["signal"],
+                                     patching_rect=[30 + channel * 130, 190, 70, 22])
+                p.add_line(oscillator, gain)
+                p.add_line(gain, tone, inlet=channel)
+        choice_x = 200 if project.inputs == 1 else 300
         toggle = p.add_textbox("toggle", maxclass="toggle", numinlets=1, numoutlets=1,
-                               outlettype=["int"], patching_rect=[200, 150, 24, 24])
-        offset = p.add_textbox("+ 1", numinlets=2, patching_rect=[240, 150, 40, 22])
+                               outlettype=["int"], patching_rect=[choice_x, 150, 24, 24])
+        offset = p.add_textbox("+ 1", numinlets=2, patching_rect=[choice_x + 40, 150, 40, 22])
         source = p.add_textbox("mc.selector~ 2", numinlets=3, numoutlets=1,
-                               outlettype=["multichannelsignal"], patching_rect=[300, 200, 100, 22])
-        p.add_comment("test-220Hz", patching_rect=[200, 125, 100, 20])
+                               outlettype=["multichannelsignal"],
+                               patching_rect=[300, 200 if project.inputs == 1 else 270, 100, 22])
+        p.add_comment("test-220Hz" if project.inputs == 1 else "test-tones",
+                      patching_rect=[choice_x, 125, 100, 20])
         p.add_line(adc, source, inlet=1)
         p.add_line(tone, source, inlet=2)
         p.add_line(toggle, offset)

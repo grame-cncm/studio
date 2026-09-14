@@ -16,6 +16,7 @@ DSP_DIR = Path(__file__).resolve().parents[1] / "dsp"
 PROJECTS = {
     "faustgen-additive-poly-midi": "Additive MIDI / synthese additive MIDI - 16 voices",
     "faustgen-quad-panner": "Quadraphonic panner / panoramique quadriphonique",
+    "faustgen-stereo-orbit": "Stereo Orbit / Orbite stereo - eight speakers / huit enceintes",
     "faustgen-8x16-panner": "8 inputs to 16 speakers / 8 entrees vers 16 enceintes",
     "faustgen-8x16-per-input-panner": "Independent 8x16 VBAP / VBAP 8x16 independant",
     "faustgen-8x16-per-input-vbap-reverb": "Independent 8x16 VBAP + Freeverb",

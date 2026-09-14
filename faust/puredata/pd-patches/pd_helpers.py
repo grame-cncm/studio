@@ -112,6 +112,27 @@ def add_faust(p: Patcher, project: FaustProject):
 
 def add_audio_input(p: Patcher, dsp, load, project: FaustProject, *, test_tone=False):
     adc = p.add("adc~ " + " ".join(map(str, range(1, project.inputs + 1))), x_pos=30, y_pos=100)
+    if test_tone and project.inputs > 1:
+        choice = p.add_toggle(label="test-tones", x_pos=200, y_pos=100)
+        invert = p.add("== 0", x_pos=300, y_pos=100)
+        p.link(choice, invert)
+        initial(p, load, choice, 0, x=300, y=60)
+        for channel in range(project.inputs):
+            x = 30 + channel * 180
+            tone = p.add(f"osc~ {220 + channel * 110}", x_pos=x, y_pos=140)
+            quiet = p.add("*~ 0.1", x_pos=x, y_pos=175)
+            tone_gain = p.add("*~", x_pos=x, y_pos=210)
+            real_gain = p.add("*~", x_pos=x + 80, y_pos=175)
+            summed = p.add("+~", x_pos=x, y_pos=260)
+            p.link(tone, quiet)
+            p.link(quiet, tone_gain)
+            p.link(choice, tone_gain, inlet=1)
+            p.link(adc, real_gain, outlet=channel)
+            p.link(invert, real_gain, inlet=1)
+            p.link(real_gain, summed)
+            p.link(tone_gain, summed, inlet=1)
+            p.link(summed, dsp, inlet=channel + 1)
+        return
     source = mono_source(p, adc, load) if test_tone else adc
     for channel in range(project.inputs):
         p.link(source, dsp, outlet=channel, inlet=channel + 1)

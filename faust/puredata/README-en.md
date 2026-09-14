@@ -88,13 +88,14 @@ needs `num_inlets=3` and `num_outlets=3` in py2pd.
 
 ## Available Faust projects
 
-The eight projects use the same [Faust sources](../dsp/) as
+The nine projects use the same [Faust sources](../dsp/) as
 [Max/MSP](../maxmsp/README-en.md):
 
 | Project | Audio inputs → outputs | Patch |
 | --- | --- | --- |
 | Additive MIDI synthesis, 16 voices | 0 → 2 | [Additive MIDI](pd-patches/faustgen-additive-poly-midi.pd) |
 | Circular quadraphonic panning | 1 → 4 | [Quad panner](pd-patches/faustgen-quad-panner.pd) |
+| Two stereo orbits on eight speakers | 2 → 8 | [Stereo Orbit](pd-patches/faustgen-stereo-orbit.pd) |
 | Rotating field of eight sources | 8 → 16 | [8×16 panner](pd-patches/faustgen-8x16-panner.pd) |
 | Independent VBAP for each input | 8 → 16 | [8×16 per-input](pd-patches/faustgen-8x16-per-input-panner.pd) |
 | Independent VBAP and Freeverb per output | 8 → 16 | [VBAP + Freeverb](pd-patches/faustgen-8x16-per-input-vbap-reverb.pd) |
@@ -148,6 +149,23 @@ then run `generate_abclib_2d_vbap6.py`. The generator produces a self-contained
 [abclib submodule libraries](../dsp/libraries/abclib/faustCodes/library/),
 which the patch loads directly. **theta** sets the source angle; **a0** to **a5** set
 the six speaker angles, in degrees.
+
+## Stereo Orbit
+
+Open [the patch](pd-patches/faustgen-stereo-orbit.pd), configure eight
+audio outputs and enable **DSP**. Connect a stereo source to inputs 1 and 2,
+or enable **test-tones** to hear two sine waves at 220 and 330 Hz. Place the
+speakers in a circle: output 1 at the front, then outputs 2 to 8 clockwise
+at 45° intervals.
+
+**speed** sets revolutions per second (negative values reverse direction);
+set **running** to 0 to freeze motion and to 1 to resume. **azimuth** shifts
+the center and **width** sets the initial separation between channels, in
+turns. Set **counterrotate** to 1 for opposite rotations or to 0 for a shared
+rotation. **spread** distributes each source around the ring (0: two adjacent
+speakers, 1: all speakers), and **level** sets the output level. Start with
+**test-tones** enabled, `speed = 0.08`, `counterrotate = 1`, `spread = 0`
+and `level = 0.5`.
 
 ## Resources
 

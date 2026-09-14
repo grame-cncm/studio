@@ -9,7 +9,7 @@ puis le guide de l’environnement concerné :
 Pour Max, lire aussi le [prompt de référence](PROMPT.md).
 Partir d’un générateur existant lorsqu’il correspond au projet demandé.
 
-Les huit projets partagent les sources `.dsp` dans `dsp/`. Modifier ces sources
+Les neuf projets partagent les sources `.dsp` dans `dsp/`. Modifier ces sources
 pour changer le traitement sonore ou les paramètres. Les `.dsp` exportés dans
 `puredata/pd-patches/` sont des copies générées ; reporter toute modification
 durable dans `dsp/`.

@@ -16,7 +16,9 @@ ROOT = Path(__file__).resolve().parents[1]
 PATCHES = ROOT / "pd-patches"
 sys.path.insert(0, str(PATCHES))
 from pd_helpers import generate, pd_name  # noqa: E402
-from common.faust import DSP_DIR, PROJECTS, analyze_dsp, include_options, parameters  # noqa: E402
+from common.faust import (  # noqa: E402
+    DSP_DIR, PROJECTS, analyze_dsp, include_options, load_project, parameters, project_builder,
+)
 
 PD = Path(os.environ.get("PD_BIN", ROOT / "pd-faustgen/pure-data/src/pd"))
 EXTERNAL = Path(os.environ.get("FAUSTGEN_EXTERNAL", ROOT / "pd-faustgen/external/faustgen2~.pd_darwin"))
@@ -86,6 +88,9 @@ def test_saved_projects_can_coexist_in_one_pd_process():
 
 def settings(stem):
     initial, changed = {}, {}
+    if stem == "faustgen-stereo-orbit":
+        initial = {"running": 0, "speed": 0}
+        return initial, initial | {"azimuth": 0.125, "spread": 0.3}
     if "zita" in stem or "spatial-reverb" in stem:
         initial["reverb_mix"] = 0
     if "vbap-reverb" in stem:
@@ -304,3 +309,108 @@ def test_reverb_tail_reaches_all_output_channels(tmp_path, stem):
     for channel in range(metadata["outputs"]):
         match = re.search(rf"^TAIL_{channel}: ([-+\d.eE]+)$", console, re.M)
         assert match and math.isfinite(float(match[1])) and float(match[1]) > 20, console
+
+
+@requires_faust
+@pytest.mark.skipif(shutil.which("c++") is None, reason="C++ compiler not found")
+@pytest.mark.parametrize("spread", [0, 1])
+def test_stereo_orbit_point_and_diffuse_energy(tmp_path, spread):
+    values = {"running": 0, "speed": 0, "width": 0, "azimuth": 0,
+              "spread": spread, "level": 0.5}
+    actual = reference(tmp_path, "faustgen-stereo-orbit", values)
+    # Inputs 0.05 + 0.10, both at the front. Allow float smoothing roundoff.
+    expected = [0.075 / math.sqrt(8)] * 8 if spread else [0.075, 0, 0, 0, 0, 0, 0, 0]
+    assert actual == pytest.approx(expected, abs=5e-6)
+    assert sum(value * value for value in actual) == pytest.approx(0.075 ** 2, abs=5e-7)
+
+
+@requires_pd
+def test_stereo_orbit_rotates_freezes_and_reverses(tmp_path):
+    stem = "faustgen-stereo-orbit"
+    shutil.copyfile(PATCHES / f"{stem}.dsp", tmp_path / f"{stem}.dsp")
+    p = Patcher()
+    load = p.add("loadbang")
+    dsp = p.add(f"faustgen2~ {stem}", num_inlets=3, num_outlets=9)
+    p.link(p.add("sig~ 1"), dsp, inlet=1)
+    p.link(p.add("sig~ 0"), dsp, inlet=2)
+    p.link(load, msg := p.add_msg("dsp 1"))
+    p.link(msg, p.add("s pd"))
+    for key, value in {"width": 0, "speed": 1, "running": 1, "level": 1}.items():
+        p.link(load, msg := p.add_msg(f"{key} {value}"))
+        p.link(msg, dsp)
+    for time, messages in ((1150, ("running 0",)),
+                           (1500, ("speed -1", "running 1"))):
+        trigger = scheduled(p, load, time)
+        for message in messages:
+            p.link(trigger, msg := p.add_msg(message))
+            p.link(msg, dsp)
+    stages = {f"MOVE{index}": 200 + 125 * index for index in range(8)}
+    stages.update({"FROZEN1": 1300, "FROZEN2": 1450, "REVERSE1": 1800, "REVERSE2": 1925})
+    for stage, time in stages.items():
+        trigger = scheduled(p, load, time)
+        for channel in range(8):
+            snapshot = p.add("snapshot~")
+            p.link(dsp, snapshot, outlet=channel + 1)
+            p.link(trigger, snapshot)
+            p.link(snapshot, p.add(f"print {stage}_{channel}"))
+    p.link(scheduled(p, load, 2000), msg := p.add_msg("quit"))
+    p.link(msg, p.add("s pd"))
+    path = tmp_path / "orbit-motion.pd"
+    p.save(path)
+    console = run(command(path) + ["-batch"])
+    samples = {}
+    for stage in stages:
+        values = []
+        for channel in range(8):
+            match = re.search(rf"^{stage}_{channel}: ([-+\d.eE]+)$", console, re.M)
+            assert match, console
+            values.append(float(match[1]))
+        assert all(math.isfinite(value) for value in values), console
+        assert sum(value * value for value in values) == pytest.approx(1, abs=0.001), console
+        samples[stage] = values
+    def strongest(values):
+        return max(range(8), key=values.__getitem__)
+    positions = [strongest(samples[f"MOVE{index}"]) for index in range(8)]
+    assert len(set(positions)) == 8, positions
+    assert all((b - a) % 8 == 1 for a, b in zip(positions, positions[1:])), positions
+    assert samples["FROZEN1"] == pytest.approx(samples["FROZEN2"], abs=1e-6)
+    assert (strongest(samples["REVERSE2"]) - strongest(samples["REVERSE1"])) % 8 == 7
+
+
+@requires_pd
+@requires_faust
+def test_stereo_orbit_internal_tones_reach_all_outputs_and_switch_off(tmp_path):
+    stem = "faustgen-stereo-orbit"
+    project = load_project(stem)
+    p = project_builder(PATCHES, stem)(project)
+    (tmp_path / f"{stem}.dsp").write_text(project.source)
+    load = next(node for node in p.nodes if node.parameters.get("text") == "loadbang")
+    dsp = next(node for node in p.nodes if node.parameters.get("text") == f"faustgen2~ {stem}")
+    choice = next(node for node in p.nodes if node.parameters.get("label") == "test-tones")
+    for time, value in ((50, 1), (600, 0)):
+        p.link(scheduled(p, load, time), msg := p.add_msg(str(value)))
+        p.link(msg, choice)
+    p.link(scheduled(p, load, 60), msg := p.add_msg("spread 1"))
+    p.link(msg, dsp)
+    p.link(load, msg := p.add_msg("dsp 1"))
+    p.link(msg, p.add("s pd"))
+    for channel in range(8):
+        energy = p.add("env~ 4096")
+        p.link(dsp, energy, outlet=channel + 1)
+        for stage, time in (("ON", 500), ("OFF", 1000)):
+            selected = p.add("f")
+            p.link(energy, selected, inlet=1)
+            p.link(scheduled(p, load, time), selected)
+            p.link(selected, p.add(f"print {stage}_{channel}"))
+    p.link(scheduled(p, load, 1100), msg := p.add_msg("quit"))
+    p.link(msg, p.add("s pd"))
+    path = tmp_path / "orbit-tones.pd"
+    p.save(path)
+    console = run(command(path) + ["-batch"])
+    for channel in range(8):
+        on = re.search(rf"^ON_{channel}: ([-+\d.eE]+)$", console, re.M)
+        off = re.search(rf"^OFF_{channel}: ([-+\d.eE]+)$", console, re.M)
+        # Two independent 0.1-amplitude sines, level 0.5, uniform eight-way gain.
+        expected_db = 100 + 20 * math.log10(0.1 * 0.5 / math.sqrt(8))
+        assert on and float(on[1]) == pytest.approx(expected_db, abs=0.05), console
+        assert off and float(off[1]) == 0, console

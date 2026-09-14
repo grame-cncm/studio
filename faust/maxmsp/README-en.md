@@ -74,12 +74,30 @@ environment, starting from an existing project.
 | --- | --- | --- |
 | Additive MIDI synthesis, 16 voices | 0 → 2 | [Additive MIDI](max-patches/faustgen-additive-poly-midi.maxpat) |
 | Circular quadraphonic panning | 1 → 4 | [Quad panner](max-patches/faustgen-quad-panner.maxpat) |
+| Two stereo orbits on eight speakers | 2 → 8 | [Stereo Orbit](max-patches/faustgen-stereo-orbit.maxpat) |
 | Rotating field of eight sources | 8 → 16 | [8×16 panner](max-patches/faustgen-8x16-panner.maxpat) |
 | Independent VBAP for each input | 8 → 16 | [8×16 per-input](max-patches/faustgen-8x16-per-input-panner.maxpat) |
 | Independent VBAP and Freeverb per output | 8 → 16 | [VBAP + Freeverb](max-patches/faustgen-8x16-per-input-vbap-reverb.maxpat) |
 | Stereo panning and Zita Rev1 | 1 → 2 | [Stereo Zita](max-patches/faustgen-mono-stereo-spatial-reverb.maxpat) |
 | Circular panning and three stereo Zita reverbs | 1 → 6 | [Six-output Zita](max-patches/faustgen-mono-6out-zita.maxpat) |
 | abclib VBAP with adjustable speaker angles | 1 → 6 | [abclib VBAP6](max-patches/faustgen-abclib-2d-vbap6.maxpat) |
+
+## Stereo Orbit
+
+Open [the patch](max-patches/faustgen-stereo-orbit.maxpat), configure eight
+audio outputs and enable **DSP**. Connect a stereo source to inputs 1 and 2,
+or enable **test-tones** to hear two sine waves at 220 and 330 Hz. Place the
+speakers in a circle: output 1 at the front, then outputs 2 to 8 clockwise
+at 45° intervals.
+
+**speed** sets revolutions per second (negative values reverse direction);
+set **running** to 0 to freeze motion and to 1 to resume. **azimuth** shifts
+the center and **width** sets the initial separation between channels, in
+turns. Set **counterrotate** to 1 for opposite rotations or to 0 for a shared
+rotation. **spread** distributes each source around the ring (0: two adjacent
+speakers, 1: all speakers), and **level** sets the output level. Start with
+**test-tones** enabled, `speed = 0.08`, `counterrotate = 1`, `spread = 0`
+and `level = 0.5`.
 
 ## Resources
 

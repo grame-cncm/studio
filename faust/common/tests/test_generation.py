@@ -16,7 +16,7 @@ from common import faust  # noqa: E402
 from max_helpers import control_address, generate as generate_max  # noqa: E402
 from pd_helpers import generate as generate_pd, pd_name  # noqa: E402
 
-SIGNATURES = [(0, 2), (1, 4), (8, 16), (8, 16), (8, 16), (1, 2), (1, 6), (1, 6)]
+SIGNATURES = [(0, 2), (1, 4), (2, 8), (8, 16), (8, 16), (8, 16), (1, 2), (1, 6), (1, 6)]
 
 
 def document(path):

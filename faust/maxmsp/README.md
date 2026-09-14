@@ -75,12 +75,30 @@ et un générateur par environnement, en partant d’un projet existant.
 | --- | --- | --- |
 | Synthèse additive MIDI, 16 voix | 0 → 2 | [Additive MIDI](max-patches/faustgen-additive-poly-midi.maxpat) |
 | Panoramique circulaire quadriphonique | 1 → 4 | [Quad panner](max-patches/faustgen-quad-panner.maxpat) |
+| Deux orbites stéréo sur huit enceintes | 2 → 8 | [Stereo Orbit](max-patches/faustgen-stereo-orbit.maxpat) |
 | Rotation d’un champ de huit sources | 8 → 16 | [8×16 panner](max-patches/faustgen-8x16-panner.maxpat) |
 | VBAP indépendant pour chaque entrée | 8 → 16 | [8×16 per-input](max-patches/faustgen-8x16-per-input-panner.maxpat) |
 | VBAP indépendant et Freeverb par sortie | 8 → 16 | [VBAP + Freeverb](max-patches/faustgen-8x16-per-input-vbap-reverb.maxpat) |
 | Panoramique stéréo et Zita Rev1 | 1 → 2 | [Stereo Zita](max-patches/faustgen-mono-stereo-spatial-reverb.maxpat) |
 | Panoramique circulaire et trois Zita stéréo | 1 → 6 | [Six-output Zita](max-patches/faustgen-mono-6out-zita.maxpat) |
 | VBAP abclib, angles des enceintes réglables | 1 → 6 | [abclib VBAP6](max-patches/faustgen-abclib-2d-vbap6.maxpat) |
+
+## Orbite stéréo
+
+Ouvrez [le patch](max-patches/faustgen-stereo-orbit.maxpat), configurez huit
+sorties audio et activez **DSP**. Branchez une source stéréo sur les entrées
+1 et 2, ou activez **test-tones** pour entendre deux sinusoïdes de 220 et 330 Hz.
+Les enceintes sont placées en cercle : sortie 1 à l’avant, puis sorties 2 à 8
+dans le sens horaire, espacées de 45°.
+
+**speed** règle la vitesse en tours par seconde (valeur négative : sens inverse),
+**running** vaut 0 pour figer le mouvement et 1 pour le reprendre.
+**azimuth** déplace le centre et **width** règle l’écart initial entre les
+canaux, en tours. **counterrotate** vaut 1 pour des rotations opposées et 0
+pour une rotation commune. **spread** étale chaque source sur le cercle
+(0 : deux enceintes voisines, 1 : toutes les enceintes), et **level** règle
+le niveau de sortie. Pour commencer, activez **test-tones** et gardez
+`speed = 0.08`, `counterrotate = 1`, `spread = 0` et `level = 0.5`.
 
 ## Ressources
 

@@ -88,13 +88,14 @@ nécessite donc `num_inlets=3` et `num_outlets=3` dans py2pd.
 
 ## Projets Faust disponibles
 
-Les huit projets utilisent les mêmes [sources Faust](../dsp/) que
+Les neuf projets utilisent les mêmes [sources Faust](../dsp/) que
 [Max/MSP](../maxmsp/README.md) :
 
 | Projet | Entrées → sorties audio | Patch |
 | --- | --- | --- |
 | Synthèse additive MIDI, 16 voix | 0 → 2 | [Additive MIDI](pd-patches/faustgen-additive-poly-midi.pd) |
 | Panoramique circulaire quadriphonique | 1 → 4 | [Quad panner](pd-patches/faustgen-quad-panner.pd) |
+| Deux orbites stéréo sur huit enceintes | 2 → 8 | [Stereo Orbit](pd-patches/faustgen-stereo-orbit.pd) |
 | Rotation d’un champ de huit sources | 8 → 16 | [8×16 panner](pd-patches/faustgen-8x16-panner.pd) |
 | VBAP indépendant pour chaque entrée | 8 → 16 | [8×16 per-input](pd-patches/faustgen-8x16-per-input-panner.pd) |
 | VBAP indépendant et Freeverb par sortie | 8 → 16 | [VBAP + Freeverb](pd-patches/faustgen-8x16-per-input-vbap-reverb.pd) |
@@ -149,6 +150,23 @@ autonome à partir des
 [bibliothèques du sous-module abclib](../dsp/libraries/abclib/faustCodes/library/),
 que le patch charge directement. **theta** règle l’angle de la source ;
 **a0** à **a5** règlent les angles des six enceintes, en degrés.
+
+## Orbite stéréo
+
+Ouvrez [le patch](pd-patches/faustgen-stereo-orbit.pd), configurez huit
+sorties audio et activez **DSP**. Branchez une source stéréo sur les entrées
+1 et 2, ou activez **test-tones** pour entendre deux sinusoïdes de 220 et 330 Hz.
+Les enceintes sont placées en cercle : sortie 1 à l’avant, puis sorties 2 à 8
+dans le sens horaire, espacées de 45°.
+
+**speed** règle la vitesse en tours par seconde (valeur négative : sens inverse),
+**running** vaut 0 pour figer le mouvement et 1 pour le reprendre.
+**azimuth** déplace le centre et **width** règle l’écart initial entre les
+canaux, en tours. **counterrotate** vaut 1 pour des rotations opposées et 0
+pour une rotation commune. **spread** étale chaque source sur le cercle
+(0 : deux enceintes voisines, 1 : toutes les enceintes), et **level** règle
+le niveau de sortie. Pour commencer, activez **test-tones** et gardez
+`speed = 0.08`, `counterrotate = 1`, `spread = 0` et `level = 0.5`.
 
 ## Ressources
 
