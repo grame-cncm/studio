@@ -1,4 +1,14 @@
-"""Generate faustgen-stereo-orbit for PureData from the common Faust source."""
+"""Build Stereo Orbit, stereo motion across eight speakers for PureData.
+
+``STEM`` identifies faust/dsp/faustgen-stereo-orbit.dsp and the exported files.
+Project-specific routing is explicit in build_patch; reusable native blocks
+live in pd_helpers, while analysis and the CLI live in common.faust.
+Portable source is written next to the .pd; the .svg previews its routing.
+
+Usage: ``python generate_faustgen_stereo_orbit.py [--output-dir DIRECTORY] [--faust EXECUTABLE]
+[--check]``. --check verifies exports without changing existing files.
+Importing this module generates nothing: its __main__ block runs the CLI for STEM.
+"""
 
 from pd_helpers import (
     add_audio_input,
@@ -16,7 +26,21 @@ STEM = "faustgen-stereo-orbit"
 
 
 def build_patch(project):
-    """Compose this project's native audio routing and interface."""
+    """Build the PureData patch for Stereo Orbit, stereo motion across eight speakers in memory.
+
+    Args:
+        project: FaustProject loaded for STEM; source, ports, and controls come from
+            the shared DSP. This builder does not invoke the compiler itself.
+
+    Returns:
+        Native Patcher validated by finish_patch, without writing any files.
+
+    Two real inputs or 220/330 Hz sines → orbit → eight outputs.
+    The optional test source is initially disabled in favor of the real inputs.
+    Numeric widgets and initial values are added after audio routing. Runtime
+    commands are host-specific; this builder does not automatically enable the DSP.
+    Helper errors are propagated.
+    """
     patch = create_patch(project)
     load = add_loadbang(patch)
     dsp = add_faust(patch, project)

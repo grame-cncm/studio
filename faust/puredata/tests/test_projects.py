@@ -1,4 +1,16 @@
-"""Check the PureData ports against their Faust DSPs, including MIDI polyphony."""
+"""Check exported Pd projects, their audio, MIDI, and spatial motion.
+
+Run ``python -m pytest faust/puredata/tests/test_projects.py`` with py2pd and
+pytest. Faust, c++, and the built Pd/external enable tests depending on them.
+PD_BIN and FAUSTGEN_EXTERNAL override local binary paths. C++ references use
+the Faust headers installed under /usr/local/include.
+
+Temporary probes do not modify reference DSPs or committed exports. Pd runs
+without GUI, preferences, or audio devices at 48 kHz. Batch mode advances
+measurement delays. Generic numeric tests exclude the MIDI synth and
+Mnemosphere, which have dedicated scenarios. env~ uses Pd's convention:
+100 dB for RMS=1 and 0 for silence.
+"""
 
 import math
 import os
@@ -29,6 +41,17 @@ requires_faust = pytest.mark.skipif(shutil.which("faust") is None, reason="faust
 
 
 def command(*paths, preload=True):
+    """Build isolated Pd arguments at 48 kHz for patches paths.
+
+    Args:
+        *paths: .pd paths resolved before opening.
+        preload: Preload the external by absolute path if True; False tests whether
+            each saved patch's declare directive loads it.
+
+    Returns:
+        List without shell execution or automatic -batch. -noaudio avoids hardware
+        devices without preventing DSP computation enabled by the patch.
+    """
     args = [str(PD.resolve()), "-noprefs", "-nostdpath", "-nogui", "-noaudio", "-stderr", "-r", "48000"]
     if preload:
         args += ["-lib", str(EXTERNAL.resolve().with_suffix(""))]
@@ -38,6 +61,11 @@ def command(*paths, preload=True):
 
 
 def run(args):
+    """Run args for up to 90 seconds and return verified stdout+stderr.
+
+    Require status zero and no error: or couldn't create in the console. Assertions
+    retain the output; TimeoutExpired is propagated.
+    """
     result = subprocess.run(args, capture_output=True, text=True, timeout=90)
     console = result.stdout + result.stderr
     assert result.returncode == 0, console
@@ -47,6 +75,12 @@ def run(args):
 
 @requires_faust
 def test_all_generated_projects_are_current_and_portable(tmp_path):
+    """Regenerate all ten projects under tmp_path and compare every export bytewise.
+
+    DSP sources must avoid /Users/ and /private/ paths. abclib must be initialized,
+    and its embedded source must match the exported .dsp. Reference files are only
+    read; this test does not regenerate them in place.
+    """
     for stem in PROJECTS:
         for path in generate(stem, tmp_path):
             assert path.read_bytes() == (PATCHES / path.name).read_bytes(), stem
@@ -61,6 +95,14 @@ def test_all_generated_projects_are_current_and_portable(tmp_path):
 @requires_faust
 @pytest.mark.parametrize("stem", PROJECTS)
 def test_saved_patch_loads_external_and_initializes_controls(stem):
+    """Load stem's saved patch without explicitly preloading the external.
+
+    The .pd declare must suffice and the announced signature must match Faust JSON.
+    Query every monophonic parameter and compare it to init within 1e-6. For the
+    synth, only the signature and sixteen-voice announcement are checked: parameter
+    queries are not used on secondary voices in this polyphonic implementation.
+    Pd exits after the queries.
+    """
     metadata = analyze_dsp(PATCHES / f"{stem}.dsp")
     params = parameters(metadata["ui"])
     # Legacy-polyphony parameter queries in this upstream revision send to a
@@ -81,6 +123,11 @@ def test_saved_patch_loads_external_and_initializes_controls(stem):
 
 @requires_pd
 def test_saved_projects_can_coexist_in_one_pd_process():
+    """Open all saved projects together and verify clean shutdown.
+
+    faustgen2~ must announce every catalog identifier. The shared process also
+    exercises the lifecycle of multiple factories without enabling the audio engine.
+    """
     console = run(command(*(PATCHES / f"{stem}.pd" for stem in PROJECTS), preload=False)
                   + ["-send", "pd quit"])
     for stem in PROJECTS:
@@ -88,6 +135,16 @@ def test_saved_projects_can_coexist_in_one_pd_process():
 
 
 def settings(stem):
+    """Choose two audible, deterministic control states for stem.
+
+    Returns:
+        Pair of dictionaries (initial, changed) using Faust parameter names.
+        Reverbs are disabled for static comparison; Orbit is frozen. The second
+        state moves a source or changes its gain.
+
+    These states supply identical values to C++ and Pd. Separate tail and motion
+    tests exercise the dynamic processing.
+    """
     initial, changed = {}, {}
     if stem == "faustgen-stereo-orbit":
         initial = {"running": 0, "speed": 0}
@@ -108,7 +165,22 @@ def settings(stem):
 
 
 def reference(tmp_path, stem, values):
-    """Compute original Faust output in C++, independently of the Pd graph."""
+    """Compile the shared DSP to C++ and compute a settled output block without Pd.
+
+    Args:
+        tmp_path: Directory for the disposable header, C++ program, and executable.
+        stem: Shared source identifier compiled with its required include paths.
+        values: Mapping of Faust parameter names to values set through MapUI.
+
+    Returns:
+        Last sample from each output after 400 blocks of 64 samples at 48 kHz.
+        Input channel c constantly equals 0.05*(c+1). C++ prints floats that Python
+        reads back in output order.
+
+    Compilation/execution errors are propagated. An unknown MapUI parameter causes
+    exit code 2. This reference shares the Faust DSP, but is independent of Pd's
+    graph, port routing, and the external's JIT.
+    """
     source = DSP_DIR / f"{stem}.dsp"
     header = tmp_path / "reference.h"
     subprocess.run(["faust", *include_options(source), "-o", str(header), str(source)], check=True,
@@ -156,6 +228,11 @@ int main(int argc, char** argv) {
 
 
 def scheduled(p, load, time):
+    """Add a time-millisecond Pd delay triggered by load in patch p.
+
+    Return the delay object for scheduling messages or measurements; no process
+    is launched. In batch mode, delays follow logical rather than wall-clock time.
+    """
     delay = p.add(f"delay {time}")
     p.link(load, delay)
     return delay
@@ -166,6 +243,18 @@ def scheduled(p, load, time):
 @pytest.mark.skipif(shutil.which("c++") is None, reason="C++ compiler not found")
 @pytest.mark.parametrize("stem", [name for name in PROJECTS if name not in {SYNTH, MNEMOSPHERE}])
 def test_every_audio_channel_matches_faust_after_controls_and_compile(tmp_path, stem):
+    """Compare every Pd output to C++ before/after a control change and compile.
+
+    Args:
+        tmp_path: Directory for the DSP copy, reference programs, and Pd probe.
+        stem: Parametrized effect, excluding the synth and Mnemosphere.
+
+    Measurements at 500/950/1600 ms surround a change at 700 ms and compile at
+    1000 ms; quit is sent at 1700 ms. Initial and changed states must differ to
+    prove that controls act on audio; the third stage must retain the changed state.
+    Every sample must be finite and match C++ within abs=2e-6/rel=1e-5. Default
+    8×16 VBAP source positions are also checked explicitly.
+    """
     metadata = analyze_dsp(PATCHES / f"{stem}.dsp")
     before, after = settings(stem)
     expected_before = reference(tmp_path, stem, before)
@@ -215,7 +304,14 @@ def test_every_audio_channel_matches_faust_after_controls_and_compile(tmp_path, 
 
 @requires_pd
 def test_midi_chord_has_simultaneous_voices_and_releases(tmp_path):
-    """Use individual fundamental projections to distinguish a chord from one voice."""
+    """Verify simultaneous notes 60/64/67 and their release after All Notes Off.
+
+    tmp_path receives the DSP and MIDI probe. Higher partials are removed so energy
+    at the three fundamentals proves distinct voices. bp~ filters with Q=80 and
+    env~ 4096 measure the chord at 300 ms. A bang at 400 ms stops all notes; both
+    stereo outputs must be silent at 700 ms. Release is reduced to 10 ms and Pd
+    quits at 800 ms.
+    """
     p = Patcher()
     load = p.add("loadbang")
     shutil.copyfile(PATCHES / f"{SYNTH}.dsp", tmp_path / f"{SYNTH}.dsp")
@@ -271,6 +367,17 @@ def test_midi_chord_has_simultaneous_voices_and_releases(tmp_path):
 @pytest.mark.parametrize("stem", ["faustgen-mono-stereo-spatial-reverb", "faustgen-mono-6out-zita",
                                  "faustgen-8x16-per-input-vbap-reverb"])
 def test_reverb_tail_reaches_all_output_channels(tmp_path, stem):
+    """Excite a reverb and verify its tail on every output.
+
+    Args:
+        tmp_path: Directory for the copied source and disposable probe.
+        stem: Parametrized Zita or VBAP/Freeverb project.
+
+    Noise attenuated to 0.03 feeds every input; wet/mix=1 isolates the effect.
+    Diffuse VBAP uses spread=1. Excitation stops at 500 ms, env~ is sampled at
+    900 ms, and quit occurs at 1000 ms. Every tail must be finite and exceed 20
+    on Pd's dB scale.
+    """
     metadata = analyze_dsp(PATCHES / f"{stem}.dsp")
     shutil.copyfile(PATCHES / f"{stem}.dsp", tmp_path / f"{stem}.dsp")
     p = Patcher()
@@ -316,6 +423,16 @@ def test_reverb_tail_reaches_all_output_channels(tmp_path, stem):
 @pytest.mark.skipif(shutil.which("c++") is None, reason="C++ compiler not found")
 @pytest.mark.parametrize("spread", [0, 1])
 def test_stereo_orbit_point_and_diffuse_energy(tmp_path, spread):
+    """Verify Orbit's point/diffuse gains and conservation of energy.
+
+    Args:
+        tmp_path: Destination for the C++ reference.
+        spread: 0 for a frontal point, 1 for uniform diffusion across eight channels.
+
+    Constant inputs 0.05/0.10 coincide at the front with width=0; level=0.5 gives
+    0.075. Diffusion divides that level by sqrt(8), preserving the sum of squares.
+    Tolerances account for floating-point smoothing roundoff.
+    """
     values = {"running": 0, "speed": 0, "width": 0, "azimuth": 0,
               "spread": spread, "level": 0.5}
     actual = reference(tmp_path, "faustgen-stereo-orbit", values)
@@ -327,6 +444,13 @@ def test_stereo_orbit_point_and_diffuse_energy(tmp_path, spread):
 
 @requires_pd
 def test_stereo_orbit_rotates_freezes_and_reverses(tmp_path):
+    """Track Orbit through eight positions, a pause, and reverse rotation in Pd.
+
+    The tmp_path probe excites only the left input with width=0 and level=1.
+    Snapshots must conserve energy, visit every speaker in order, remain identical
+    while running=0, and move back one position after speed=-1. Measurement times
+    allow controls to settle.
+    """
     stem = "faustgen-stereo-orbit"
     shutil.copyfile(PATCHES / f"{stem}.dsp", tmp_path / f"{stem}.dsp")
     p = Patcher()
@@ -370,6 +494,11 @@ def test_stereo_orbit_rotates_freezes_and_reverses(tmp_path):
         assert sum(value * value for value in values) == pytest.approx(1, abs=0.001), console
         samples[stage] = values
     def strongest(values):
+        """Return the speaker index with the greatest gain among eight values.
+
+        This identifies the snapshot's dominant position. On a tie, max retains the
+        first index in channel order.
+        """
         return max(range(8), key=values.__getitem__)
     positions = [strongest(samples[f"MOVE{index}"]) for index in range(8)]
     assert len(set(positions)) == 8, positions
@@ -381,6 +510,15 @@ def test_stereo_orbit_rotates_freezes_and_reverses(tmp_path):
 @requires_pd
 @requires_faust
 def test_stereo_orbit_internal_tones_reach_all_outputs_and_switch_off(tmp_path):
+    """Instrument the real Orbit patch to measure its internal sines and their shutdown.
+
+    tmp_path receives the source and constructed patch. test-tones is enabled at
+    50 ms and disabled at 600 ms. spread=1 distributes two independent 0.1-level
+    sines, with initial level=0.5, across eight outputs. env~ at 500 ms must match
+    the expected RMS within 0.05 dB; measurements at 1000 ms must show silence
+    without hardware ADC input. This validates the generator's actual selector,
+    rather than only the DSP in isolation.
+    """
     stem = "faustgen-stereo-orbit"
     project = load_project(stem)
     p = project_builder(PATCHES, stem)(project)

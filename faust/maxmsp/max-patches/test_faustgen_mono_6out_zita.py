@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Structural regression test for the generated mono-to-six Zita Max patch."""
+"""Validate the mono-to-six Zita patch without launching Max.
+
+Run ``python test_faustgen_mono_6out_zita.py`` directly with Faust and py2max.
+--check first compares exports without modifying them; assertions then inspect
+the shared source and JSON. Max is not launched. Python -O disables assertions
+and is unsuitable for this verification.
+"""
 
 from __future__ import annotations
 
@@ -16,6 +22,15 @@ PATCH_PATH = THIS_DIR / "faustgen-mono-6out-zita.maxpat"
 
 
 def boxes_by_id(document: dict) -> dict[str, dict]:
+    """Index objects from a Max JSON document by identifier.
+
+    Args:
+        document: Dictionary containing patcher/boxes.
+
+    Returns:
+        Mapping id → box, excluding objects without an id. The JSON structure is
+        assumed valid; the objects themselves are not copied.
+    """
     return {
         box["box"]["id"]: box["box"]
         for box in document["patcher"]["boxes"]
@@ -24,6 +39,12 @@ def boxes_by_id(document: dict) -> dict[str, dict]:
 
 
 def main() -> None:
+    """Check current exports, 1→6 MC routing, and three stereo Zita instances.
+
+    Embedded source must match the shared DSP. Every control address extracted by
+    Faust must have a Max message. Subprocess errors or assertions stop the script;
+    success prints PASS.
+    """
     subprocess.run([sys.executable, str(GENERATOR), "--check"], check=True)
     document = json.loads(PATCH_PATH.read_text(encoding="utf-8"))
     boxes = boxes_by_id(document)

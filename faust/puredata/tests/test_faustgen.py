@@ -1,4 +1,15 @@
-"""Exercise Faust JIT, controls, audio, recompilation, and Pd shutdown."""
+"""Exercise the real Faust JIT in Pd: initialization, audio, and recompilation.
+
+Run ``python -m pytest faust/puredata/tests/test_faustgen.py``. PD_BIN and
+FAUSTGEN_EXTERNAL can override the binaries built inside the submodule.
+requires_pd/requires_faust markers skip tests with unavailable prerequisites.
+py2pd constructs probe patches under tmp_path.
+
+JIT_SOURCE is a minimal stereo gain fixture independent of catalog projects.
+Pd runs without preferences, a GUI, or audio devices, with the external preloaded.
+Batch mode advances scheduled delays without real time; automatic compilation
+uses real-time scheduling so Python can edit the source during the test.
+"""
 
 import os
 from pathlib import Path
@@ -37,6 +48,16 @@ requires_pd = pytest.mark.skipif(
 
 
 def pd_command(*patches: Path, batch: bool = True) -> list[str]:
+    """Build an isolated Pd command to open one or more patches.
+
+    Args:
+        *patches: Paths resolved before adding -open options.
+        batch: Add -batch if True; False retains real-time scheduling.
+
+    Returns:
+        Arguments without a shell. -noaudio avoids devices, but patches may still
+        enable DSP computation. Preferences and standard search paths are excluded.
+    """
     command = [str(PD_BIN.resolve()), "-noprefs", "-nostdpath", "-nogui", "-noaudio",
                "-stderr", "-lib", str(EXTERNAL.resolve().with_suffix(""))]
     if batch:
@@ -47,6 +68,12 @@ def pd_command(*patches: Path, batch: bool = True) -> list[str]:
 
 
 def assert_clean(result: subprocess.CompletedProcess) -> str:
+    """Return a CompletedProcess's combined console output after checking it.
+
+    Require status zero and absence of ``error:`` (case-insensitive) and
+    ``couldn't create``. stderr may be None when merged into stdout. Assertions
+    include the complete console to make failures diagnosable.
+    """
     console = result.stdout + (result.stderr or "")
     assert result.returncode == 0, console
     assert "error:" not in console.lower(), console
@@ -58,6 +85,12 @@ def assert_clean(result: subprocess.CompletedProcess) -> str:
 @requires_faust
 @pytest.mark.parametrize("clear_before_quit", [False, True])
 def test_generated_patch_loads_initializes_and_exits(tmp_path, clear_before_quit):
+    """Load a generated quad-panner and check level=0.8 before its destruction.
+
+    tmp_path receives exports. clear_before_quit chooses between clearing the canvas
+    before quit and normal destruction at shutdown. Pd must announce a 1/4 DSP,
+    report the initialized control, and exit cleanly within 15 seconds.
+    """
     pd_path, _, _ = generate(PROJECT, tmp_path)
     messages = [f"{PROJECT} level"]
     if clear_before_quit:
@@ -71,6 +104,20 @@ def test_generated_patch_loads_initializes_and_exits(tmp_path, clear_before_quit
 
 
 def probe(tmp_path: Path, *, automatic: bool = False) -> tuple[Path, Path]:
+    """Write a gain DSP and two Pd patches driving its measurements and shutdown.
+
+    Args:
+        tmp_path: Directory for the .dsp fixture and generated patches.
+        automatic: Enable autocompile with 20 ms polling and delay measurements to
+            allow external editing; otherwise send compile at 400 ms.
+
+    Returns:
+        Pair (probe.pd, driver.pd). The probe measures constant inputs 1 and 0.5
+        before a change, after gain=0.5, and after recompilation. The independent
+        driver closes Pd after 600 ms or 2500 ms.
+
+    This writes disposable fixtures without launching Pd.
+    """
     (tmp_path / f"{JIT_STEM}.dsp").write_text(JIT_SOURCE)
     p = Patcher()
     dsp = p.add(f"faustgen2~ {JIT_STEM}", num_inlets=3, num_outlets=3)
@@ -79,6 +126,10 @@ def probe(tmp_path: Path, *, automatic: bool = False) -> tuple[Path, Path]:
     load = p.add("loadbang")
 
     def delayed(milliseconds: int):
+        """Add a delay in milliseconds triggered by the probe's loadbang.
+
+        Return the delay object to connect a measurement or command at that Pd time.
+        """
         delay = p.add(f"delay {milliseconds}")
         p.link(load, delay)
         return delay
@@ -114,6 +165,15 @@ def probe(tmp_path: Path, *, automatic: bool = False) -> tuple[Path, Path]:
 
 
 def assert_samples(console: str, *, automatic: bool = False):
+    """Compare six printed measurements against expected gains within 1e-6.
+
+    Args:
+        console: Pd text output containing INITIAL/UPDATED/RECOMPILED per channel.
+        automatic: Expect doubled gain from source editing after UPDATE; otherwise
+            expect gain=0.5 to survive manual compilation.
+
+    Missing or different samples raise AssertionError with the complete console.
+    """
     expected = {"INITIAL_1": 0.1, "INITIAL_2": 0.05,
                 "UPDATED_1": 0.5, "UPDATED_2": 0.25,
                 "RECOMPILED_1": 1.0 if automatic else 0.5,
@@ -126,6 +186,12 @@ def assert_samples(console: str, *, automatic: bool = False):
 
 @requires_pd
 def test_audio_parameter_change_and_manual_recompile(tmp_path):
+    """Measure stereo gain around a control change and its preservation through compile.
+
+    The tmp_path probe runs in batch within 15 seconds. At least two 2/2 DSP
+    announcements confirm that recompilation really occurred, rather than only a
+    parameter update.
+    """
     paths = probe(tmp_path)
     result = subprocess.run(pd_command(*paths), capture_output=True, text=True, timeout=15)
     console = assert_clean(result)
@@ -135,6 +201,15 @@ def test_audio_parameter_change_and_manual_recompile(tmp_path):
 
 @requires_pd
 def test_changed_faust_source_is_recompiled_automatically(tmp_path):
+    """Edit the DSP after UPDATED_2 and verify that autocompilation doubles the gain.
+
+    Pd runs in real time without audio devices. Python reads its console and rewrites
+    only the tmp_path fixture. A Timer kills the process after 15 seconds if it
+    hangs and is canceled in finally. Measurement timing exceeds the one-second
+    granularity of the timestamp observed by the external. The source must actually
+    be edited, Pd must exit cleanly, and new samples must reflect doubled gain with
+    the previous control value preserved.
+    """
     paths = probe(tmp_path, automatic=True)
     source = tmp_path / f"{JIT_STEM}.dsp"
     changed = False
