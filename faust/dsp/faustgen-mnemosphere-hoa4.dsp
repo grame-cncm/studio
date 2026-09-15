@@ -31,16 +31,15 @@ level = hslider("level", 0.25, 0, 0.7, 0.01) : si.smoo;
 decoder = nentry("decoder [style:menu{'abclib direct':0;'Ambitools SAD':1}]", 0, 0, 1, 1) : si.smoo;
 decoder_gain_db = hslider("decoder_gain [unit:dB]", -6, -60, 6, 0.1) : ba.db2linear : si.smoo;
 
-rad = ma.PI / 180;
 breath_phase = os[SAFE=1;].phasor(1, abs(orbit_hz) * 0.618033989 * running);
 aperture = focus * (1 - breathing * 0.65 * (0.5 + 0.5 * sin(2 * ma.PI * breath_phase)));
 
 // Four unequal, counter-rotating petals. Elevations remain away from the poles.
-longitude(voice) = azimuth * rad + voice * ma.PI * 0.5 +
+longitude(voice) = ma.deg2rad(azimuth) + voice * ma.PI * 0.5 +
     2 * ma.PI * os[SAFE=1;].phasor(1,
         (1 - 2 * (voice % 2)) * orbit_hz * (1 + voice * 0.25) * running);
-height(voice) = min(80, max(-80, elevation + latitude *
-    sin(2 * ma.PI * breath_phase + voice * ma.PI * 0.5))) * rad;
+height(voice) = ma.deg2rad(min(80, max(-80, elevation + latitude *
+    sin(2 * ma.PI * breath_phase + voice * ma.PI * 0.5))));
 
 // Abclib's delay memory has 262144 samples. Also bound it at high sample rates.
 memory(voice) = min(memory_ms, 262140 * 1000 / ma.SR) * (0.55 + voice * 0.1);
@@ -54,7 +53,7 @@ cloud = (no.multinoise(8), (_ <: si.bus(4))) : ro.interleave(4, 3) :
         encode(voice)) :> si.bus(25);
 
 // Diffraction delays upper spatial components before lower ones: a spatial echo.
-field = _ <: ((encoder(azimuth * rad, elevation * rad) :
+field = _ <: ((encoder(ma.deg2rad(azimuth), ma.deg2rad(elevation)) :
                     par(channel, 25, *(1 - grain_mix))),
                 (cloud : par(channel, 25, *(grain_mix * 0.25)))) :>
     si.bus(25) : abc.wider3D(4, aperture) :
