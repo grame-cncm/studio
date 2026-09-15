@@ -53,7 +53,7 @@ python -m pip install -e faust/maxmsp/py2max -e faust/puredata/py2pd
 Les dix projets utilisent les mêmes [sources Faust dans `dsp/`](dsp/).
 Les paramètres, leurs plages et leurs valeurs initiales sont définis dans ces
 fichiers ; les interfaces sont créées à partir du JSON produit par Faust.
-Le sous-module [`abclib`](dsp/libraries/abclib/) fournit les bibliothèques dans
+Le sous-module [`abclib`](https://github.com/alainbonardi/abclib) fournit les bibliothèques dans
 `faustCodes/library/`.
 
 1. Modifiez le `.dsp` dans `dsp/` pour changer le son ou les paramètres.
