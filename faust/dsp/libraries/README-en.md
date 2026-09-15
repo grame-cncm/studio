@@ -2,11 +2,16 @@
 
 [Version française](README.md)
 
-[`grame_studio_hoa.lib`](grame_studio_hoa.lib) centralizes the studio geometry
-and provides two reusable 3D decoders: the **abclib** ACN/SN3D direct decoder
-and the **Ambitools** max-rE Sampling Ambisonic Decoder (SAD). A DSP importing it
-therefore gets an HOA-to-real-loudspeaker matrix instead of an abstract HOA bus
-that still lacks decoding and routing.
+Shared geometry is now isolated in
+[`grame_studio_layout.lib`](grame_studio_layout.lib). This non-Ambisonic library
+describes all 28 speakers and 2-, 4-, 6-, and 8-channel multi-output presets.
+See its [complete documentation](grame_studio_layout-en.md).
+
+[`grame_studio_hoa.lib`](grame_studio_hoa.lib) reuses that geometry and provides
+two reusable 3D decoders: the **abclib** ACN/SN3D direct decoder and the
+**Ambitools** max-rE Sampling Ambisonic Decoder (SAD). A DSP importing it gets
+an HOA-to-real-loudspeaker matrix instead of an abstract HOA bus that still
+lacks decoding and routing.
 
 ## Usage
 
@@ -32,7 +37,8 @@ embed local libraries when exporting.
 
 ## Geometry and routing
 
-Positions come from
+Positions come from `grame_studio_layout.lib`, which is itself synchronized
+with
 [`speaker-description/gramestudio-speaker-setup.csv`](../../../speaker-description/gramestudio-speaker-setup.csv).
 The axes are `x` to the right, `y` to the front and `z` upwards, in metres.
 Azimuth is 0° at the front (`+y`) and increases towards the right (`+x`).

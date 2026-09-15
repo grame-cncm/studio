@@ -2,11 +2,16 @@
 
 [English version](README-en.md)
 
-La bibliothèque [`grame_studio_hoa.lib`](grame_studio_hoa.lib) centralise la
-géométrie du studio et fournit deux décodeurs 3D réutilisables : le décodeur
-direct ACN/SN3D d'**abclib** et le Sampling Ambisonic Decoder (SAD) max-rE
-d'**Ambitools**. Un DSP qui l'importe reçoit donc une matrice HOA vers les
-enceintes réelles, au lieu d'une sortie HOA abstraite à router sans décodage.
+La géométrie commune est maintenant isolée dans
+[`grame_studio_layout.lib`](grame_studio_layout.lib). Cette bibliothèque sans
+traitement ambisonique décrit les 28 enceintes et les presets multi-sorties de
+2, 4, 6 et 8 canaux. Voir sa [documentation complète](grame_studio_layout.md).
+
+[`grame_studio_hoa.lib`](grame_studio_hoa.lib) réutilise cette géométrie et
+fournit deux décodeurs 3D : le décodeur direct ACN/SN3D d'**abclib** et le
+Sampling Ambisonic Decoder (SAD) max-rE d'**Ambitools**. Un DSP qui l'importe
+reçoit une matrice HOA vers les enceintes réelles, au lieu d'une sortie HOA
+abstraite à router sans décodage.
 
 ## Utilisation
 
@@ -32,7 +37,8 @@ recherche Faust et incorporent les bibliothèques locales lors de l'export.
 
 ## Géométrie et routage
 
-Les positions viennent de
+Les positions viennent de `grame_studio_layout.lib`, elle-même synchronisée
+avec
 [`speaker-description/gramestudio-speaker-setup.csv`](../../../speaker-description/gramestudio-speaker-setup.csv).
 Les axes retenus sont `x` vers la droite, `y` vers l'avant et `z` vers le haut,
 en mètres. L'azimut vaut 0° devant (`+y`) et croît vers la droite (`+x`).

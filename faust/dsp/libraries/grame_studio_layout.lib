@@ -1,0 +1,553 @@
+//########################## grame_studio_layout.lib ##########################
+// Physical loudspeaker geometry and output mappings for the GRAME studio.
+//
+// This library is independent of any spatialization technique. It can be used
+// by ordinary multi-output DSPs, Ambisonic decoders, VBAP implementations, or
+// calibration tools without imposing signal processing on the audio channels.
+//
+// The 28 speakers follow the CSV order exactly. Public speaker indices are
+// zero-based; hardware outputs are one-based. Convenience mappings expose the
+// studio's stereo pair and its physical 4-, 6-, and 8-speaker rings.
+//
+// Its official prefix is `gsl`. New public names use camelCase consistently.
+// It should be used through the `gsl` environment:
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// process = gsl.ringHardwareOutput(4,0);
+// ```
+//
+// Copyright (C) 2026 GRAME, Centre national de creation musicale
+// SPDX-License-Identifier: CC-BY-NC-SA-4.0
+//##############################################################################
+
+ba = library("basics.lib");
+ma = library("maths.lib");
+
+declare name "GRAME studio loudspeaker layout library";
+declare version "1.0.0";
+declare author "GRAME";
+declare copyright "2026 GRAME, Centre national de creation musicale";
+declare license "CC-BY-NC-SA-4.0";
+
+//================================== Geometry ===================================
+// Values are copied from speaker-description/gramestudio-speaker-setup.csv.
+// Axes: x points right, y points to the front, z points upwards, in metres.
+// Azimuth is zero at the front (+y), positive towards the right (+x).
+// Indices 0..27 correspond exactly to CSV speakers / hardware outputs 1..28.
+//===============================================================================
+
+_speakerX(i) = ba.take(i + 1,
+    (-1.80,  1.80, -2.55,  2.55, -2.45,  2.45, -2.55,  2.55,
+      0.00,  0.00, -2.55,  2.55, -2.40,  2.45, -2.47,  2.47,
+     -2.00,  2.00, -2.00,  2.00, -1.16,  1.16, -1.16,  1.16,
+      0.00, -2.40,  2.40,  0.00));
+
+_speakerY(i) = ba.take(i + 1,
+    ( 3.65,  3.65,  3.40,  3.40,  0.00,  0.00, -2.90, -2.90,
+      4.50, -4.10,  3.29,  3.29,  0.00,  0.00, -2.90, -2.90,
+      1.50,  1.50, -1.50, -1.50,  1.44,  1.44, -1.44, -1.44,
+      0.00,  3.60,  3.60,  4.00));
+
+_speakerZ(i) = ba.take(i + 1,
+    (2.30, 2.30, 2.30, 2.30, 2.30, 2.30, 2.30, 2.30,
+     2.30, 2.30, 1.24, 1.24, 1.24, 1.24, 1.24, 1.24,
+     0.40, 0.40, 0.40, 0.40, 3.12, 3.10, 3.10, 3.12,
+     2.40, 0.38, 0.38, 1.24));
+
+_speakerAzimuth(i) = ba.take(i + 1,
+    (-26.2,  26.2, -36.9,  36.9, -90.0,  90.0, -138.7, 138.7,
+       0.0, 180.0, -37.8,  37.8, -90.0,  90.0, -139.5, 139.5,
+     -53.1,  53.1,-126.9, 126.9, -38.9,  38.8, -141.1, 141.2,
+       0.0, -33.7,  33.7,   0.0));
+
+_speakerDistance(i) = ba.take(i + 1,
+    (4.88, 4.88, 4.85, 4.85, 3.36, 3.36, 4.49, 4.49,
+     5.05, 4.70, 4.34, 4.34, 2.70, 2.74, 3.99, 3.99,
+     2.53, 2.53, 2.53, 2.53, 3.62, 3.60, 3.60, 3.62,
+     2.40, 4.34, 4.34, 4.19));
+
+_speakerElevation(i) = ba.take(i + 1,
+    (28.1, 28.1, 28.3, 28.3, 43.2, 43.2, 30.8, 30.8,
+     27.1, 29.3, 16.6, 16.6, 27.3, 26.9, 18.1, 18.1,
+      9.1,  9.1,  9.1,  9.1, 59.5, 59.5, 59.5, 59.5,
+     90.0,  5.0,  5.0, 17.2));
+
+// Group codes: 0 = L/R, 1 = C1..C8, 2 = M1..M6, 3 = L1..L4,
+// 4 = H1..H5, 5 = subwoofer, 6 = AtmoC.
+_speakerGroup(i) = ba.take(i + 1,
+    (0, 0,
+     1, 1, 1, 1, 1, 1, 1, 1,
+     2, 2, 2, 2, 2, 2,
+     3, 3, 3, 3,
+     4, 4, 4, 4, 4,
+     5, 5,
+     6));
+
+// First CSV index for the supported conventional output sets:
+// stereo L/R, low L ring, middle M ring, and upper C ring.
+_ringStart(P) = 0 * (P == 2) + 16 * (P == 4) +
+                10 * (P == 6) +  2 * (P == 8);
+
+//-------------------------`(gsl).speakerCount`-------------------------
+// Number of physical speakers and hardware outputs described by the layout.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerCount : _
+// ```
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerCount_test = gsl.speakerCount;
+// ```
+//---------------------------------------------------------------------
+declare speakerCount license "CC-BY-NC-SA-4.0";
+speakerCount = 28;
+
+//---------------------------`(gsl).speakerX`---------------------------
+// Returns the published x coordinate in metres for a physical speaker.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerX(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerX_test = gsl.speakerX(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerX license "CC-BY-NC-SA-4.0";
+speakerX(I) = _speakerX(I);
+
+//---------------------------`(gsl).speakerY`---------------------------
+// Returns the published y coordinate in metres for a physical speaker.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerY(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerY_test = gsl.speakerY(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerY license "CC-BY-NC-SA-4.0";
+speakerY(I) = _speakerY(I);
+
+//---------------------------`(gsl).speakerZ`---------------------------
+// Returns the published z coordinate in metres for a physical speaker.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerZ(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerZ_test = gsl.speakerZ(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerZ license "CC-BY-NC-SA-4.0";
+speakerZ(I) = _speakerZ(I);
+
+//------------------------`(gsl).speakerAzimuth`------------------------
+// Returns the published azimuth in degrees for a physical speaker.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerAzimuth(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerAzimuth_test = gsl.speakerAzimuth(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerAzimuth license "CC-BY-NC-SA-4.0";
+speakerAzimuth(I) = _speakerAzimuth(I);
+
+//------------------------`(gsl).speakerDistance`-----------------------
+// Returns the published distance in metres for a physical speaker.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerDistance(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerDistance_test = gsl.speakerDistance(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerDistance license "CC-BY-NC-SA-4.0";
+speakerDistance(I) = _speakerDistance(I);
+
+//-----------------------`(gsl).speakerElevation`-----------------------
+// Returns the published elevation in degrees for a physical speaker.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerElevation(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerElevation_test = gsl.speakerElevation(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerElevation license "CC-BY-NC-SA-4.0";
+speakerElevation(I) = _speakerElevation(I);
+
+//----------------------`(gsl).speakerCartesian`------------------------
+// Returns a physical speaker's published Cartesian position in metres.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerCartesian(I) : _,_,_
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerCartesian_test = gsl.speakerCartesian(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerCartesian license "CC-BY-NC-SA-4.0";
+speakerCartesian(I) = speakerX(I), speakerY(I), speakerZ(I);
+
+//----------------------`(gsl).speakerSpherical`------------------------
+// Returns the published azimuth, distance, and elevation. Angles are in
+// degrees and distance is in metres.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerSpherical(I) : _,_,_
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerSpherical_test = gsl.speakerSpherical(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerSpherical license "CC-BY-NC-SA-4.0";
+speakerSpherical(I) = speakerAzimuth(I), speakerDistance(I), speakerElevation(I);
+
+//---------------------`(gsl).speakerSphericalAt`-----------------------
+// Recomputes azimuth, distance, and elevation from Cartesian coordinates and
+// a supplied listening position. Unlike `speakerSpherical`, the result does
+// not retain the rounding of the CSV's A/D/E columns.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerSphericalAt(I,lx,ly,lz) : _,_,_
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27;
+// * `lx`: listener x coordinate in metres;
+// * `ly`: listener y coordinate in metres;
+// * `lz`: listener z coordinate in metres.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerSphericalAt_test = gsl.speakerSphericalAt(0,0,0,1.24);
+// ```
+//---------------------------------------------------------------------
+declare speakerSphericalAt license "CC-BY-NC-SA-4.0";
+speakerSphericalAt(I, lx, ly, lz) = azimuth, distance, elevation
+with {
+    dx = speakerX(I) - lx;
+    dy = speakerY(I) - ly;
+    dz = speakerZ(I) - lz;
+    horizontal = sqrt(dx * dx + dy * dy);
+    azimuth = atan2(dx, dy) * 180.0 / ma.PI;
+    distance = sqrt(horizontal * horizontal + dz * dz);
+    elevation = atan2(dz, horizontal) * 180.0 / ma.PI;
+};
+
+//------------------------`(gsl).speakerGroup`--------------------------
+// Returns the physical group code: 0=L/R, 1=C ring, 2=M ring, 3=L ring,
+// 4=H group, 5=subwoofer, 6=AtmoC.
+//
+// #### Usage
+//
+// ```
+// gsl.speakerGroup(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// speakerGroup_test = gsl.speakerGroup(25);
+// ```
+//---------------------------------------------------------------------
+declare speakerGroup license "CC-BY-NC-SA-4.0";
+speakerGroup(I) = _speakerGroup(I);
+
+//------------------------`(gsl).isSubwoofer`---------------------------
+// Returns 1 for SW1+L and SW2+R, otherwise 0.
+//
+// #### Usage
+//
+// ```
+// gsl.isSubwoofer(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// isSubwoofer_test = gsl.isSubwoofer(25);
+// ```
+//---------------------------------------------------------------------
+declare isSubwoofer license "CC-BY-NC-SA-4.0";
+isSubwoofer(I) = (I == 25) | (I == 26);
+
+//------------------------`(gsl).isAtmoCenter`--------------------------
+// Returns 1 for AtmoC, otherwise 0.
+//
+// #### Usage
+//
+// ```
+// gsl.isAtmoCenter(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// isAtmoCenter_test = gsl.isAtmoCenter(27);
+// ```
+//---------------------------------------------------------------------
+declare isAtmoCenter license "CC-BY-NC-SA-4.0";
+isAtmoCenter(I) = I == 27;
+
+//-----------------------`(gsl).hardwareOutput`-------------------------
+// Maps a zero-based physical speaker index to its one-based hardware output.
+//
+// #### Usage
+//
+// ```
+// gsl.hardwareOutput(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time physical speaker index, from 0 to 27.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// hardwareOutput_test = gsl.hardwareOutput(27);
+// ```
+//---------------------------------------------------------------------
+declare hardwareOutput license "CC-BY-NC-SA-4.0";
+hardwareOutput(I) = I + 1;
+
+//----------------------`(gsl).ringSpeakerIndex`------------------------
+// Maps a conventional multi-output channel to a physical speaker index.
+// Supported sizes are 2 (L/R), 4 (L1..L4), 6 (M1..M6), and 8 (C1..C8).
+// This is a routing preset, not a panner or an Ambisonic decoder.
+//
+// #### Usage
+//
+// ```
+// gsl.ringSpeakerIndex(P,I) : _
+// ```
+//
+// Where:
+//
+// * `P`: compile-time output count, 2, 4, 6, or 8;
+// * `I`: compile-time channel index, from 0 to `P-1`.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// ringSpeakerIndex_test = gsl.ringSpeakerIndex(4,0);
+// ```
+//---------------------------------------------------------------------
+declare ringSpeakerIndex license "CC-BY-NC-SA-4.0";
+ringSpeakerIndex(P, I) = _ringStart(P) + I;
+
+//---------------------`(gsl).ringHardwareOutput`-----------------------
+// Maps a conventional multi-output channel to a one-based hardware output.
+// Supported sizes are 2 (1..2), 4 (17..20), 6 (11..16), and 8 (3..10).
+//
+// #### Usage
+//
+// ```
+// gsl.ringHardwareOutput(P,I) : _
+// ```
+//
+// Where:
+//
+// * `P`: compile-time output count, 2, 4, 6, or 8;
+// * `I`: compile-time channel index, from 0 to `P-1`.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// ringHardwareOutput_test = gsl.ringHardwareOutput(8,7);
+// ```
+//---------------------------------------------------------------------
+declare ringHardwareOutput license "CC-BY-NC-SA-4.0";
+ringHardwareOutput(P, I) = hardwareOutput(ringSpeakerIndex(P, I));
+
+//----------------------`(gsl).ringCartesian`---------------------------
+// Returns the Cartesian coordinates of a conventional output channel.
+//
+// #### Usage
+//
+// ```
+// gsl.ringCartesian(P,I) : _,_,_
+// ```
+//
+// Where:
+//
+// * `P`: compile-time output count, 2, 4, 6, or 8;
+// * `I`: compile-time channel index, from 0 to `P-1`.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// ringCartesian_test = gsl.ringCartesian(6,0);
+// ```
+//---------------------------------------------------------------------
+declare ringCartesian license "CC-BY-NC-SA-4.0";
+ringCartesian(P, I) = speakerCartesian(ringSpeakerIndex(P, I));
+
+//----------------------`(gsl).ringSpherical`---------------------------
+// Returns the published azimuth, distance, and elevation of a conventional
+// output channel.
+//
+// #### Usage
+//
+// ```
+// gsl.ringSpherical(P,I) : _,_,_
+// ```
+//
+// Where:
+//
+// * `P`: compile-time output count, 2, 4, 6, or 8;
+// * `I`: compile-time channel index, from 0 to `P-1`.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// ringSpherical_test = gsl.ringSpherical(4,0);
+// ```
+//---------------------------------------------------------------------
+declare ringSpherical license "CC-BY-NC-SA-4.0";
+ringSpherical(P, I) = speakerSpherical(ringSpeakerIndex(P, I));
+
+//---------------------`(gsl).ringSphericalAt`--------------------------
+// Recomputes the spherical coordinates of a conventional output channel for
+// a supplied listening position.
+//
+// #### Usage
+//
+// ```
+// gsl.ringSphericalAt(P,I,lx,ly,lz) : _,_,_
+// ```
+//
+// Where:
+//
+// * `P`: compile-time output count, 2, 4, 6, or 8;
+// * `I`: compile-time channel index, from 0 to `P-1`;
+// * `lx`: listener x coordinate in metres;
+// * `ly`: listener y coordinate in metres;
+// * `lz`: listener z coordinate in metres.
+//
+// #### Test
+//
+// ```
+// gsl = library("grame_studio_layout.lib");
+// ringSphericalAt_test = gsl.ringSphericalAt(8,0,0,0,1.24);
+// ```
+//---------------------------------------------------------------------
+declare ringSphericalAt license "CC-BY-NC-SA-4.0";
+ringSphericalAt(P, I, lx, ly, lz) =
+    speakerSphericalAt(ringSpeakerIndex(P, I), lx, ly, lz);

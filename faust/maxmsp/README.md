@@ -134,6 +134,12 @@ Le champ interne reste **3D d’ordre 4, ACN/SN3D**, puis la
 la sortie DSP 26 correspond à AtmoC et va à la sortie matérielle 28. Les sorties
 matérielles 26–27 restent réservées aux subwoofers et ne reçoivent pas le HOA.
 
+Pour un DSP multi-sorties sans ambisonie, utilisez directement la
+[bibliothèque de géométrie](../dsp/libraries/grame_studio_layout.md). Ses presets
+associent 2 sorties à L/R, 4 à L1–L4, 6 à M1–M6 et 8 à C1–C8. Ils décrivent le
+routage sans traiter l'audio : le générateur Max doit appliquer les numéros
+retournés par `ringHardwareOutput(P,I)` à `mc.dac~`.
+
 Pour enregistrer le champ, cliquez sur **open**, choisissez un fichier **WAV**,
 puis sur le message sous **record**, et sur **0** sous **stop**. `mc.sfrecord~ 26`
 enregistre les 26 sorties décodées en flottant 32 bits. Ouvrez de nouveau un fichier

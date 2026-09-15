@@ -200,6 +200,13 @@ feeds. DSP outputs 1–25 target hardware outputs 1–25; DSP output 26 is AtmoC
 and targets hardware output 28. Hardware outputs 26–27 remain reserved for the
 subwoofers and receive no HOA component.
 
+For a non-Ambisonic multi-output DSP, use the
+[geometry library](../dsp/libraries/grame_studio_layout-en.md) directly. Its
+presets associate 2 outputs with L/R, 4 with L1–L4, 6 with M1–M6, and 8 with
+C1–C8. They describe routing without processing audio: the Pure Data generator
+must connect DSP outputs to the `dac~` channels returned by
+`ringHardwareOutput(P,I)`.
+
 To record the field, click **choose-WAV**, choose a filename ending in `.wav`,
 then click **start** and **stop**. `writesf~ 26` records the 26 decoded feeds
 as 32-bit float.

@@ -132,6 +132,12 @@ feeds. DSP outputs 1–25 target hardware outputs 1–25; DSP output 26 is AtmoC
 and targets hardware output 28. Hardware outputs 26–27 remain reserved for the
 subwoofers and receive no HOA component.
 
+For a non-Ambisonic multi-output DSP, use the
+[geometry library](../dsp/libraries/grame_studio_layout-en.md) directly. Its
+presets associate 2 outputs with L/R, 4 with L1–L4, 6 with M1–M6, and 8 with
+C1–C8. They describe routing without processing audio: the Max generator must
+apply the numbers returned by `ringHardwareOutput(P,I)` to `mc.dac~`.
+
 To record the field, click **open**, choose a **WAV** file, then click the message
 under **record** and **0** under **stop**. `mc.sfrecord~ 26` records the 26
 decoded feeds as 32-bit float. Open a file again for each new take.

@@ -52,6 +52,7 @@ def test_combined_library_can_be_embedded_without_local_paths(tmp_path):
     bundled = faust.bundle_local_libraries(source, faust.DSP_DIR)
     assert 'abc = library("abclib/' not in bundled
     assert 'ambi = library("ambitools/' not in bundled
+    assert 'gsl = library("grame_studio_layout.lib")' not in bundled
     assert "/Users/" not in bundled
     dsp = tmp_path / "bundled.dsp"
     output = tmp_path / "bundled.cpp"
@@ -70,9 +71,10 @@ def test_combined_library_can_be_embedded_without_local_paths(tmp_path):
 def test_library_documents_the_csv_geometry_and_subwoofer_exclusion():
     """Keep the source-level geometry contract visible and reviewable."""
     source = LIBRARY.read_text()
-    assert "speaker-description/gramestudio-speaker-setup.csv" in source
-    assert "CSV speakers 26 and 27 are subwoofers" in source
-    assert "hardwareOutput(I) = I + 1 + 2 * (I == 25)" in source
+    assert 'gsl = library("grame_studio_layout.lib")' in source
+    assert "subwoofers and are intentionally not decoded" in source
+    assert "_hoaSpeakerIndex(i) = i + 2 * (i == 25)" in source
+    assert "hardwareOutput(I) = gsl.hardwareOutput(_hoaSpeakerIndex(I))" in source
 
 
 def test_public_symbols_follow_faust_library_documentation_conventions():

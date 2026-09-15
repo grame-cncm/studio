@@ -3,7 +3,7 @@
 //
 // This library provides:
 //
-// * the published Cartesian and spherical loudspeaker geometry;
+// * compatibility access to the shared studio loudspeaker geometry;
 // * direct ACN/SN3D decoding based on abclib;
 // * max-rE Sampling Ambisonic Decoding based on Ambitools;
 // * 25-speaker and 26-speaker variants (the latter adds AtmoC).
@@ -25,7 +25,7 @@
 
 abc = library("abclib/faustCodes/library/hoa2.lib");
 ambi = library("ambitools/faust/ylm.lib");
-ba = library("basics.lib");
+gsl = library("grame_studio_layout.lib");
 ma = library("maths.lib");
 si = library("signals.lib");
 
@@ -36,47 +36,19 @@ declare copyright "2026 GRAME, Centre national de creation musicale";
 declare license "CC-BY-NC-SA-4.0";
 
 //================================== Geometry ===================================
-// Coordinates are copied from speaker-description/gramestudio-speaker-setup.csv.
-// Axes: x points right, y points to the front, z points upwards, in metres.
-// Indices 0..24 are CSV speakers 1..25. Index 25 is CSV speaker 28 (AtmoC).
-// CSV speakers 26 and 27 are subwoofers and are intentionally not decoded.
+// Geometry comes from grame_studio_layout.lib, whose indices follow all 28 CSV
+// rows. HOA indices 0..24 select physical speakers 0..24, while HOA index 25
+// selects physical speaker 27 (AtmoC). Physical speakers 25 and 26 are the two
+// subwoofers and are intentionally not decoded.
 //===============================================================================
 
-_speakerX(i) = ba.take(i + 1,
-    (-1.80,  1.80, -2.55,  2.55, -2.45,  2.45, -2.55,  2.55,
-      0.00,  0.00, -2.55,  2.55, -2.40,  2.45, -2.47,  2.47,
-     -2.00,  2.00, -2.00,  2.00, -1.16,  1.16, -1.16,  1.16,
-      0.00,  0.00));
-
-_speakerY(i) = ba.take(i + 1,
-    ( 3.65,  3.65,  3.40,  3.40,  0.00,  0.00, -2.90, -2.90,
-      4.50, -4.10,  3.29,  3.29,  0.00,  0.00, -2.90, -2.90,
-      1.50,  1.50, -1.50, -1.50,  1.44,  1.44, -1.44, -1.44,
-      0.00,  4.00));
-
-_speakerZ(i) = ba.take(i + 1,
-    (2.30, 2.30, 2.30, 2.30, 2.30, 2.30, 2.30, 2.30,
-     2.30, 2.30, 1.24, 1.24, 1.24, 1.24, 1.24, 1.24,
-     0.40, 0.40, 0.40, 0.40, 3.12, 3.10, 3.10, 3.12,
-     2.40, 1.24));
-
-_speakerAzimuth(i) = ba.take(i + 1,
-    (-26.2,  26.2, -36.9,  36.9, -90.0,  90.0, -138.7, 138.7,
-       0.0, 180.0, -37.8,  37.8, -90.0,  90.0, -139.5, 139.5,
-     -53.1,  53.1,-126.9, 126.9, -38.9,  38.8, -141.1, 141.2,
-       0.0,   0.0));
-
-_speakerDistance(i) = ba.take(i + 1,
-    (4.88, 4.88, 4.85, 4.85, 3.36, 3.36, 4.49, 4.49,
-     5.05, 4.70, 4.34, 4.34, 2.70, 2.74, 3.99, 3.99,
-     2.53, 2.53, 2.53, 2.53, 3.62, 3.60, 3.60, 3.62,
-     2.40, 4.19));
-
-_speakerElevation(i) = ba.take(i + 1,
-    (28.1, 28.1, 28.3, 28.3, 43.2, 43.2, 30.8, 30.8,
-     27.1, 29.3, 16.6, 16.6, 27.3, 26.9, 18.1, 18.1,
-      9.1,  9.1,  9.1,  9.1, 59.5, 59.5, 59.5, 59.5,
-     90.0, 17.2));
+_hoaSpeakerIndex(i) = i + 2 * (i == 25);
+_speakerX(i) = gsl.speakerX(_hoaSpeakerIndex(i));
+_speakerY(i) = gsl.speakerY(_hoaSpeakerIndex(i));
+_speakerZ(i) = gsl.speakerZ(_hoaSpeakerIndex(i));
+_speakerAzimuth(i) = gsl.speakerAzimuth(_hoaSpeakerIndex(i));
+_speakerDistance(i) = gsl.speakerDistance(_hoaSpeakerIndex(i));
+_speakerElevation(i) = gsl.speakerElevation(_hoaSpeakerIndex(i));
 
 //----------------------`(gs).speakerCartesian`-------------------------
 // Returns a studio speaker's published Cartesian position in metres.
@@ -99,7 +71,7 @@ _speakerElevation(i) = ba.take(i + 1,
 // ```
 //---------------------------------------------------------------------
 declare speakerCartesian license "CC-BY-NC-SA-4.0";
-speakerCartesian(I) = _speakerX(I), _speakerY(I), _speakerZ(I);
+speakerCartesian(I) = gsl.speakerCartesian(_hoaSpeakerIndex(I));
 
 //----------------------`(gs).speakerSpherical`-------------------------
 // Returns the CSV's published azimuth, distance, and elevation.
@@ -124,7 +96,7 @@ speakerCartesian(I) = _speakerX(I), _speakerY(I), _speakerZ(I);
 // ```
 //---------------------------------------------------------------------
 declare speakerSpherical license "CC-BY-NC-SA-4.0";
-speakerSpherical(I) = _speakerAzimuth(I), _speakerDistance(I), _speakerElevation(I);
+speakerSpherical(I) = gsl.speakerSpherical(_hoaSpeakerIndex(I));
 
 //----------------------`(gs).speakerSphericalAt`-----------------------
 // Recomputes azimuth, distance, and elevation from Cartesian coordinates and
@@ -152,16 +124,8 @@ speakerSpherical(I) = _speakerAzimuth(I), _speakerDistance(I), _speakerElevation
 // ```
 //---------------------------------------------------------------------
 declare speakerSphericalAt license "CC-BY-NC-SA-4.0";
-speakerSphericalAt(I, lx, ly, lz) = azimuth, distance, elevation
-with {
-    dx = _speakerX(I) - lx;
-    dy = _speakerY(I) - ly;
-    dz = _speakerZ(I) - lz;
-    horizontal = sqrt(dx * dx + dy * dy);
-    azimuth = atan2(dx, dy) * 180.0 / ma.PI;
-    distance = sqrt(horizontal * horizontal + dz * dz);
-    elevation = atan2(dz, horizontal) * 180.0 / ma.PI;
-};
+speakerSphericalAt(I, lx, ly, lz) =
+    gsl.speakerSphericalAt(_hoaSpeakerIndex(I), lx, ly, lz);
 
 //----------------------`(gs).hardwareOutput`---------------------------
 // Maps a zero-based decoder output index to its one-based hardware channel.
@@ -185,7 +149,7 @@ with {
 // ```
 //---------------------------------------------------------------------
 declare hardwareOutput license "CC-BY-NC-SA-4.0";
-hardwareOutput(I) = I + 1 + 2 * (I == 25);
+hardwareOutput(I) = gsl.hardwareOutput(_hoaSpeakerIndex(I));
 
 _azimuthAt(i, lx, ly) = atan2(_speakerX(i) - lx, _speakerY(i) - ly) * 180.0 / ma.PI;
 
