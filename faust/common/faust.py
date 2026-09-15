@@ -29,7 +29,7 @@ PROJECTS = {
     "faustgen-additive-poly-midi": "Additive MIDI / synthese additive MIDI - 16 voices",
     "faustgen-quad-panner": "Quadraphonic panner / panoramique quadriphonique",
     "faustgen-stereo-orbit": "Stereo Orbit / Orbite stereo - eight speakers / huit enceintes",
-    "faustgen-mnemosphere-hoa4": "Mnemosphere HOA4 / Mnemosphere - 3D ACN SN3D + stereo preview",
+    "faustgen-mnemosphere-hoa4": "Mnemosphere HOA4 / Mnemosphere - studio decoder / decodeur studio - 26 speakers",
     "faustgen-8x16-panner": "8 inputs to 16 speakers / 8 entrees vers 16 enceintes",
     "faustgen-8x16-per-input-panner": "Independent 8x16 VBAP / VBAP 8x16 independant",
     "faustgen-8x16-per-input-vbap-reverb": "Independent 8x16 VBAP + Freeverb",
@@ -57,7 +57,8 @@ def include_options(dsp: Path) -> list[str]:
 
     This function neither checks that the DSP file exists nor launches a compiler.
     """
-    paths = [dsp.resolve().parent, DSP_DIR / "libraries/abclib/faustCodes/library"]
+    paths = [dsp.resolve().parent, DSP_DIR / "libraries",
+             DSP_DIR / "libraries/abclib/faustCodes/library"]
     return [argument for path in paths if path.is_dir() for argument in ("-I", str(path))]
 
 
@@ -194,7 +195,7 @@ class FaustProject:
 
     @property
     def outputs(self) -> int:
-        """Return the Faust audio output count, including any stereo preview channels."""
+        """Return the Faust audio output count reported by the compiler."""
         return self.metadata["outputs"]
 
     @property
@@ -293,21 +294,23 @@ def bundle_local_libraries(source: str, directory: Path) -> str:
     parsing. Alias deduplication recognizes simple declarations occupying a whole
     line, as matched by the regular expression.
     """
-    def library(match):
-        """Embed the matched library and isolate its definitions in an environment.
+    embedding = set()
 
-        ``match[1]`` is its relative path. Import and alias registries are local to this
-        environment, allowing separately embedded libraries to remain self-contained.
-        """
-        path = directory / match[1]
+    def environment(path):
+        """Embed path and recursively turn its local libraries into environments."""
+        path = path.resolve()
+        if path in embedding:
+            raise ValueError(f"Recursive local library dependency: {path}")
+        embedding.add(path)
         aliases = {}
         imported = set()
 
         def include(path):
-            """Read path and expand local imports using the shared imported registry.
+            """Read path and expand local imports and library environments.
 
             Return the expanded text to the caller. Imports absent from disk remain intact
-            so that the compiler can still resolve the standard Faust libraries.
+            so that the compiler can still resolve standard Faust libraries. A local
+            ``library`` expression remains namespaced in its own embedded environment.
             """
             def local_import(match):
                 """Resolve an import relative to the file containing the directive.
@@ -326,23 +329,45 @@ def bundle_local_libraries(source: str, directory: Path) -> str:
                 imported.add(child)
                 return include(child)
 
-            return re.sub(r'import\("([^"]+)"\);', local_import, path.read_text())
+            def local_library(match):
+                """Embed a library path relative to the file that refers to it."""
+                child = path.parent / match[1]
+                if not child.is_file() or child.resolve() == path:
+                    # Self references occur in faust2md documentation examples.
+                    return match[0]
+                return environment(child)
 
-        lines = []
-        for line in include(path).splitlines():
-            line = re.sub(r'^[ \t]+', lambda match: match[0].expandtabs(4), line).rstrip()
-            alias = re.fullmatch(r'(\w+)\s*=\s*library\("([^"]+)"\);', line)
-            if alias:
-                # Included files may declare the same standard library aliases;
-                # only identical declarations can be shared without ambiguity.
-                name, target = alias.groups()
-                if name in aliases:
-                    if aliases[name] != target:
-                        raise ValueError(f"Conflicting bundled library alias: {name}")
-                    continue
-                aliases[name] = target
-            lines.append(line)
-        return "environment {\n" + "\n".join(lines) + "\n}"
+            text = re.sub(r'import\("([^"]+)"\);', local_import, path.read_text())
+            return re.sub(r'library\("([^"]+)"\)', local_library, text)
+
+        try:
+            lines = []
+            depth = 0
+            for line in include(path).splitlines():
+                line = re.sub(r'^[ \t]+', lambda match: match[0].expandtabs(4), line).rstrip()
+                # Nested local libraries are already isolated environments; only
+                # deduplicate aliases in the current environment's top level.
+                alias = (re.fullmatch(r'(\w+)\s*=\s*library\("([^"]+)"\);', line)
+                         if depth == 0 else None)
+                if alias:
+                    # Included files may declare the same standard library aliases;
+                    # only identical declarations can be shared without ambiguity.
+                    name, target = alias.groups()
+                    if name in aliases:
+                        if aliases[name] != target:
+                            raise ValueError(f"Conflicting bundled library alias: {name}")
+                        continue
+                    aliases[name] = target
+                lines.append(line)
+                code = line.split("//", 1)[0]
+                depth += code.count("{") - code.count("}")
+            return "environment {\n" + "\n".join(lines) + "\n}"
+        finally:
+            embedding.remove(path)
+
+    def library(match):
+        """Embed a top-level ``libraries/...`` expression."""
+        return environment(directory / match[1])
 
     return re.sub(r'library\("(libraries/[^"]+)"\)', library, source)
 

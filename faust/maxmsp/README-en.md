@@ -75,7 +75,7 @@ environment, starting from an existing project.
 | Additive MIDI synthesis, 16 voices | 0 → 2 | [Additive MIDI](max-patches/faustgen-additive-poly-midi.maxpat) |
 | Circular quadraphonic panning | 1 → 4 | [Quad panner](max-patches/faustgen-quad-panner.maxpat) |
 | Two stereo orbits on eight speakers | 2 → 8 | [Stereo Orbit](max-patches/faustgen-stereo-orbit.maxpat) |
-| Fourth-order 3D ambisonic granular memory | 1 → 25 HOA + 2 stereo | [Mnemosphere](max-patches/faustgen-mnemosphere-hoa4.maxpat) |
+| HOA4 granular memory decoded for the studio | 1 → 26 speakers | [Mnemosphere](max-patches/faustgen-mnemosphere-hoa4.maxpat) |
 | Rotating field of eight sources | 8 → 16 | [8×16 panner](max-patches/faustgen-8x16-panner.maxpat) |
 | Independent VBAP for each input | 8 → 16 | [8×16 per-input](max-patches/faustgen-8x16-per-input-panner.maxpat) |
 | Independent VBAP and Freeverb per output | 8 → 16 | [VBAP + Freeverb](max-patches/faustgen-8x16-per-input-vbap-reverb.maxpat) |
@@ -117,26 +117,29 @@ and **latitude** place the clouds and set their vertical excursion.
 **focus** at 1 favors precision, and at 0 an omnidirectional field;
 **breathing** modulates precision. **diffraction**, **echo_ms** and
 **echo_feedback** control spatial echoes; **level** sets the overall level.
+**decoder** selects the decoder (`0`: abclib direct, `1`: Ambitools max-rE
+SAD) with a smoothed crossfade; **decoder_gain** is the final calibration trim
+in dB.
 
 For particle rain, try `grain_ms = 35`, `scarcity = 0.6`, `grain_mix = 1`
 and `orbit_hz = 0.09`. For suspended memory, try `grain_ms = 180`,
 `memory_ms = 1800`, `grain_feedback = 0.45` and `running = 0`. Keep the
 level moderate and adjust diffraction by ear.
 
-DSP outputs 1 to 25 contain **fourth-order 3D HOA, ACN/SN3D**:
-ACN 0 is omnidirectional; degrees 1, 2, 3 and 4 occupy ACN channels
-1–3, 4–8, 9–15 and 16–24. Feed these components to a speaker-array HOA
-decoder or a binaural decoder. Stereo preview uses the two extra DSP outputs
-and reaches audio outputs 1 and 2; it represents two virtual speakers at
-±30°, without HRTFs.
+The internal field remains **fourth-order 3D HOA, ACN/SN3D**, then the
+[studio decoder library](../dsp/libraries/README-en.md) produces 26 speaker
+feeds. DSP outputs 1–25 target hardware outputs 1–25; DSP output 26 is AtmoC
+and targets hardware output 28. Hardware outputs 26–27 remain reserved for the
+subwoofers and receive no HOA component.
 
 To record the field, click **open**, choose a **WAV** file, then click the message
-under **record** and **0** under **stop**. `mc.sfrecord~ 25` records the 25
-components as 32-bit float. Open a file again for each new take.
+under **record** and **0** under **stop**. `mc.sfrecord~ 26` records the 26
+decoded feeds as 32-bit float. Open a file again for each new take.
 
-Import the WAV into your decoding environment as **ACN/SN3D, order 4**.
-The two preview channels stay outside the recording. The [common DSP](../dsp/faustgen-mnemosphere-hoa4.dsp)
-uses abclib’s granulator, 3D encoder, wider and decorrelator.
+The recorded WAV contains speaker feeds, not an HOA file to decode again. The
+[common DSP](../dsp/faustgen-mnemosphere-hoa4.dsp) uses abclib’s granulator,
+3D encoder, wider and decorrelator, followed by the abclib/Ambitools decoders.
+Importing Ambitools places this DSP under CC-BY-NC-SA-4.0.
 
 ## Resources
 

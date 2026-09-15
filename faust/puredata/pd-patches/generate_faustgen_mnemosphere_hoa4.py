@@ -28,10 +28,10 @@ def build_patch(project):
     Returns:
         Native Patcher validated by finish_patch, without writing any files.
 
-    Real mono input or sine → DSP → 25 HOA channels and stereo preview.
-    Pd control outlet 0 is excluded from the writers: outlets 1..25 feed writesf~ 25
-    and outlets 26/27 feed dac~ 1 2. savepanel passes the chosen path through
-    list prepend/list trim to open a WAV with four bytes per sample. start/stop
+    Real mono input or sine → DSP → 26 decoded studio-speaker channels.
+    Pd control outlet 0 is excluded: audio outlets 1..25 target hardware 1..25,
+    and audio outlet 26 targets AtmoC on hardware 28. All 26 feeds also reach
+    writesf~ 26. savepanel opens a WAV with four bytes per sample; start/stop
     remain manual actions.
     Numeric widgets and initial values are added after audio routing. Runtime
     commands are host-specific; this builder does not automatically enable the DSP.
@@ -41,15 +41,14 @@ def build_patch(project):
     load = add_loadbang(patch)
     dsp = add_faust(patch, project)
     add_audio_input(patch, dsp, load, project, test_tone=True)
-    recorder = patch.add("writesf~ 25", x_pos=750, y_pos=200)
-    dac = patch.add("dac~ 1 2", x_pos=950, y_pos=200)
+    recorder = patch.add("writesf~ 26", x_pos=750, y_pos=200)
+    outputs = list(range(1, 26)) + [28]
+    dac = patch.add("dac~ " + " ".join(map(str, outputs)), x_pos=950, y_pos=200)
     # Offset by +1: faustgen2~ reserves outlet 0 for control messages.
-    for channel in range(25):
+    for channel in range(26):
         patch.link(dsp, recorder, outlet=channel + 1, inlet=channel)
-    for channel in range(2):
-        patch.link(dsp, dac, outlet=26 + channel, inlet=channel)
-    patch.add_comment("25 HOA channels: ACN 0..24 / SN3D", x_pos=650, y_pos=175)
-    patch.add_comment("Stereo preview / preecoute stereo", x_pos=950, y_pos=175)
+        patch.link(dsp, dac, outlet=channel + 1, inlet=channel)
+    patch.add_comment("Decoded speakers 1..25 + AtmoC -> hardware 28", x_pos=650, y_pos=175)
     open_file = patch.add_bang(label="choose-WAV", x_pos=650, y_pos=60)
     panel = patch.add("savepanel", x_pos=650, y_pos=100)
     # The list preserves the chosen path as an argument before converting
@@ -62,7 +61,7 @@ def build_patch(project):
     patch.link(trim, recorder)
     for text, x in (("start", 800), ("stop", 900)):
         patch.link(patch.add_msg(text, x_pos=x, y_pos=300), recorder)
-    patch.add_comment("Record HOA / enregistrer le champ HOA", x_pos=650, y_pos=275)
+    patch.add_comment("Record decoded feeds / enregistrer les sorties decodees", x_pos=650, y_pos=275)
     add_controls(patch, dsp, load, project)
     add_runtime_controls(patch, dsp)
     return finish_patch(patch)

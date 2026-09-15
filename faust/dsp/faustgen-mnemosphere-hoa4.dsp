@@ -1,14 +1,16 @@
 declare name "Mnemosphere HOA4";
 declare description "Four granular memories orbiting in a breathing fourth-order 3D ambisonic field";
-declare author "GRAME; uses abclib by Alain Bonardi, Paul Goutmann and collaborators";
-declare licence "LGPLv3";
+declare author "GRAME; uses abclib and Ambitools";
+declare license "CC-BY-NC-SA-4.0";
 declare ambisonic_order "4";
 declare ambisonic_channels "25";
 declare ambisonic_format "ACN/SN3D";
-declare monitor_channels "2";
+declare decoder_outputs "26";
+declare output_layout "GRAME speakers 1..25, then AtmoC on hardware output 28";
 
 import("stdfaust.lib");
 abc = library("libraries/abclib/faustCodes/library/abc.lib");
+gs = library("libraries/grame_studio_hoa.lib");
 
 grain_ms = hslider("grain_ms [unit:ms]", 90, 15, 240, 1) : si.smoo;
 memory_ms = hslider("memory_ms [unit:ms]", 1100, 50, 2000, 1) : si.smoo;
@@ -26,6 +28,8 @@ diffraction = hslider("diffraction", 0.45, 0, 1, 0.01) : si.smoo;
 echo_ms = hslider("echo_ms [unit:ms]", 330, 20, 800, 1) : si.smoo;
 echo_feedback = hslider("echo_feedback", 0.22, 0, 0.6, 0.01) : si.smoo;
 level = hslider("level", 0.25, 0, 0.7, 0.01) : si.smoo;
+decoder = nentry("decoder [style:menu{'abclib direct':0;'Ambitools SAD':1}]", 0, 0, 1, 1) : si.smoo;
+decoder_gain_db = hslider("decoder_gain [unit:dB]", -6, -60, 6, 0.1) : ba.db2linear : si.smoo;
 
 rad = ma.PI / 180;
 breath_phase = os[SAFE=1;].phasor(1, abs(orbit_hz) * 0.618033989 * running);
@@ -59,7 +63,14 @@ field = _ <: ((encoder(azimuth * rad, elevation * rad) :
                          echo_feedback, 0, 0) :
     par(channel, 25, *(level));
 
-// Outputs 1..25: ACN 0..24, SN3D. Outputs 26/27: two virtual-speaker preview.
-// This preview is stereo, without HRTFs; use a real HOA decoder for the studio.
-preview = abc.optimMaxRe3D(4) : abc.decoder3D(4, (30, -30), (0, 0), 0.2);
-process = fi.dcblocker : field <: si.bus(25), preview;
+// Both paths consume the same 25-channel ACN/SN3D field. `decoder` crossfades
+// between abclib direct decoding (0) and Ambitools max-rE SAD (1), avoiding a
+// hard switch. Their normalizations differ, so decoder_gain is a calibration
+// trim rather than a promise of equal loudness.
+decode = si.bus(25) <:
+    (gs.abclibDecoder26(4, decoder_gain_db * (1 - decoder)),
+     gs.samplingDecoder26(4, decoder_gain_db * decoder)) :> si.bus(26);
+
+// Outputs 1..25 feed hardware 1..25. Output 26 is AtmoC and must be routed by
+// the host to hardware 28. Hardware 26/27 remain reserved for SW1+L and SW2+R.
+process = fi.dcblocker : field : decode;

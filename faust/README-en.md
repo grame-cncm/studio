@@ -55,6 +55,11 @@ created from the JSON produced by Faust. The
 [`abclib` submodule](https://github.com/alainbonardi/abclib) provides libraries in
 `faustCodes/library/`.
 
+The [studio HOA decoder](dsp/libraries/README-en.md) adds two reusable matrices
+for the real geometry: abclib direct decoding and Ambitools max-rE SAD, with 25-
+or 26-main-speaker layouts. Its documentation covers AtmoC/sub routing,
+normalization, licensing and the limitations of the irregular dome.
+
 1. Edit the `.dsp` in `dsp/` to change the sound or parameters.
 2. Edit `build_patch()` in each environment's `generate_*.py` script to change
    its layout or routing.

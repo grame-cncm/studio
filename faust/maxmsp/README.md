@@ -76,7 +76,7 @@ et un générateur par environnement, en partant d’un projet existant.
 | Synthèse additive MIDI, 16 voix | 0 → 2 | [Additive MIDI](max-patches/faustgen-additive-poly-midi.maxpat) |
 | Panoramique circulaire quadriphonique | 1 → 4 | [Quad panner](max-patches/faustgen-quad-panner.maxpat) |
 | Deux orbites stéréo sur huit enceintes | 2 → 8 | [Stereo Orbit](max-patches/faustgen-stereo-orbit.maxpat) |
-| Granulation et mémoire ambisonique 3D d’ordre 4 | 1 → 25 HOA + 2 stéréo | [Mnémosphère](max-patches/faustgen-mnemosphere-hoa4.maxpat) |
+| Granulation HOA4 décodée sur le studio | 1 → 26 enceintes | [Mnémosphère](max-patches/faustgen-mnemosphere-hoa4.maxpat) |
 | Rotation d’un champ de huit sources | 8 → 16 | [8×16 panner](max-patches/faustgen-8x16-panner.maxpat) |
 | VBAP indépendant pour chaque entrée | 8 → 16 | [8×16 per-input](max-patches/faustgen-8x16-per-input-panner.maxpat) |
 | VBAP indépendant et Freeverb par sortie | 8 → 16 | [VBAP + Freeverb](max-patches/faustgen-8x16-per-input-vbap-reverb.maxpat) |
@@ -119,29 +119,31 @@ fige les positions et la respiration, tout en laissant vivre la mémoire sonore.
 excursion verticale. **focus** à 1 privilégie la précision, à 0 le champ
 omnidirectionnel ; **breathing** module cette précision. **diffraction**,
 **echo_ms** et **echo_feedback** règlent les échos spatiaux ; **level** règle
-le niveau général.
+le niveau général. **decoder** choisit le décodeur (`0` : abclib direct,
+`1` : SAD max-rE Ambitools) avec un fondu lissé entre les deux ;
+**decoder_gain** est le gain de calibration final en dB.
 
 Pour une pluie de particules, essayez `grain_ms = 35`, `scarcity = 0.6`,
 `grain_mix = 1` et `orbit_hz = 0.09`. Pour une mémoire suspendue, essayez
 `grain_ms = 180`, `memory_ms = 1800`, `grain_feedback = 0.45` et `running = 0`.
 Gardez un niveau modéré et ajustez la diffraction à l’écoute.
 
-Les sorties DSP 1 à 25 sont le champ **3D d’ordre 4, ACN/SN3D** :
-ACN 0 est omnidirectionnel, puis les degrés 1, 2, 3 et 4 occupent respectivement
-les canaux ACN 1–3, 4–8, 9–15 et 16–24. Ces composantes vont à un décodeur
-ambisonique adapté aux enceintes ou à un décodeur binaural. La préécoute
-stéréo utilise les deux sorties DSP supplémentaires et arrive sur les sorties
-audio 1 et 2 ; elle représente deux enceintes virtuelles à ±30°, sans HRTF.
+Le champ interne reste **3D d’ordre 4, ACN/SN3D**, puis la
+[bibliothèque de décodage du studio](../dsp/libraries/README.md) produit
+26 signaux d’enceintes. Les sorties DSP 1–25 vont aux sorties matérielles 1–25 ;
+la sortie DSP 26 correspond à AtmoC et va à la sortie matérielle 28. Les sorties
+matérielles 26–27 restent réservées aux subwoofers et ne reçoivent pas le HOA.
 
 Pour enregistrer le champ, cliquez sur **open**, choisissez un fichier **WAV**,
-puis sur le message sous **record**, et sur **0** sous **stop**. `mc.sfrecord~ 25`
-enregistre les 25 composantes en flottant 32 bits. Ouvrez de nouveau un fichier
+puis sur le message sous **record**, et sur **0** sous **stop**. `mc.sfrecord~ 26`
+enregistre les 26 sorties décodées en flottant 32 bits. Ouvrez de nouveau un fichier
 pour une nouvelle prise.
 
-Importez le WAV dans votre environnement de décodage en indiquant
-**ACN/SN3D, ordre 4**. Les deux canaux de préécoute restent hors du fichier.
-Le [DSP commun](../dsp/faustgen-mnemosphere-hoa4.dsp) utilise le granulateur,
-l’encodeur 3D, l’élargisseur et la décorrélation d’abclib.
+Le WAV enregistré contient des sorties d’enceintes, pas un fichier HOA à
+redécoder. Le [DSP commun](../dsp/faustgen-mnemosphere-hoa4.dsp) utilise le
+granulateur, l’encodeur 3D, l’élargisseur et la décorrélation d’abclib, puis les
+deux décodeurs abclib/Ambitools. L’import Ambitools place ce DSP sous
+CC-BY-NC-SA-4.0.
 
 ## Ressources
 

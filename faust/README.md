@@ -56,6 +56,12 @@ fichiers ; les interfaces sont créées à partir du JSON produit par Faust.
 Le sous-module [`abclib`](https://github.com/alainbonardi/abclib) fournit les bibliothèques dans
 `faustCodes/library/`.
 
+Le [décodeur HOA du studio](dsp/libraries/README.md) ajoute deux matrices
+réutilisables pour la géométrie réelle : décodage direct abclib et SAD max-rE
+Ambitools, avec dispositions de 25 ou 26 enceintes principales. Sa documentation
+détaille le routage d'AtmoC et des subs, les normalisations, les licences et les
+limites propres au dôme irrégulier.
+
 1. Modifiez le `.dsp` dans `dsp/` pour changer le son ou les paramètres.
 2. Modifiez le `build_patch()` du script `generate_*.py` de chaque environnement
    pour adapter sa disposition ou son câblage.

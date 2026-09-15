@@ -1,0 +1,541 @@
+//############################ grame_studio_hoa.lib ############################
+// Ambisonic decoding for the GRAME studio loudspeaker layout.
+//
+// This library provides:
+//
+// * the published Cartesian and spherical loudspeaker geometry;
+// * direct ACN/SN3D decoding based on abclib;
+// * max-rE Sampling Ambisonic Decoding based on Ambitools;
+// * 25-speaker and 26-speaker variants (the latter adds AtmoC).
+//
+// Its official prefix is `gs`. New public names use camelCase consistently.
+// It should be used through the `gs` environment:
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// process = gs.abclibDecoder26(4, 1.0);
+// ```
+//
+// Inputs to every decoder are ACN/SN3D. Subwoofers are excluded. See README.md
+// beside this file for output routing, algorithmic choices, and limitations.
+//
+// Copyright (C) 2026 GRAME, Centre national de creation musicale
+// SPDX-License-Identifier: CC-BY-NC-SA-4.0
+//##############################################################################
+
+abc = library("abclib/faustCodes/library/hoa2.lib");
+ambi = library("ambitools/faust/ylm.lib");
+ba = library("basics.lib");
+ma = library("maths.lib");
+si = library("signals.lib");
+
+declare name "GRAME studio HOA decoding library";
+declare version "1.0.0";
+declare author "GRAME";
+declare copyright "2026 GRAME, Centre national de creation musicale";
+declare license "CC-BY-NC-SA-4.0";
+
+//================================== Geometry ===================================
+// Coordinates are copied from speaker-description/gramestudio-speaker-setup.csv.
+// Axes: x points right, y points to the front, z points upwards, in metres.
+// Indices 0..24 are CSV speakers 1..25. Index 25 is CSV speaker 28 (AtmoC).
+// CSV speakers 26 and 27 are subwoofers and are intentionally not decoded.
+//===============================================================================
+
+_speakerX(i) = ba.take(i + 1,
+    (-1.80,  1.80, -2.55,  2.55, -2.45,  2.45, -2.55,  2.55,
+      0.00,  0.00, -2.55,  2.55, -2.40,  2.45, -2.47,  2.47,
+     -2.00,  2.00, -2.00,  2.00, -1.16,  1.16, -1.16,  1.16,
+      0.00,  0.00));
+
+_speakerY(i) = ba.take(i + 1,
+    ( 3.65,  3.65,  3.40,  3.40,  0.00,  0.00, -2.90, -2.90,
+      4.50, -4.10,  3.29,  3.29,  0.00,  0.00, -2.90, -2.90,
+      1.50,  1.50, -1.50, -1.50,  1.44,  1.44, -1.44, -1.44,
+      0.00,  4.00));
+
+_speakerZ(i) = ba.take(i + 1,
+    (2.30, 2.30, 2.30, 2.30, 2.30, 2.30, 2.30, 2.30,
+     2.30, 2.30, 1.24, 1.24, 1.24, 1.24, 1.24, 1.24,
+     0.40, 0.40, 0.40, 0.40, 3.12, 3.10, 3.10, 3.12,
+     2.40, 1.24));
+
+_speakerAzimuth(i) = ba.take(i + 1,
+    (-26.2,  26.2, -36.9,  36.9, -90.0,  90.0, -138.7, 138.7,
+       0.0, 180.0, -37.8,  37.8, -90.0,  90.0, -139.5, 139.5,
+     -53.1,  53.1,-126.9, 126.9, -38.9,  38.8, -141.1, 141.2,
+       0.0,   0.0));
+
+_speakerDistance(i) = ba.take(i + 1,
+    (4.88, 4.88, 4.85, 4.85, 3.36, 3.36, 4.49, 4.49,
+     5.05, 4.70, 4.34, 4.34, 2.70, 2.74, 3.99, 3.99,
+     2.53, 2.53, 2.53, 2.53, 3.62, 3.60, 3.60, 3.62,
+     2.40, 4.19));
+
+_speakerElevation(i) = ba.take(i + 1,
+    (28.1, 28.1, 28.3, 28.3, 43.2, 43.2, 30.8, 30.8,
+     27.1, 29.3, 16.6, 16.6, 27.3, 26.9, 18.1, 18.1,
+      9.1,  9.1,  9.1,  9.1, 59.5, 59.5, 59.5, 59.5,
+     90.0, 17.2));
+
+//----------------------`(gs).speakerCartesian`-------------------------
+// Returns a studio speaker's published Cartesian position in metres.
+//
+// #### Usage
+//
+// ```
+// gs.speakerCartesian(I) : _,_,_
+// ```
+//
+// Where:
+//
+// * `I`: compile-time speaker index, from 0 to 25.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// speakerCartesian_test = gs.speakerCartesian(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerCartesian license "CC-BY-NC-SA-4.0";
+speakerCartesian(I) = _speakerX(I), _speakerY(I), _speakerZ(I);
+
+//----------------------`(gs).speakerSpherical`-------------------------
+// Returns the CSV's published azimuth, distance, and elevation.
+// Angles are in degrees and distance is in metres. Azimuth is zero at the
+// front (+y), positive towards the right (+x).
+//
+// #### Usage
+//
+// ```
+// gs.speakerSpherical(I) : _,_,_
+// ```
+//
+// Where:
+//
+// * `I`: compile-time speaker index, from 0 to 25.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// speakerSpherical_test = gs.speakerSpherical(0);
+// ```
+//---------------------------------------------------------------------
+declare speakerSpherical license "CC-BY-NC-SA-4.0";
+speakerSpherical(I) = _speakerAzimuth(I), _speakerDistance(I), _speakerElevation(I);
+
+//----------------------`(gs).speakerSphericalAt`-----------------------
+// Recomputes azimuth, distance, and elevation from Cartesian coordinates and
+// a supplied listening position. Unlike `speakerSpherical`, these values do
+// not retain the rounding of the CSV's A/D/E columns.
+//
+// #### Usage
+//
+// ```
+// gs.speakerSphericalAt(I,lx,ly,lz) : _,_,_
+// ```
+//
+// Where:
+//
+// * `I`: compile-time speaker index, from 0 to 25;
+// * `lx`: listener x coordinate in metres;
+// * `ly`: listener y coordinate in metres;
+// * `lz`: listener z coordinate in metres.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// speakerSphericalAt_test = gs.speakerSphericalAt(0,0,0,1.24);
+// ```
+//---------------------------------------------------------------------
+declare speakerSphericalAt license "CC-BY-NC-SA-4.0";
+speakerSphericalAt(I, lx, ly, lz) = azimuth, distance, elevation
+with {
+    dx = _speakerX(I) - lx;
+    dy = _speakerY(I) - ly;
+    dz = _speakerZ(I) - lz;
+    horizontal = sqrt(dx * dx + dy * dy);
+    azimuth = atan2(dx, dy) * 180.0 / ma.PI;
+    distance = sqrt(horizontal * horizontal + dz * dz);
+    elevation = atan2(dz, horizontal) * 180.0 / ma.PI;
+};
+
+//----------------------`(gs).hardwareOutput`---------------------------
+// Maps a zero-based decoder output index to its one-based hardware channel.
+// Outputs 0..24 map to hardware 1..25; output 25 (AtmoC) maps to hardware 28.
+//
+// #### Usage
+//
+// ```
+// gs.hardwareOutput(I) : _
+// ```
+//
+// Where:
+//
+// * `I`: compile-time decoder output index, from 0 to 25.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// hardwareOutput_test = gs.hardwareOutput(25);
+// ```
+//---------------------------------------------------------------------
+declare hardwareOutput license "CC-BY-NC-SA-4.0";
+hardwareOutput(I) = I + 1 + 2 * (I == 25);
+
+_azimuthAt(i, lx, ly) = atan2(_speakerX(i) - lx, _speakerY(i) - ly) * 180.0 / ma.PI;
+
+_elevationAt(i, lx, ly, lz) = atan2(dz, sqrt(dx * dx + dy * dy)) * 180.0 / ma.PI
+with {
+    dx = _speakerX(i) - lx;
+    dy = _speakerY(i) - ly;
+    dz = _speakerZ(i) - lz;
+};
+
+_azimuthsAt(P, lx, ly) = par(i, P, _azimuthAt(i, lx, ly));
+_elevationsAt(P, lx, ly, lz) = par(i, P, _elevationAt(i, lx, ly, lz));
+_azimuths(P) = par(i, P, _speakerAzimuth(i));
+_elevations(P) = par(i, P, _speakerElevation(i));
+
+//========================== abclib direct decoder ============================
+// These functions call abclib's ACN/SN3D direct decoder. N and P must be
+// constant numerical expressions. P is supported for 25 or 26 only.
+//=============================================================================
+
+//----------------------`(gs).abclibDecoderAt`--------------------------
+// Decodes ACN/SN3D from directions recomputed for a listening position.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.abclibDecoderAt(N,P,gain,lx,ly,lz) : si.bus(P)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `P`: compile-time speaker count, 25 or 26;
+// * `gain`: final linear output gain;
+// * `lx`, `ly`, `lz`: listening position in metres.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// abclibDecoderAt_test = gs.abclibDecoderAt(4,26,1,0,0,1.24);
+// ```
+//---------------------------------------------------------------------
+declare abclibDecoderAt license "CC-BY-NC-SA-4.0";
+abclibDecoderAt(N, P, gain, lx, ly, lz) =
+    abc.decoder3D(N, _azimuthsAt(P, lx, ly), _elevationsAt(P, lx, ly, lz), gain);
+
+//----------------------`(gs).abclibDecoder`----------------------------
+// Decodes ACN/SN3D using the published A/E columns.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.abclibDecoder(N,P,gain) : si.bus(P)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `P`: compile-time speaker count, 25 or 26;
+// * `gain`: final linear output gain.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// abclibDecoder_test = gs.abclibDecoder(4,26,1);
+// ```
+//---------------------------------------------------------------------
+declare abclibDecoder license "CC-BY-NC-SA-4.0";
+abclibDecoder(N, P, gain) = abc.decoder3D(N, _azimuths(P), _elevations(P), gain);
+
+//----------------------`(gs).abclibDecoder25`--------------------------
+// 25-speaker shortcut for `abclibDecoder`.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.abclibDecoder25(N,gain) : si.bus(25)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `gain`: final linear output gain.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// abclibDecoder25_test = gs.abclibDecoder25(4,1);
+// ```
+//---------------------------------------------------------------------
+declare abclibDecoder25 license "CC-BY-NC-SA-4.0";
+abclibDecoder25(N, gain) = abclibDecoder(N, 25, gain);
+
+//----------------------`(gs).abclibDecoder26`--------------------------
+// 26-speaker shortcut for `abclibDecoder`, including AtmoC last.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.abclibDecoder26(N,gain) : si.bus(26)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `gain`: final linear output gain.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// abclibDecoder26_test = gs.abclibDecoder26(4,1);
+// ```
+//---------------------------------------------------------------------
+declare abclibDecoder26 license "CC-BY-NC-SA-4.0";
+abclibDecoder26(N, gain) = abclibDecoder(N, 26, gain);
+
+//----------------------`(gs).abclibMaxReDecoderAt`---------------------
+// Applies abclib's cosine max-rE optimization, then decodes for a supplied
+// listening position. Do not use it on an already max-rE-weighted HOA bus.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.abclibMaxReDecoderAt(N,P,gain,lx,ly,lz) : si.bus(P)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `P`: compile-time speaker count, 25 or 26;
+// * `gain`: final linear output gain;
+// * `lx`, `ly`, `lz`: listening position in metres.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// abclibMaxReDecoderAt_test = gs.abclibMaxReDecoderAt(4,26,1,0,0,1.24);
+// ```
+//---------------------------------------------------------------------
+declare abclibMaxReDecoderAt license "CC-BY-NC-SA-4.0";
+abclibMaxReDecoderAt(N, P, gain, lx, ly, lz) =
+    abc.optimMaxRe3D(N) : abclibDecoderAt(N, P, gain, lx, ly, lz);
+
+//----------------------`(gs).abclibMaxReDecoder`-----------------------
+// Applies abclib's cosine max-rE optimization, then decodes with published A/E.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.abclibMaxReDecoder(N,P,gain) : si.bus(P)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `P`: compile-time speaker count, 25 or 26;
+// * `gain`: final linear output gain.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// abclibMaxReDecoder_test = gs.abclibMaxReDecoder(4,26,1);
+// ```
+//---------------------------------------------------------------------
+declare abclibMaxReDecoder license "CC-BY-NC-SA-4.0";
+abclibMaxReDecoder(N, P, gain) = abc.optimMaxRe3D(N) : abclibDecoder(N, P, gain);
+
+//----------------------`(gs).abclibMaxReDecoder25`---------------------
+// 25-speaker shortcut for `abclibMaxReDecoder`.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.abclibMaxReDecoder25(N,gain) : si.bus(25)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `gain`: final linear output gain.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// abclibMaxReDecoder25_test = gs.abclibMaxReDecoder25(4,1);
+// ```
+//---------------------------------------------------------------------
+declare abclibMaxReDecoder25 license "CC-BY-NC-SA-4.0";
+abclibMaxReDecoder25(N, gain) = abclibMaxReDecoder(N, 25, gain);
+
+//----------------------`(gs).abclibMaxReDecoder26`---------------------
+// 26-speaker shortcut for `abclibMaxReDecoder`, including AtmoC last.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.abclibMaxReDecoder26(N,gain) : si.bus(26)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `gain`: final linear output gain.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// abclibMaxReDecoder26_test = gs.abclibMaxReDecoder26(4,1);
+// ```
+//---------------------------------------------------------------------
+declare abclibMaxReDecoder26 license "CC-BY-NC-SA-4.0";
+abclibMaxReDecoder26(N, gain) = abclibMaxReDecoder(N, 26, gain);
+
+//====================== Ambitools sampling decoder ===========================
+// Ambitools' `ylm` and `wre` operate in ACN/N3D. `_samplingInputWeights`
+// converts every ACN/SN3D degree l to N3D by sqrt(2l+1), exactly as Ambitools'
+// converter.dsp, and applies its max-rE weight. NFC is intentionally absent.
+//=============================================================================
+
+_samplingInputWeights(N) = par(l, N + 1,
+    par(m, 2 * l + 1, _ * sqrt(2 * l + 1) * ambi.wre(N, N, l)));
+
+_samplingRow(N, azimuthDegrees, elevationDegrees) =
+    (si.bus((N + 1)^2),
+     par(l, N + 1,
+         par(m, 2 * l + 1,
+             ambi.ylm(l, m - l,
+                      azimuthDegrees * ma.PI / 180.0,
+                      elevationDegrees * ma.PI / 180.0))))
+    : si.dot((N + 1)^2);
+
+//----------------------`(gs).samplingDecoderAt`------------------------
+// Applies Ambitools max-rE SAD to ACN/SN3D using directions recomputed for a
+// supplied listening position. This is the Ambitools `nfcon=0` case.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.samplingDecoderAt(N,P,gain,lx,ly,lz) : si.bus(P)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `P`: compile-time speaker count, 25 or 26;
+// * `gain`: final linear output gain;
+// * `lx`, `ly`, `lz`: listening position in metres.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// samplingDecoderAt_test = gs.samplingDecoderAt(4,26,1,0,0,1.24);
+// ```
+//
+// #### References
+//
+// * <https://github.com/pierrelc/ambitools>
+//---------------------------------------------------------------------
+declare samplingDecoderAt license "CC-BY-NC-SA-4.0";
+samplingDecoderAt(N, P, gain, lx, ly, lz) =
+    _samplingInputWeights(N)
+    <: par(i, P, _samplingRow(N, _azimuthAt(i, lx, ly), _elevationAt(i, lx, ly, lz)))
+    : par(i, P, *(gain));
+
+//----------------------`(gs).samplingDecoder`--------------------------
+// Applies Ambitools max-rE SAD to ACN/SN3D using the published A/E columns.
+// This is the Ambitools `nfcon=0` case.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.samplingDecoder(N,P,gain) : si.bus(P)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `P`: compile-time speaker count, 25 or 26;
+// * `gain`: final linear output gain.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// samplingDecoder_test = gs.samplingDecoder(4,26,1);
+// ```
+//
+// #### References
+//
+// * <https://github.com/pierrelc/ambitools>
+//---------------------------------------------------------------------
+declare samplingDecoder license "CC-BY-NC-SA-4.0";
+samplingDecoder(N, P, gain) =
+    _samplingInputWeights(N)
+    <: par(i, P, _samplingRow(N, _speakerAzimuth(i), _speakerElevation(i)))
+    : par(i, P, *(gain));
+
+//----------------------`(gs).samplingDecoder25`------------------------
+// 25-speaker shortcut for `samplingDecoder`.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.samplingDecoder25(N,gain) : si.bus(25)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `gain`: final linear output gain.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// samplingDecoder25_test = gs.samplingDecoder25(4,1);
+// ```
+//---------------------------------------------------------------------
+declare samplingDecoder25 license "CC-BY-NC-SA-4.0";
+samplingDecoder25(N, gain) = samplingDecoder(N, 25, gain);
+
+//----------------------`(gs).samplingDecoder26`------------------------
+// 26-speaker shortcut for `samplingDecoder`, including AtmoC last.
+//
+// #### Usage
+//
+// ```
+// si.bus((N+1)^2) : gs.samplingDecoder26(N,gain) : si.bus(26)
+// ```
+//
+// Where:
+//
+// * `N`: compile-time Ambisonic order;
+// * `gain`: final linear output gain.
+//
+// #### Test
+//
+// ```
+// gs = library("grame_studio_hoa.lib");
+// samplingDecoder26_test = gs.samplingDecoder26(4,1);
+// ```
+//---------------------------------------------------------------------
+declare samplingDecoder26 license "CC-BY-NC-SA-4.0";
+samplingDecoder26(N, gain) = samplingDecoder(N, 26, gain);

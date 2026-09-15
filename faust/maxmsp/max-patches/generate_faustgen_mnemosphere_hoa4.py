@@ -28,10 +28,10 @@ def build_patch(project):
     Returns:
         Native Patcher validated by finish_patch, without writing any files.
 
-    Real mono input or sine → DSP → 25 HOA channels and stereo preview.
-    DSP indices 0..24 are repacked into an MC bus for mc.sfrecord~ 25; only indices
-    25/26 reach mc.dac~ 1 2. The recorder is configured for float32 on loading but
-    does not start recording automatically.
+    Real mono input or sine → DSP → 26 decoded studio-speaker channels.
+    DSP indices 0..24 target hardware outputs 1..25; index 25 is AtmoC and targets
+    hardware output 28. All feeds are also repacked for mc.sfrecord~ 26. The
+    recorder is configured for float32 on loading but does not start automatically.
     Numeric widgets and initial values are added after audio routing. Runtime
     commands are host-specific; this builder does not automatically enable the DSP.
     Helper errors are propagated.
@@ -40,27 +40,23 @@ def build_patch(project):
     load = add_loadbang(patch)
     dsp = add_faust(patch, project)
     add_audio_input(patch, dsp, load, project, test_tone=True)
-    split = patch.add_textbox("mc.unpack~ 27", id="hoa_split", numinlets=1, numoutlets=27,
-                              outlettype=["signal"] * 27, patching_rect=[650, 200, 150, 22])
-    hoa = patch.add_textbox("mc.pack~ 25", id="hoa_bus", numinlets=25, numoutlets=1,
-                            outlettype=["multichannelsignal"], patching_rect=[650, 100, 150, 22])
-    monitor = patch.add_textbox("mc.pack~ 2", numinlets=2, numoutlets=1,
-                                outlettype=["multichannelsignal"], patching_rect=[850, 200, 90, 22])
-    dac = patch.add_textbox("mc.dac~ 1 2", id="dac_1", numinlets=1, numoutlets=0,
-                            patching_rect=[950, 200, 100, 22])
-    recorder = patch.add_textbox("mc.sfrecord~ 25 @bitdepth 32", id="hoa_recorder", numinlets=1, numoutlets=1,
-                                 outlettype=["signal"], patching_rect=[800, 100, 220, 22])
+    split = patch.add_textbox("mc.unpack~ 26", id="speaker_split", numinlets=1, numoutlets=26,
+                              outlettype=["signal"] * 26, patching_rect=[650, 200, 150, 22])
+    speakers = patch.add_textbox("mc.pack~ 26", id="speaker_bus", numinlets=26, numoutlets=1,
+                                 outlettype=["multichannelsignal"], patching_rect=[650, 100, 150, 22])
+    outputs = list(range(1, 26)) + [28]
+    dac = patch.add_textbox("mc.dac~ " + " ".join(map(str, outputs)), id="dac_1",
+                            numinlets=1, numoutlets=0, patching_rect=[900, 200, 300, 22])
+    recorder = patch.add_textbox("mc.sfrecord~ 26 @bitdepth 32", id="speaker_recorder",
+                                 numinlets=1, numoutlets=1, outlettype=["signal"],
+                                 patching_rect=[850, 100, 220, 22])
     patch.add_line(dsp, split)
-    # The first 25 signals form the fourth-order field, without decoding.
-    for channel in range(25):
-        patch.add_line(split, hoa, outlet=channel, inlet=channel)
-    # The remaining two signals provide a preview already computed by the DSP.
-    for channel in range(2):
-        patch.add_line(split, monitor, outlet=25 + channel, inlet=channel)
-    patch.add_line(monitor, dac)
-    patch.add_line(hoa, recorder)
-    patch.add_comment("25 HOA channels: ACN 0..24 / SN3D", patching_rect=[650, 65, 400, 20])
-    patch.add_comment("Stereo preview / preecoute stereo", patching_rect=[850, 175, 450, 20])
+    for channel in range(26):
+        patch.add_line(split, speakers, outlet=channel, inlet=channel)
+    patch.add_line(speakers, dac)
+    patch.add_line(speakers, recorder)
+    patch.add_comment("Decoded speakers 1..25 + AtmoC -> hardware 28",
+                      patching_rect=[650, 65, 450, 20])
     patch.add_comment("Choose WAVE / choisir WAV", patching_rect=[650, 270, 260, 20])
     patch.add_line(patch.add_message("open", patching_rect=[650, 300, 70, 22]), recorder)
     patch.add_line(patch.add_message("samptype float32, 1", patching_rect=[800, 300, 180, 22]), recorder)
