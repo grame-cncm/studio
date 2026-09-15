@@ -13,7 +13,7 @@ Le dossier [`maxmsp/`](maxmsp/) utilise **py2max** pour générer des patches
 compile dans Max. Les objets multicanaux Max permettent de faire évoluer le
 routage audio.
 
-- [`maxmsp/py2max/`](maxmsp/py2max/) : outil de génération des patches ;
+- [`maxmsp/py2max/`](https://github.com/shakfu/py2max) : outil de génération des patches ;
 - [`maxmsp/max-patches/`](maxmsp/max-patches/) : générateurs Python et patches prêts à ouvrir dans Max ;
 - **Guides d’utilisation :** [français](maxmsp/README.md) ·
   [English](maxmsp/README-en.md).
@@ -26,8 +26,8 @@ Le dossier [`puredata/`](puredata/) utilise **py2pd** pour générer des patches
 `.dsp` placé à côté du patch et le compile dans PureData. Chaque canal audio
 est relié séparément.
 
-- [`puredata/py2pd/`](puredata/py2pd/) : outil de génération des patches ;
-- [`puredata/pd-faustgen/`](puredata/pd-faustgen/) : external Faust pour PureData ;
+- [`puredata/py2pd/`](https://github.com/shakfu/py2pd) : outil de génération des patches ;
+- [`puredata/pd-faustgen/`](https://github.com/sletz/pd-faustgen) : external Faust pour PureData ;
 - [`puredata/pd-patches/`](puredata/pd-patches/) : générateurs Python, DSP exportés
   et patches prêts à ouvrir dans PureData ;
 - **Guides d’utilisation :** [français](puredata/README.md) ·

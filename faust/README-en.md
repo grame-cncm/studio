@@ -12,7 +12,7 @@ The [`maxmsp/`](maxmsp/) folder uses **py2max** to generate `.maxpat` patches.
 Faust code is embedded in **`mc.faustgen~`**, which compiles it inside Max.
 Max's multichannel objects let you adapt the audio routing.
 
-- [`maxmsp/py2max/`](maxmsp/py2max/): patch generation tool;
+- [`maxmsp/py2max/`](https://github.com/shakfu/py2max): patch generation tool;
 - [`maxmsp/max-patches/`](maxmsp/max-patches/): Python generators and patches ready to open in Max;
 - **User guides:** [English](maxmsp/README-en.md) ·
   [français](maxmsp/README.md).
@@ -25,8 +25,8 @@ The **`faustgen2~`** object, provided by the
 file next to the patch and compiles it inside PureData. Each audio channel
 is connected separately.
 
-- [`puredata/py2pd/`](puredata/py2pd/): patch generation tool;
-- [`puredata/pd-faustgen/`](puredata/pd-faustgen/): Faust external for PureData;
+- [`puredata/py2pd/`](https://github.com/shakfu/py2pd): patch generation tool;
+- [`puredata/pd-faustgen/`](https://github.com/sletz/pd-faustgen): Faust external for PureData;
 - [`puredata/pd-patches/`](puredata/pd-patches/): Python generators, exported DSPs
   and patches ready to open in PureData;
 - **User guides:** [English](puredata/README-en.md) ·
