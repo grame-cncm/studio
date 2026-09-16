@@ -1,5 +1,7 @@
 # Comparaison des décodeurs ambisoniques abclib, Ambitools et Spat5
 
+[English version](AMBISONIC-DECODERS-COMPARISON-en.md)
+
 Date de l'analyse : 16 septembre 2026.
 
 ## Objet

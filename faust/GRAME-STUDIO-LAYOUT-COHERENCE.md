@@ -1,5 +1,7 @@
 # Vérification de cohérence du layout du studio GRAME
 
+[English version](GRAME-STUDIO-LAYOUT-COHERENCE-en.md)
+
 Date de la vérification : 16 septembre 2026.
 
 ## Objet
