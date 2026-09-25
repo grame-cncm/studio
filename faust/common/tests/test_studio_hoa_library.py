@@ -50,9 +50,12 @@ def test_combined_library_can_be_embedded_without_local_paths(tmp_path):
         "process = gs.samplingDecoder26(4, 1.0);\n"
     )
     bundled = faust.bundle_local_libraries(source, faust.DSP_DIR)
-    assert 'abc = library("abclib/' not in bundled
-    assert 'ambi = library("ambitools/' not in bundled
-    assert 'gsl = library("grame_studio_layout.lib")' not in bundled
+    # The usage examples of the libraries keep their library() line in
+    # comments; only code must no longer refer to the local files.
+    code = "\n".join(line.split("//", 1)[0] for line in bundled.splitlines())
+    assert 'abc = library("abclib/' not in code
+    assert 'ambi = library("ambitools/' not in code
+    assert 'gsl = library("grame_studio_layout.lib")' not in code
     assert "/Users/" not in bundled
     dsp = tmp_path / "bundled.dsp"
     output = tmp_path / "bundled.cpp"
