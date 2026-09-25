@@ -76,6 +76,10 @@ ma = library("maths.lib");
 // ```
 // _ : up.clamp01 : _
 // ```
+//
+// Where:
+//
+// * input: signal or number to limit to [0, 1]
 clamp01(x) = max(0.0, min(1.0, x));
 
 //--- `(up.)average` ---
@@ -86,8 +90,13 @@ clamp01(x) = max(0.0, min(1.0, x));
 // #### Usage
 //
 // ```
-// _ : up.average(0.040) : _
+// _ : up.average(t) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant in seconds, floored at 1 ms
+// * input: signal to average
 //
 // #### References
 //
@@ -104,8 +113,13 @@ with {
 // #### Usage
 //
 // ```
-// _ : up.power(0.040) : _
+// _ : up.power(t) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant of the average, in seconds (floored at 1 ms)
+// * input: signal whose mean-square power is estimated
 //
 // #### References
 //
@@ -126,6 +140,11 @@ power(t, x) = x*x : average(t);
 // _ : up.bands : _,_,_
 // ```
 //
+// Where:
+//
+// * input: signal to split
+// * outputs: above 5 kHz, 200 Hz to 5 kHz, below 200 Hz
+//
 // #### References
 //
 // * [KZ16] sec. 3: complementary IIR filter bank whose bands sum to an
@@ -141,6 +160,10 @@ bands(x) = x : fi.filterbank(3, (200.0, 5000.0));
 // ```
 // _ : up.mid : _
 // ```
+//
+// Where:
+//
+// * input: signal whose 200 Hz to 5 kHz band is taken
 //
 // #### References
 //
@@ -162,6 +185,10 @@ mid(x) = bands(x) : !,_,!;
 // _ : up.outer : _
 // ```
 //
+// Where:
+//
+// * input: signal whose bands below 200 Hz and above 5 kHz are summed
+//
 // #### References
 //
 // * [KZ16] sec. 3.1: summing complementary outputs recovers the input
@@ -176,8 +203,13 @@ outer(x) = bands(x) : _,!,_ :> _;
 // #### Usage
 //
 // ```
-// up.allpass_p(1500.0)
+// up.allpass_p(fc)
 // ```
+//
+// Where:
+//
+// * `fc`: crossover frequency of the sum/difference pair, in Hz,
+//   0 < `fc` < SR/2
 //
 // #### References
 //
@@ -197,8 +229,13 @@ with {
 // #### Usage
 //
 // ```
-// _ : up.allpass1(up.allpass_p(1500.0)) : _
+// _ : up.allpass1(p) : _
 // ```
+//
+// Where:
+//
+// * `p`: pole, |`p`| < 1, for example `allpass_p(fc)`
+// * input: signal to filter
 //
 // #### References
 //
@@ -214,8 +251,14 @@ allpass1(p, x) = (x' - p*x) : + ~ *(p);
 // #### Usage
 //
 // ```
-// up.split_low(1200.0, x), up.split_high(1200.0, x)
+// _ : up.split_low(fc) : _
+// _ : up.split_high(fc) : _
 // ```
+//
+// Where:
+//
+// * `fc`: crossover frequency, in Hz, 0 < `fc` < SR/2
+// * input: signal to split; the two outputs of one `fc` sum to it
 //
 // #### References
 //
@@ -232,8 +275,14 @@ split_high(fc, x) = x - split_low(fc, x);
 // #### Usage
 //
 // ```
-// _ : up.allpass2(1000.0, 3.0) : _
+// _ : up.allpass2(fc, q) : _
 // ```
+//
+// Where:
+//
+// * `fc`: center frequency, in Hz, 0 < `fc` < SR/2
+// * `q`: quality factor, `q` > 0; the phase turns over about `fc/q`
+// * input: signal to filter
 allpass2(fc, q) = fi.tf2(a2, a1, 1.0, a1, a2)
 with {
     w = 2.0 * ma.PI * fc / float(ma.SR);
@@ -255,8 +304,14 @@ with {
 // #### Usage
 //
 // ```
-// _ : up.diffuser(0) : _
+// _ : up.diffuser(seed) : _
 // ```
+//
+// Where:
+//
+// * `seed`: non-negative integer, a constant numerical expression; its
+//   parity chooses the half of each slot, its value the jitter
+// * input: signal to filter
 //
 // #### References
 //
@@ -292,8 +347,17 @@ with {
 // #### Usage
 //
 // ```
-// up.relocate(0, 1.0, 0.5, a) : _
+// _ : up.relocate(seed, g, d) : _
 // ```
+//
+// Where:
+//
+// * `seed`: `diffuser` seed, a constant numerical expression; the DSP
+//   programs use 0 for the left side and 1 for the right side
+// * `g`: decorrelation, in [0, 1]
+// * `d`: relocation depth, in [0, 1]: the share of the ambience sent to
+//   the surround channel
+// * input: ambient component `a` of one side
 //
 // #### References
 //
@@ -327,8 +391,13 @@ relocate(seed, g, d, a) = d*a - g*min(d, 1.0-d) * diffuser(seed, a);
 // #### Usage
 //
 // ```
-// _ : up.surround_delay(10.0) : _
+// _ : up.surround_delay(ms) : _
 // ```
+//
+// Where:
+//
+// * `ms`: delay in milliseconds, `ms` >= 0, at most 8192 samples
+// * input: surround signal to delay
 //
 // #### References
 //
@@ -348,8 +417,15 @@ surround_delay(ms) = de.sdelay(8192, 1024, int(ms * float(ma.SR) / 1000.0 + 0.5)
 // #### Usage
 //
 // ```
-// up.center_share(0.040, 1.0, l, r) : _
+// _,_ : up.center_share(t, depth) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant of the power estimates, in seconds (floored at 1 ms)
+// * `depth`: extraction depth, in [0, 1]; 0 gives no center
+// * inputs `l`, `r`: left and right signals of one band, for example `mid`
+//   of each input channel
 //
 // #### References
 //
@@ -376,8 +452,14 @@ with {
 // #### Usage
 //
 // ```
-// up.ambient_mask(0.040, l, r) : _
+// _,_ : up.ambient_mask(t) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant of the power estimates, in seconds (floored at 1 ms)
+// * inputs `l`, `r`: left and right signals of one band, for example `mid`
+//   of each input channel
 //
 // #### References
 //
@@ -414,8 +496,14 @@ with {
 // #### Usage
 //
 // ```
-// up.coherence_mask(0.040, l, r) : _
+// _,_ : up.coherence_mask(t) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant of the power estimates, in seconds (floored at 1 ms)
+// * inputs `l`, `r`: left and right signals of one band, for example `mid`
+//   of each input channel
 //
 // #### References
 //

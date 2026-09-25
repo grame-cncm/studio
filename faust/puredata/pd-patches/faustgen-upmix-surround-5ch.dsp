@@ -1,5 +1,73 @@
 // Generated from faust/dsp/faustgen-upmix-surround-5ch.dsp; edit that source and regenerate.
-// Stereo to L, R, C, Ls, Rs (no synthesized LFE).
+//###################### faustgen-upmix-surround-5ch.dsp #######################
+// Adaptive surround upmix, stereo to 5.0: FL, FR, C, Ls, Rs.
+//
+// The center extraction of faustgen-upmix-center-3ch.dsp, plus the ambience moved to two
+// surround channels: balanced, weakly correlated content (reverberation,
+// applause, wide pads) goes partly to the surrounds, decorrelated from the
+// fronts and from each other, and delayed so that direct sound leaking into
+// them stays localized in front.
+//
+// Signal chain:
+//
+// 1. Band split and center share q, as in faustgen-upmix-center-3ch.dsp: the processing
+//    band l, r (200 Hz to 5 kHz) of each input, and L~, R~, the allpass
+//    versions of the inputs the fronts start from.
+// 2. `up.ambient_mask` estimates how much of the band is ambience:
+//    m = 2 min(Pl,Pr)/(Pl+Pr) * min(1, Pd/Ps), near 0 for a centered or a
+//    one-sided source, near 1 for balanced uncorrelated or anti-phase content.
+//    The ambient components are aL = m (l - q) and aR = m (r - q).
+// 3. `up.relocate` sends to each surround Ls = d aL - s D0(aL), and likewise
+//    Rs with D1, where d is `rear relocation`, s = decorrelation * min(d, 1-d),
+//    and D0, D1 are the dense allpasses of `up.diffuser` (seeds 0 and 1,
+//    interleaved). The part left in front, aL - Ls, and Ls are complementary
+//    combs: decorrelated, never boosted, and summing to aL.
+// 4. The fronts subtract q and the undelayed Ls, Rs; the surround outputs are
+//    then delayed by `surround delay` (`up.surround_delay`).
+//
+// Inputs: 1 = left, 2 = right.
+//
+// Outputs, in order (tau is the surround delay):
+//
+//   1  FL  L~ - q - Ls
+//   2  FR  R~ - q - Rs
+//   3  C   sqrt(2) q
+//   4  Ls  Ls delayed by tau
+//   5  Rs  Rs delayed by tau
+//
+// Controls:
+//
+// * `center extraction`, 0 to 1, default 1: depth of the center extraction.
+// * `rear relocation`, 0 to 1, default 0.5: share of the ambience sent to the
+//   surrounds. 0 mutes them; 1 moves all of the estimated ambience.
+// * `decorrelation`, 0 to 1, default 1: at 0 each surround is a scaled copy of
+//   the ambience it shares with its front; at 1 and depth 0.5 the two are
+//   complementary combs with zero correlation, and each surround alone has
+//   narrow notches. Only 300 Hz to 5 kHz is decorrelated.
+// * `surround delay`, 0 to 30 ms, default 10 ms, rounded to whole samples;
+//   a change crossfades over 1024 samples, without click.
+// * `analysis time`, 5 to 200 ms, default 40 ms: time constant of all power
+//   estimates.
+//
+// Invariant, with the surrounds advanced by their delay:
+// FL(n) + C(n)/sqrt(2) + Ls(n+tau) = L~(n), and the same on the right.
+//
+// Behavior: a centered source goes to C; a one-sided source stays on its
+// side; balanced uncorrelated noise goes partly to the surrounds; a coherent
+// anti-phase signal is treated as ambience by this single-band mask.
+//
+// Limitations: one analysis band, so a strong centered source reduces the
+// ambience estimate of the whole band; the surrounds only receive 200 Hz to
+// 5 kHz; after a reset, the first 1024 surround samples are not yet fully
+// delayed; no LFE; no compensation of loudspeaker distances.
+//
+// References (header of upmix.lib): [Vickers09] center, [KZ15] direct and
+// ambient separation, [Kraft22] decorrelation (sec. 5.4) and precedence
+// effect (sec. 3.6), [PT22] adjustable rear level, [KZ16] band split.
+//################################################################################
+
+// Copy of the faust-upmix project, where this program and libraries/upmix.lib
+// are maintained and tested.
 up = environment {
 declare name "upmix.lib";
 declare version "0.1.0";
@@ -79,6 +147,10 @@ ma = library("maths.lib");
 // ```
 // _ : up.clamp01 : _
 // ```
+//
+// Where:
+//
+// * input: signal or number to limit to [0, 1]
 clamp01(x) = max(0.0, min(1.0, x));
 
 //--- `(up.)average` ---
@@ -89,8 +161,13 @@ clamp01(x) = max(0.0, min(1.0, x));
 // #### Usage
 //
 // ```
-// _ : up.average(0.040) : _
+// _ : up.average(t) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant in seconds, floored at 1 ms
+// * input: signal to average
 //
 // #### References
 //
@@ -107,8 +184,13 @@ with {
 // #### Usage
 //
 // ```
-// _ : up.power(0.040) : _
+// _ : up.power(t) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant of the average, in seconds (floored at 1 ms)
+// * input: signal whose mean-square power is estimated
 //
 // #### References
 //
@@ -129,6 +211,11 @@ power(t, x) = x*x : average(t);
 // _ : up.bands : _,_,_
 // ```
 //
+// Where:
+//
+// * input: signal to split
+// * outputs: above 5 kHz, 200 Hz to 5 kHz, below 200 Hz
+//
 // #### References
 //
 // * [KZ16] sec. 3: complementary IIR filter bank whose bands sum to an
@@ -144,6 +231,10 @@ bands(x) = x : fi.filterbank(3, (200.0, 5000.0));
 // ```
 // _ : up.mid : _
 // ```
+//
+// Where:
+//
+// * input: signal whose 200 Hz to 5 kHz band is taken
 //
 // #### References
 //
@@ -165,6 +256,10 @@ mid(x) = bands(x) : !,_,!;
 // _ : up.outer : _
 // ```
 //
+// Where:
+//
+// * input: signal whose bands below 200 Hz and above 5 kHz are summed
+//
 // #### References
 //
 // * [KZ16] sec. 3.1: summing complementary outputs recovers the input
@@ -179,8 +274,13 @@ outer(x) = bands(x) : _,!,_ :> _;
 // #### Usage
 //
 // ```
-// up.allpass_p(1500.0)
+// up.allpass_p(fc)
 // ```
+//
+// Where:
+//
+// * `fc`: crossover frequency of the sum/difference pair, in Hz,
+//   0 < `fc` < SR/2
 //
 // #### References
 //
@@ -200,8 +300,13 @@ with {
 // #### Usage
 //
 // ```
-// _ : up.allpass1(up.allpass_p(1500.0)) : _
+// _ : up.allpass1(p) : _
 // ```
+//
+// Where:
+//
+// * `p`: pole, |`p`| < 1, for example `allpass_p(fc)`
+// * input: signal to filter
 //
 // #### References
 //
@@ -217,8 +322,14 @@ allpass1(p, x) = (x' - p*x) : + ~ *(p);
 // #### Usage
 //
 // ```
-// up.split_low(1200.0, x), up.split_high(1200.0, x)
+// _ : up.split_low(fc) : _
+// _ : up.split_high(fc) : _
 // ```
+//
+// Where:
+//
+// * `fc`: crossover frequency, in Hz, 0 < `fc` < SR/2
+// * input: signal to split; the two outputs of one `fc` sum to it
 //
 // #### References
 //
@@ -235,8 +346,14 @@ split_high(fc, x) = x - split_low(fc, x);
 // #### Usage
 //
 // ```
-// _ : up.allpass2(1000.0, 3.0) : _
+// _ : up.allpass2(fc, q) : _
 // ```
+//
+// Where:
+//
+// * `fc`: center frequency, in Hz, 0 < `fc` < SR/2
+// * `q`: quality factor, `q` > 0; the phase turns over about `fc/q`
+// * input: signal to filter
 allpass2(fc, q) = fi.tf2(a2, a1, 1.0, a1, a2)
 with {
     w = 2.0 * ma.PI * fc / float(ma.SR);
@@ -258,8 +375,14 @@ with {
 // #### Usage
 //
 // ```
-// _ : up.diffuser(0) : _
+// _ : up.diffuser(seed) : _
 // ```
+//
+// Where:
+//
+// * `seed`: non-negative integer, a constant numerical expression; its
+//   parity chooses the half of each slot, its value the jitter
+// * input: signal to filter
 //
 // #### References
 //
@@ -295,8 +418,17 @@ with {
 // #### Usage
 //
 // ```
-// up.relocate(0, 1.0, 0.5, a) : _
+// _ : up.relocate(seed, g, d) : _
 // ```
+//
+// Where:
+//
+// * `seed`: `diffuser` seed, a constant numerical expression; the DSP
+//   programs use 0 for the left side and 1 for the right side
+// * `g`: decorrelation, in [0, 1]
+// * `d`: relocation depth, in [0, 1]: the share of the ambience sent to
+//   the surround channel
+// * input: ambient component `a` of one side
 //
 // #### References
 //
@@ -330,8 +462,13 @@ relocate(seed, g, d, a) = d*a - g*min(d, 1.0-d) * diffuser(seed, a);
 // #### Usage
 //
 // ```
-// _ : up.surround_delay(10.0) : _
+// _ : up.surround_delay(ms) : _
 // ```
+//
+// Where:
+//
+// * `ms`: delay in milliseconds, `ms` >= 0, at most 8192 samples
+// * input: surround signal to delay
 //
 // #### References
 //
@@ -351,8 +488,15 @@ surround_delay(ms) = de.sdelay(8192, 1024, int(ms * float(ma.SR) / 1000.0 + 0.5)
 // #### Usage
 //
 // ```
-// up.center_share(0.040, 1.0, l, r) : _
+// _,_ : up.center_share(t, depth) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant of the power estimates, in seconds (floored at 1 ms)
+// * `depth`: extraction depth, in [0, 1]; 0 gives no center
+// * inputs `l`, `r`: left and right signals of one band, for example `mid`
+//   of each input channel
 //
 // #### References
 //
@@ -379,8 +523,14 @@ with {
 // #### Usage
 //
 // ```
-// up.ambient_mask(0.040, l, r) : _
+// _,_ : up.ambient_mask(t) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant of the power estimates, in seconds (floored at 1 ms)
+// * inputs `l`, `r`: left and right signals of one band, for example `mid`
+//   of each input channel
 //
 // #### References
 //
@@ -417,8 +567,14 @@ with {
 // #### Usage
 //
 // ```
-// up.coherence_mask(0.040, l, r) : _
+// _,_ : up.coherence_mask(t) : _
 // ```
+//
+// Where:
+//
+// * `t`: time constant of the power estimates, in seconds (floored at 1 ms)
+// * inputs `l`, `r`: left and right signals of one band, for example `mid`
+//   of each input channel
 //
 // #### References
 //
@@ -436,25 +592,38 @@ with {
 };
 
 declare name "Adaptive surround 2 to 5";
+declare description "Stereo to 5.0 (FL, FR, C, Ls, Rs): center extraction and decorrelated, delayed ambience";
 declare author "GRAME";
-declare description "Maintained in the faust-upmix project; see libraries/upmix.lib";
+declare version "0.2.0";
 
-centerDepth = hslider("center extraction", 1.0, 0.0, 1.0, 0.01);
-rearDepth = hslider("rear relocation", 0.5, 0.0, 1.0, 0.01);
-decorrelation = hslider("decorrelation", 1.0, 0.0, 1.0, 0.01);
-surroundDelay = hslider("surround delay [unit:ms]", 10.0, 0.0, 30.0, 0.1);
-analysisTime = hslider("analysis time [unit:ms]", 40.0, 5.0, 200.0, 1.0) / 1000.0;
+// Depth of the center extraction, 0 (no center) to 1.
+centerDepth = hslider("center extraction [tooltip:Share of the centered sound sent to the center, 0 gives no center]",
+                      1.0, 0.0, 1.0, 0.01);
+// Share of the estimated ambience moved to the surrounds.
+rearDepth = hslider("rear relocation [tooltip:Share of the ambience sent to the surrounds, 0 mutes them]",
+                    0.5, 0.0, 1.0, 0.01);
+// Strength of the front/surround and left/right decorrelation.
+decorrelation = hslider("decorrelation [tooltip:0 copies the ambience, 1 decorrelates it with complementary combs]",
+                        1.0, 0.0, 1.0, 0.01);
+// Precedence delay of the surround outputs.
+surroundDelay = hslider("surround delay [unit:ms] [tooltip:Delay of the surround outputs, keeps leaking direct sound in front]",
+                        10.0, 0.0, 30.0, 0.1);
+// Time constant of the power estimates, converted from ms to seconds.
+analysisTime = hslider("analysis time [unit:ms] [tooltip:Time constant of the power estimates]",
+                       40.0, 5.0, 200.0, 1.0) / 1000.0;
 
-// The fronts subtract the undelayed ls, rs; only the surround outputs are delayed.
+// 4. The fronts subtract the undelayed ls, rs; only the surround outputs are delayed.
 process(l, r) = up.outer(l)+lm-share-ls, up.outer(r)+rm-share-rs, share*sqrt(2.0),
                 (ls, rs : par(i, 2, up.surround_delay(surroundDelay)))
 with {
+    // 1. Processing band and center share.
     lm = up.mid(l);
     rm = up.mid(r);
     share = up.center_share(analysisTime, centerDepth, lm, rm);
+    // 2. Ambience estimate of the band, shared by both sides.
     mask = up.ambient_mask(analysisTime, lm, rm);
-    // One diffuser seed per side: surrounds decorrelated from the fronts
-    // and from each other.
+    // 3. One diffuser seed per side: surrounds decorrelated from the fronts
+    //    and from each other.
     ls = up.relocate(0, decorrelation, rearDepth, (lm-share) * mask);
     rs = up.relocate(1, decorrelation, rearDepth, (rm-share) * mask);
 };
