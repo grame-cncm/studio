@@ -36,6 +36,10 @@ PROJECTS = {
     "faustgen-mono-stereo-spatial-reverb": "Mono to stereo / mono vers stereo - Zita Rev1",
     "faustgen-mono-6out-zita": "Mono to six outputs / mono vers six sorties - Zita Rev1",
     "faustgen-abclib-2d-vbap6": "abclib 2D VBAP - six speakers / six enceintes",
+    "faustgen-upmix-center-3ch": "Stereo upmix 2 to 3 / upmix stereo 2 vers 3 - center / centre",
+    "faustgen-upmix-surround-5ch": "Stereo upmix 2 to 5.0 / upmix stereo 2 vers 5.0",
+    "faustgen-upmix-surround-7ch": "Stereo upmix 2 to 7.0 / upmix stereo 2 vers 7.0",
+    "faustgen-upmix-surround-7ch-multiband": "Stereo upmix 2 to 7.0, four bands / upmix stereo 2 vers 7.0, quatre bandes",
 }
 GENERATORS = {
     stem: "generate_" + stem.replace("faustgen-abclib", "abclib").replace(

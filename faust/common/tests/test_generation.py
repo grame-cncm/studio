@@ -25,7 +25,31 @@ from common import faust  # noqa: E402
 from max_helpers import control_address, generate as generate_max  # noqa: E402
 from pd_helpers import generate as generate_pd, pd_name  # noqa: E402
 
-SIGNATURES = [(0, 2), (1, 4), (2, 8), (1, 26), (8, 16), (8, 16), (8, 16), (1, 2), (1, 6), (1, 6)]
+SIGNATURES = [(0, 2), (1, 4), (2, 8), (1, 26), (8, 16), (8, 16), (8, 16), (1, 2), (1, 6), (1, 6),
+              (2, 3), (2, 5), (2, 7), (2, 7)]
+# Upmix outputs FL, FR, C, then surrounds, on the M layer and AtmoC.
+UPMIX_SPEAKERS = ["M1", "M2", "AtmoC", "M3", "M4", "M5", "M6"]
+UPMIX = [stem for stem in faust.PROJECTS if stem.startswith("faustgen-upmix-")]
+
+
+def studio_speakers():
+    """Read the studio CSV: {name: (hardware output, azimuth, height)}.
+
+    Rows are numbered from 1 like the hardware outputs; the file uses a BOM,
+    semicolons, and decimal commas.
+    """
+    csv = ROOT.parent / "speaker-description/gramestudio-speaker-setup.csv"
+    speakers = {}
+    for line in csv.read_text(encoding="utf-8-sig").splitlines()[1:]:
+        fields = line.split(";")
+        speakers[fields[1]] = (int(fields[0]), float(fields[6].replace(",", ".")),
+                               float(fields[4].replace(",", ".")))
+    return speakers
+
+
+def studio_output(name):
+    """Return the hardware output of the studio speaker called name."""
+    return studio_speakers()[name][0]
 
 
 def document(path):
@@ -66,7 +90,12 @@ def test_same_dsp_ports_controls_and_initialization_in_both_hosts(tmp_path, stem
     assert dsp["text"] == "mc.faustgen~"
     assert dsp["sourcecode"] == dsp_path.read_text() == project.source
     assert dsp["sourcecode_size"] == len(project.source.encode("utf-8"))
-    outputs = list(range(1, 26)) + [28] if stem == "faustgen-mnemosphere-hoa4" else range(1, project.outputs + 1)
+    if stem == "faustgen-mnemosphere-hoa4":
+        outputs = list(range(1, 26)) + [28]
+    elif stem in UPMIX:
+        outputs = [studio_output(name) for name in UPMIX_SPEAKERS[:project.outputs]]
+    else:
+        outputs = range(1, project.outputs + 1)
     assert boxes["dac_1"]["text"] == "mc.dac~ " + " ".join(map(str, outputs))
     assert f"faustgen2~ {stem}" in pd_path.read_text()
     assert "/Users/" not in project.source and "/private/" not in project.source
@@ -145,3 +174,29 @@ def test_check_detects_stale_assets_without_modifying_them(tmp_path, directory, 
     result = subprocess.run(command, capture_output=True, text=True)
     assert result.returncode != 0 and "Regenerate" in result.stderr
     assert stale == {path.name: (path.read_bytes(), path.stat().st_mtime_ns) for path in paths}
+
+
+@pytest.mark.parametrize("stem", UPMIX)
+def test_upmix_outputs_reach_named_studio_speakers(stem):
+    """Both generators send the upmix outputs to the same named studio speakers.
+
+    FL/FR/C then the surrounds must be M1, M2, AtmoC, M3..M6 in that order, one
+    height (the M layer and AtmoC), left speakers at negative azimuths and right
+    ones at positive azimuths, as in a 5.0 or 7.0 layout.
+    """
+    import importlib.util
+    lists = []
+    for directory in (MAX, PD):
+        path = directory / faust.GENERATORS[stem]
+        spec = importlib.util.spec_from_file_location(f"{directory.name}_{stem}_speakers", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        lists.append(module.SPEAKERS)
+    assert lists[0] == lists[1]
+    speakers = studio_speakers()
+    names = UPMIX_SPEAKERS[:len(lists[0])]
+    assert lists[0] == [speakers[name][0] for name in names]
+    assert {speakers[name][2] for name in names} == {1.24}
+    azimuths = [speakers[name][1] for name in names]
+    assert azimuths[2] == 0
+    assert all(left < 0 < right for left, right in zip(azimuths[0::2][:1] + azimuths[3::2], azimuths[1::2][:1] + azimuths[4::2]))

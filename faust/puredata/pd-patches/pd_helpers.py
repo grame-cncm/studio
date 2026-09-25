@@ -239,21 +239,87 @@ def add_audio_input(p: Patcher, dsp, load, project: FaustProject, *, test_tone=F
         p.link(source, dsp, outlet=channel, inlet=channel + 1)
 
 
-def add_audio_output(p: Patcher, dsp, load, project: FaustProject, *, master_level=None):
+def add_stereo_scene_input(p: Patcher, dsp, load, project: FaustProject):
+    """Connect adc~ 1 2 to Faust, or a test scene selected by a toggle.
+
+    Args:
+        p: Patcher to modify.
+        dsp: faustgen2~ whose audio inlets 1 and 2 receive the stereo pair.
+        load: Initialization trigger selecting the hardware inputs.
+        project: Must have exactly two audio inputs.
+
+    Raises:
+        ValueError: The project does not have two inputs.
+
+    The test scene has a centered 440 Hz sine at 0.1 in both channels and an
+    independent white noise at 0.05 in each channel: a phantom center over a
+    decorrelated background, which an upmix should send to the center and the
+    surrounds respectively. The sine breathes, one second on and one off (a
+    0.5 Hz cosine clipped to 0..1), because a single-band upmix sees little
+    ambience while a strong centered source plays. As in add_audio_input, the toggle and its inverse
+    open one of two gains summed per channel. Return None.
+    """
+    if project.inputs != 2:
+        raise ValueError("The stereo test scene needs a two-input DSP.")
+    adc = p.add("adc~ 1 2", x_pos=30, y_pos=100)
+    choice = p.add_toggle(label="test-scene", x_pos=200, y_pos=100)
+    invert = p.add("== 0", x_pos=300, y_pos=100)
+    p.link(choice, invert)
+    initial(p, load, choice, 0, x=300, y=60)
+    tone = p.add("osc~ 440", x_pos=30, y_pos=140)
+    breath = p.add("osc~ 0.5", x_pos=30, y_pos=60)
+    clipped = p.add("clip~ 0 1", x_pos=120, y_pos=60)
+    pulsed = p.add("*~", x_pos=30, y_pos=160)
+    centered = p.add("*~ 0.1", x_pos=30, y_pos=175)
+    p.link(breath, clipped)
+    p.link(tone, pulsed)
+    p.link(clipped, pulsed, inlet=1)
+    p.link(pulsed, centered)
+    for channel in range(2):
+        x = 30 + channel * 180
+        # One noise~ per channel: independent backgrounds, a decorrelated ambience.
+        noise = p.add("noise~", x_pos=x + 90, y_pos=140)
+        quiet = p.add("*~ 0.05", x_pos=x + 90, y_pos=175)
+        scene = p.add("+~", x_pos=x, y_pos=210)
+        tone_gain = p.add("*~", x_pos=x, y_pos=240)
+        real_gain = p.add("*~", x_pos=x + 90, y_pos=240)
+        summed = p.add("+~", x_pos=x, y_pos=280)
+        p.link(noise, quiet)
+        p.link(centered, scene)
+        p.link(quiet, scene, inlet=1)
+        p.link(scene, tone_gain)
+        p.link(choice, tone_gain, inlet=1)
+        p.link(adc, real_gain, outlet=channel)
+        p.link(invert, real_gain, inlet=1)
+        p.link(real_gain, summed)
+        p.link(tone_gain, summed, inlet=1)
+        p.link(summed, dsp, inlet=channel + 1)
+
+
+def add_audio_output(p: Patcher, dsp, load, project: FaustProject, *, master_level=None,
+                     hardware=None):
     """Connect Faust outputs to dac~, optionally adding shared master gain.
 
     Args:
         p: Patcher to modify.
         dsp: faustgen2~ whose audio outlets start at index 1.
         load: Initialization trigger for the master level.
-        project: Channel count sent to hardware DAC channels 1 to N.
+        project: Channel count sent to hardware DAC channels 1 to N by default.
         master_level: Initial 0..1 level, or None for direct routing.
+        hardware: Hardware output for each Faust output, in order, or None for
+            1 to N. dac~ inlet c plays on the c-th listed output.
+
+    Raises:
+        ValueError: hardware does not list exactly one output per Faust output.
 
     When a level is requested, one *~ per channel shares the same volume widget.
     Faust outlet c+1 reaches DAC inlet c. No limiter is added and the DSP is not
     enabled. Mnemosphere uses custom HOA/preview routing. Return None.
     """
-    dac = p.add("dac~ " + " ".join(map(str, range(1, project.outputs + 1))), x_pos=850, y_pos=200)
+    hardware = list(range(1, project.outputs + 1)) if hardware is None else list(hardware)
+    if len(hardware) != project.outputs:
+        raise ValueError("hardware must list one output per Faust output.")
+    dac = p.add("dac~ " + " ".join(map(str, hardware)), x_pos=850, y_pos=200)
     volume = None
     if master_level is not None:
         volume = p.add_numberbox(min_val=0, max_val=1, label="output-level", x_pos=800, y_pos=100)

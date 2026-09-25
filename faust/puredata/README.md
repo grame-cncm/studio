@@ -88,7 +88,7 @@ nécessite donc `num_inlets=3` et `num_outlets=3` dans py2pd.
 
 ## Projets Faust disponibles
 
-Les dix projets utilisent les mêmes [sources Faust](../dsp/) que
+Les quatorze projets utilisent les mêmes [sources Faust](../dsp/) que
 [Max/MSP](../maxmsp/README.md) :
 
 | Projet | Entrées → sorties audio | Patch |
@@ -103,6 +103,10 @@ Les dix projets utilisent les mêmes [sources Faust](../dsp/) que
 | Panoramique stéréo et Zita Rev1 | 1 → 2 | [Stereo Zita](pd-patches/faustgen-mono-stereo-spatial-reverb.pd) |
 | Panoramique circulaire et trois Zita stéréo | 1 → 6 | [Six-output Zita](pd-patches/faustgen-mono-6out-zita.pd) |
 | VBAP abclib, angles des enceintes réglables | 1 → 6 | [abclib VBAP6](pd-patches/faustgen-abclib-2d-vbap6.pd) |
+| Upmix stéréo, extraction adaptative du centre | 2 → 3 | [Upmix 2→3](pd-patches/faustgen-upmix-center-3ch.pd) |
+| Upmix stéréo 5.0, ambiance décorrélée | 2 → 5 | [Upmix 2→5.0](pd-patches/faustgen-upmix-surround-5ch.pd) |
+| Upmix stéréo 7.0, latérales et arrières | 2 → 7 | [Upmix 2→7.0](pd-patches/faustgen-upmix-surround-7ch.pd) |
+| Upmix stéréo 7.0, analyse en quatre bandes | 2 → 7 | [Upmix 2→7.0 multibande](pd-patches/faustgen-upmix-surround-7ch-multiband.pd) |
 
 Pour générer tous ces patches et leurs aperçus SVG :
 
@@ -217,6 +221,45 @@ redécoder. Le [DSP commun](../dsp/faustgen-mnemosphere-hoa4.dsp) utilise le
 granulateur, l’encodeur 3D, l’élargisseur et la décorrélation d’abclib, puis les
 deux décodeurs abclib/Ambitools. L’import Ambitools place ce DSP sous
 CC-BY-NC-SA-4.0.
+
+## Upmix stéréo
+
+Quatre patches répartissent une source stéréo sur les enceintes du studio :
+[2 → 3](pd-patches/faustgen-upmix-center-3ch.pd) extrait un centre,
+[2 → 5.0](pd-patches/faustgen-upmix-surround-5ch.pd) ajoute deux surrounds,
+[2 → 7.0](pd-patches/faustgen-upmix-surround-7ch.pd) les partage entre
+latérales et arrières, et [2 → 7.0 multibande](pd-patches/faustgen-upmix-surround-7ch-multiband.pd)
+analyse l'image stéréo dans quatre bandes au lieu d'une. Il n'y a pas de LFE.
+
+Branchez une source stéréo sur les entrées 1 et 2, activez **DSP**, ou activez
+**test-scene** : une sinusoïde de 440 Hz centrée, qui joue une seconde sur deux,
+sur deux bruits indépendants. Le son centré va au centre ; pendant ses silences,
+le bruit décorrélé part dans les surrounds.
+
+Les sorties suivent la couche M du studio, à hauteur d'oreille, et AtmoC :
+
+| Sortie du DSP | Enceinte | Sortie matérielle |
+| --- | --- | --- |
+| FL, FR | M1, M2 (±37,8°) | 11, 12 |
+| C | AtmoC (0°) | 28 |
+| Ls, Rs (5.0) ou Lss, Rss (7.0) | M3, M4 (±90°) | 13, 14 |
+| Lrs, Rrs (7.0) | M5, M6 (±139,5°) | 15, 16 |
+
+**center extraction** règle la part du son centré envoyée au centre (0 : aucun
+centre) et **analysis time** la constante de temps de l'analyse, en ms.
+**rear relocation** (5.0) ou **surround relocation** (7.0) règle la part de
+l'ambiance envoyée aux surrounds ; 0 les rend muets. **decorrelation** décorrèle
+les surrounds des canaux avant et entre eux (0 : copies de l'ambiance,
+1 : décorrélation maximale, avec une coloration en peigne de chaque surround).
+**surround delay** retarde les surrounds, en ms, pour que le son direct qui y
+fuit reste localisé à l'avant. Les messages correspondants sont `center-extraction`, `analysis-time`, `rear-relocation`, `surround-relocation`, `decorrelation` et `surround-delay`.
+
+Seule la bande 200 Hz–5 kHz est analysée ; les graves et les aigus restent à
+l'avant. Un son centré n'est extrait qu'en partie quand une ambiance joue dans la
+même bande : la version multibande sépare mieux les deux. Le traitement ne
+compense pas les distances des enceintes (M3 et M4 sont plus proches que M1 et
+M2). Le DSP commun importe [`upmix.lib`](../dsp/libraries/upmix.lib), dont les
+fonctions citent les articles utilisés.
 
 ## Ressources
 

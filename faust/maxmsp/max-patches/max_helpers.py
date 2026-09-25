@@ -166,24 +166,33 @@ def add_audio_input(p: Patcher, dsp, load, project: FaustProject, *, test_tone=F
     p.add_line(source, dsp)
 
 
-def add_audio_output(p: Patcher, dsp, load, project: FaustProject, *, master_level=None):
+def add_audio_output(p: Patcher, dsp, load, project: FaustProject, *, master_level=None,
+                     hardware=None):
     """Connect every Faust output to the MC DAC, with optional master gain.
 
     Args:
         p: Patcher to modify.
         dsp: MC bus source on outlet 0.
         load: Trigger initializing the master level, if present.
-        project: Output count, mapped to hardware channels 1 to N.
+        project: Output count, mapped to hardware channels 1 to N by default.
         master_level: Initial mc.*~ gain, or None for a direct connection. The widget
             offers a 0..1 range; no audio limiter is added.
+        hardware: Hardware output for each Faust output, in order, or None for
+            1 to N. mc.dac~ sends MC channel c to the c-th listed output.
 
     Returns:
         None. The DAC uses the stable identifier dac_1.
 
+    Raises:
+        ValueError: hardware does not list exactly one output per Faust output.
+
     Mnemosphere's generator uses custom routing to separate 25 HOA components from
     the two preview channels instead of using this block.
     """
-    channels = " ".join(map(str, range(1, project.outputs + 1)))
+    hardware = list(range(1, project.outputs + 1)) if hardware is None else list(hardware)
+    if len(hardware) != project.outputs:
+        raise ValueError("hardware must list one output per Faust output.")
+    channels = " ".join(map(str, hardware))
     dac = p.add_textbox(f"mc.dac~ {channels}", id="dac_1", numinlets=1, numoutlets=0,
                         patching_rect=[850, 200, 360, 22])
     source = dsp
@@ -197,6 +206,72 @@ def add_audio_output(p: Patcher, dsp, load, project: FaustProject, *, master_lev
         p.add_line(volume, source, inlet=1)
         initial(p, load, volume, master_level, x=900, y=100)
     p.add_line(source, dac)
+
+
+def add_stereo_scene_input(p: Patcher, dsp, load, project: FaustProject):
+    """Connect stereo hardware inputs, or a test scene selected by a toggle.
+
+    Args:
+        p: Patcher to modify.
+        dsp: Faust object receiving the two-channel bus on inlet 0.
+        load: Initialization trigger selecting the hardware inputs.
+        project: Must have exactly two audio inputs.
+
+    Raises:
+        ValueError: The project does not have two inputs.
+
+    The test scene has a centered 440 Hz sine at 0.1 in both channels and an
+    independent white noise at 0.05 in each channel: a phantom center over a
+    decorrelated background, which an upmix should send to the center and the
+    surrounds respectively. The sine breathes, one second on and one off (a
+    0.5 Hz cosine clipped to 0..1), because a single-band upmix sees little
+    ambience while a strong centered source plays. mc.pack~ 2 assembles the scene; the 0/1 toggle
+    becomes 1/2 for mc.selector~ 2, as in add_audio_input. Return None.
+    """
+    if project.inputs != 2:
+        raise ValueError("The stereo test scene needs a two-input DSP.")
+    adc = p.add_textbox("mc.adc~ 1 2", id="adc_1", numinlets=1, numoutlets=1,
+                        outlettype=["multichannelsignal"], patching_rect=[30, 100, 220, 22])
+    tone = p.add_textbox("cycle~ 440", numinlets=2, numoutlets=1, outlettype=["signal"],
+                         patching_rect=[30, 150, 90, 22])
+    breath = p.add_textbox("cycle~ 0.5", numinlets=2, numoutlets=1, outlettype=["signal"],
+                           patching_rect=[30, 110, 80, 22])
+    clipped = p.add_textbox("clip~ 0 1", numinlets=3, numoutlets=1, outlettype=["signal"],
+                            patching_rect=[120, 110, 70, 22])
+    pulsed = p.add_textbox("*~", numinlets=2, numoutlets=1, outlettype=["signal"],
+                           patching_rect=[30, 170, 40, 22])
+    centered = p.add_textbox("*~ 0.1", numinlets=2, numoutlets=1, outlettype=["signal"],
+                             patching_rect=[30, 190, 60, 22])
+    p.add_line(breath, clipped)
+    p.add_line(tone, pulsed)
+    p.add_line(clipped, pulsed, inlet=1)
+    p.add_line(pulsed, centered)
+    scene = p.add_textbox("mc.pack~ 2", numinlets=2, numoutlets=1,
+                          outlettype=["multichannelsignal"], patching_rect=[30, 270, 120, 22])
+    for channel in range(2):
+        # One noise~ per channel: independent backgrounds, a decorrelated ambience.
+        noise = p.add_textbox("noise~", numinlets=1, numoutlets=1, outlettype=["signal"],
+                              patching_rect=[130 + channel * 90, 150, 60, 22])
+        quiet = p.add_textbox("*~ 0.05", numinlets=2, numoutlets=1, outlettype=["signal"],
+                              patching_rect=[130 + channel * 90, 190, 60, 22])
+        summed = p.add_textbox("+~", numinlets=2, numoutlets=1, outlettype=["signal"],
+                               patching_rect=[30 + channel * 90, 230, 40, 22])
+        p.add_line(noise, quiet)
+        p.add_line(centered, summed)
+        p.add_line(quiet, summed, inlet=1)
+        p.add_line(summed, scene, inlet=channel)
+    toggle = p.add_textbox("toggle", maxclass="toggle", numinlets=1, numoutlets=1,
+                           outlettype=["int"], patching_rect=[320, 150, 24, 24])
+    offset = p.add_textbox("+ 1", numinlets=2, patching_rect=[360, 150, 40, 22])
+    source = p.add_textbox("mc.selector~ 2", numinlets=3, numoutlets=1,
+                           outlettype=["multichannelsignal"], patching_rect=[300, 270, 100, 22])
+    p.add_comment("test-scene", patching_rect=[320, 125, 100, 20])
+    p.add_line(adc, source, inlet=1)
+    p.add_line(scene, source, inlet=2)
+    p.add_line(toggle, offset)
+    p.add_line(offset, source)
+    initial(p, load, toggle, 0, x=300, y=100)
+    p.add_line(source, dsp)
 
 
 def control_address(project: FaustProject, parameter) -> str:

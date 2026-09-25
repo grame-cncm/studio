@@ -82,6 +82,10 @@ environment, starting from an existing project.
 | Stereo panning and Zita Rev1 | 1 → 2 | [Stereo Zita](max-patches/faustgen-mono-stereo-spatial-reverb.maxpat) |
 | Circular panning and three stereo Zita reverbs | 1 → 6 | [Six-output Zita](max-patches/faustgen-mono-6out-zita.maxpat) |
 | abclib VBAP with adjustable speaker angles | 1 → 6 | [abclib VBAP6](max-patches/faustgen-abclib-2d-vbap6.maxpat) |
+| Stereo upmix, adaptive center extraction | 2 → 3 | [Upmix 2→3](max-patches/faustgen-upmix-center-3ch.maxpat) |
+| Stereo upmix to 5.0, decorrelated ambience | 2 → 5 | [Upmix 2→5.0](max-patches/faustgen-upmix-surround-5ch.maxpat) |
+| Stereo upmix to 7.0, side and rear surrounds | 2 → 7 | [Upmix 2→7.0](max-patches/faustgen-upmix-surround-7ch.maxpat) |
+| Stereo upmix to 7.0, four analysis bands | 2 → 7 | [Upmix 2→7.0 multiband](max-patches/faustgen-upmix-surround-7ch-multiband.maxpat) |
 
 ## Stereo Orbit
 
@@ -146,6 +150,46 @@ The recorded WAV contains speaker feeds, not an HOA file to decode again. The
 [common DSP](../dsp/faustgen-mnemosphere-hoa4.dsp) uses abclib’s granulator,
 3D encoder, wider and decorrelator, followed by the abclib/Ambitools decoders.
 Importing Ambitools places this DSP under CC-BY-NC-SA-4.0.
+
+## Stereo Upmix
+
+Four patches spread a stereo source over the studio speakers:
+[2 → 3](max-patches/faustgen-upmix-center-3ch.maxpat) extracts a center,
+[2 → 5.0](max-patches/faustgen-upmix-surround-5ch.maxpat) adds two surrounds,
+[2 → 7.0](max-patches/faustgen-upmix-surround-7ch.maxpat) splits them between
+side and rear, and [2 → 7.0 multiband](max-patches/faustgen-upmix-surround-7ch-multiband.maxpat)
+analyzes the stereo image in four bands instead of one. There is no LFE.
+
+Connect a stereo source to inputs 1 and 2, enable **DSP**, or enable
+**test-scene**: a centered 440 Hz sine, playing every other second, over two
+independent noises. The centered sound goes to the center; during its pauses,
+the decorrelated noise moves to the surrounds.
+
+The outputs follow the studio's M layer, at ear height, and AtmoC:
+
+| DSP output | Speaker | Hardware output |
+| --- | --- | --- |
+| FL, FR | M1, M2 (±37.8°) | 11, 12 |
+| C | AtmoC (0°) | 28 |
+| Ls, Rs (5.0) or Lss, Rss (7.0) | M3, M4 (±90°) | 13, 14 |
+| Lrs, Rrs (7.0) | M5, M6 (±139.5°) | 15, 16 |
+
+**center extraction** sets how much of the centered sound goes to the center
+(0: no center) and **analysis time** the time constant of the analysis, in ms.
+**rear relocation** (5.0) or **surround relocation** (7.0) sets how much of the
+ambience goes to the surrounds; 0 mutes them. **decorrelation** decorrelates the
+surrounds from the fronts and from each other (0: copies of the ambience,
+1: maximum decorrelation, with a comb coloration of each surround).
+**surround delay** delays the surrounds, in ms, so that direct sound leaking
+into them stays localized in front. Each control sends its full Faust path, for example
+`/Adaptive_surround_2_to_5/center_extraction $1`.
+
+Only the 200 Hz–5 kHz band is analyzed; low and high frequencies stay in front.
+A centered sound is only partly extracted while ambience plays in the same band:
+the multiband version separates the two better. The processing does not
+compensate for speaker distances (M3 and M4 are closer than M1 and M2). The
+shared DSP imports [`upmix.lib`](../dsp/libraries/upmix.lib), whose functions
+cite the papers they use.
 
 ## Resources
 

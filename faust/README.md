@@ -50,7 +50,7 @@ git submodule update --init
 python -m pip install -e faust/maxmsp/py2max -e faust/puredata/py2pd
 ```
 
-Les dix projets utilisent les mêmes [sources Faust dans `dsp/`](dsp/).
+Les quatorze projets utilisent les mêmes [sources Faust dans `dsp/`](dsp/).
 Les paramètres, leurs plages et leurs valeurs initiales sont définis dans ces
 fichiers ; les interfaces sont créées à partir du JSON produit par Faust.
 Le sous-module [`abclib`](https://github.com/alainbonardi/abclib) fournit les bibliothèques dans
@@ -71,7 +71,7 @@ python faust/maxmsp/max-patches/generate_all.py
 python faust/puredata/pd-patches/generate_all.py
 ```
 
-Les générateurs des dix projets acceptent `--output-dir dossier`,
+Les générateurs des quatorze projets acceptent `--output-dir dossier`,
 `--faust chemin-du-compilateur` et `--check` pour comparer les fichiers existants sans les modifier.
 Un générateur individuel accepte les mêmes options que `generate_all.py`.
 

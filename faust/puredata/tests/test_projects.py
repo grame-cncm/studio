@@ -75,7 +75,7 @@ def run(args):
 
 @requires_faust
 def test_all_generated_projects_are_current_and_portable(tmp_path):
-    """Regenerate all ten projects under tmp_path and compare every export bytewise.
+    """Regenerate every catalog project under tmp_path and compare every export bytewise.
 
     DSP sources must avoid /Users/ and /private/ paths. abclib must be initialized,
     and its embedded source must match the exported .dsp. Reference files are only
@@ -241,7 +241,10 @@ def scheduled(p, load, time):
 @requires_pd
 @requires_faust
 @pytest.mark.skipif(shutil.which("c++") is None, reason="C++ compiler not found")
-@pytest.mark.parametrize("stem", [name for name in PROJECTS if name not in {SYNTH, MNEMOSPHERE}])
+# Upmixes process 200 Hz-5 kHz: constant inputs stay in the fronts whatever the
+# controls, so test_upmix.py drives them with their test scene instead.
+@pytest.mark.parametrize("stem", [name for name in PROJECTS if name not in {SYNTH, MNEMOSPHERE}
+                                  and not name.startswith("faustgen-upmix-")])
 def test_every_audio_channel_matches_faust_after_controls_and_compile(tmp_path, stem):
     """Compare every Pd output to C++ before/after a control change and compile.
 

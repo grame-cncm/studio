@@ -88,7 +88,7 @@ needs `num_inlets=3` and `num_outlets=3` in py2pd.
 
 ## Available Faust projects
 
-The ten projects use the same [Faust sources](../dsp/) as
+The fourteen projects use the same [Faust sources](../dsp/) as
 [Max/MSP](../maxmsp/README-en.md):
 
 | Project | Audio inputs → outputs | Patch |
@@ -103,6 +103,10 @@ The ten projects use the same [Faust sources](../dsp/) as
 | Stereo panning and Zita Rev1 | 1 → 2 | [Stereo Zita](pd-patches/faustgen-mono-stereo-spatial-reverb.pd) |
 | Circular panning and three stereo Zita reverbs | 1 → 6 | [Six-output Zita](pd-patches/faustgen-mono-6out-zita.pd) |
 | abclib VBAP with adjustable speaker angles | 1 → 6 | [abclib VBAP6](pd-patches/faustgen-abclib-2d-vbap6.pd) |
+| Stereo upmix, adaptive center extraction | 2 → 3 | [Upmix 2→3](pd-patches/faustgen-upmix-center-3ch.pd) |
+| Stereo upmix to 5.0, decorrelated ambience | 2 → 5 | [Upmix 2→5.0](pd-patches/faustgen-upmix-surround-5ch.pd) |
+| Stereo upmix to 7.0, side and rear surrounds | 2 → 7 | [Upmix 2→7.0](pd-patches/faustgen-upmix-surround-7ch.pd) |
+| Stereo upmix to 7.0, four analysis bands | 2 → 7 | [Upmix 2→7.0 multiband](pd-patches/faustgen-upmix-surround-7ch-multiband.pd) |
 
 Generate all these patches and their SVG previews:
 
@@ -215,6 +219,45 @@ The recorded WAV contains speaker feeds, not an HOA file to decode again. The
 [common DSP](../dsp/faustgen-mnemosphere-hoa4.dsp) uses abclib’s granulator,
 3D encoder, wider and decorrelator, followed by the abclib/Ambitools decoders.
 Importing Ambitools places this DSP under CC-BY-NC-SA-4.0.
+
+## Stereo Upmix
+
+Four patches spread a stereo source over the studio speakers:
+[2 → 3](pd-patches/faustgen-upmix-center-3ch.pd) extracts a center,
+[2 → 5.0](pd-patches/faustgen-upmix-surround-5ch.pd) adds two surrounds,
+[2 → 7.0](pd-patches/faustgen-upmix-surround-7ch.pd) splits them between
+side and rear, and [2 → 7.0 multiband](pd-patches/faustgen-upmix-surround-7ch-multiband.pd)
+analyzes the stereo image in four bands instead of one. There is no LFE.
+
+Connect a stereo source to inputs 1 and 2, enable **DSP**, or enable
+**test-scene**: a centered 440 Hz sine, playing every other second, over two
+independent noises. The centered sound goes to the center; during its pauses,
+the decorrelated noise moves to the surrounds.
+
+The outputs follow the studio's M layer, at ear height, and AtmoC:
+
+| DSP output | Speaker | Hardware output |
+| --- | --- | --- |
+| FL, FR | M1, M2 (±37.8°) | 11, 12 |
+| C | AtmoC (0°) | 28 |
+| Ls, Rs (5.0) or Lss, Rss (7.0) | M3, M4 (±90°) | 13, 14 |
+| Lrs, Rrs (7.0) | M5, M6 (±139.5°) | 15, 16 |
+
+**center extraction** sets how much of the centered sound goes to the center
+(0: no center) and **analysis time** the time constant of the analysis, in ms.
+**rear relocation** (5.0) or **surround relocation** (7.0) sets how much of the
+ambience goes to the surrounds; 0 mutes them. **decorrelation** decorrelates the
+surrounds from the fronts and from each other (0: copies of the ambience,
+1: maximum decorrelation, with a comb coloration of each surround).
+**surround delay** delays the surrounds, in ms, so that direct sound leaking
+into them stays localized in front. The corresponding messages are `center-extraction`, `analysis-time`, `rear-relocation`, `surround-relocation`, `decorrelation`, and `surround-delay`.
+
+Only the 200 Hz–5 kHz band is analyzed; low and high frequencies stay in front.
+A centered sound is only partly extracted while ambience plays in the same band:
+the multiband version separates the two better. The processing does not
+compensate for speaker distances (M3 and M4 are closer than M1 and M2). The
+shared DSP imports [`upmix.lib`](../dsp/libraries/upmix.lib), whose functions
+cite the papers they use.
 
 ## Resources
 
