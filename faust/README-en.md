@@ -73,6 +73,7 @@ python faust/puredata/pd-patches/generate_all.py
 The fourteen project generators accept `--output-dir directory`,
 `--faust compiler-path`, and `--check` to compare existing files without modifying them. Individual
 project generators accept the same options as `generate_all.py`.
+The [tests](TESTS-en.md) check the generated patches and their sound.
 
 Max embeds Faust in the `.maxpat`. PureData receives a `.dsp` copy beside its
 `.pd`. Regeneration replaces these copies: copy any edits made in Max or in

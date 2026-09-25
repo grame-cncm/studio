@@ -27,7 +27,8 @@ patches for both environments. After a modification specific to one
 interface, regenerate only the concerned patches. Keep the scripts and
 their `.maxpat`, `.pd` and `.svg` outputs in their current locations. Use
 `--check` to verify that the outputs of the project generators are up to
-date, then run the checks appropriate to the modification.
+date, then run the checks appropriate to the modification, as listed in
+[TESTS-en.md](TESTS-en.md).
 
 The `py2max`, `py2pd`, `pd-faustgen` and abclib dependencies are submodules
 declared in `../.gitmodules`. Use the original abclib libraries in
